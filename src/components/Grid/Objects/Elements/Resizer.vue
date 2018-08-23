@@ -38,19 +38,20 @@
             })
             .on('drag', () => {
               let resultPosition = {
-                x: (d3.event.x - this.initialPositionFromEvent.x)/this.$store.getters.getChartScale() + this.initialPosition.x,
-                y: (d3.event.y - this.initialPositionFromEvent.y)/this.$store.getters.getChartScale() + this.initialPosition.y
+                x: d3.event.x - this.initialPositionFromEvent.x,
+                y: d3.event.y - this.initialPositionFromEvent.y
               }
+              let width = resultPosition.x + this.initialSize.width,
+                  height = resultPosition.y + this.initialSize.height
 
               this.objectComponent.data.size = {
-                width: resultPosition.x - this.initialPosition.x + this.initialSize.width,
-                height: resultPosition.y - this.initialPosition.y + this.initialSize.height,
+                width, height
               }
 
               this.$store.getters.getCurves(this.objectId).forEach(curve => curve.redraw())
             })
             .on('end', () => {
-
+              this.objectComponent.calcMinSize()
             })
         )
       })
@@ -62,11 +63,8 @@
   .resizer {
     width: 10px;
     height: 10px;
-    position: absolute;
-    right: -3px;
-    bottom: -3px;
     background: #ffffff;
-    border: 3px solid #005ba4;
+    border: 3px solid #505fa6;
     cursor: nwse-resize;
   }
 </style>

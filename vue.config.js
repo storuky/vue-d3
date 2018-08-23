@@ -1,3 +1,6 @@
+var path = require('path')
+var webpack = require('webpack')
+
 module.exports = {
   devServer: {
     proxy: {
@@ -6,5 +9,7 @@ module.exports = {
         secure: false
       }
     }
-  }
+  },
+  lintOnSave: true,
+  outputDir: path.resolve(__dirname, '../../../kaupang/frontent'),
 };

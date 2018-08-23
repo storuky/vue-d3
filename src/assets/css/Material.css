@@ -1,0 +1,17 @@
+.v-pink {
+  background: #df4e9e;
+  color: white;
+}
+
+.success {
+  background-color: #fc418c !important;
+  border-color: #fc418c !important;
+}
+
+.gradient {
+  background: #e44e9d;
+  background: -moz-linear-gradient(left, #e44e9d 0%, #505fa6 100%);
+  background: -webkit-linear-gradient(left, #e44e9d 0%,#505fa6 100%);
+  background: linear-gradient(to right, #e44e9d 0%,#505fa6 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e44e9d', endColorstr='#505fa6',GradientType=1 );
+}

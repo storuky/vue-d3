@@ -4,11 +4,11 @@
     <svg ref="svg">
       <defs>
         <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#05a"/>
-          <stop offset="100%" stop-color="#0a5"/>
+          <stop offset="0%"   stop-color="#505fa6"/>
+          <stop offset="100%" stop-color="#e44e9d"/>
         </linearGradient>
         <marker id="arrow" viewBox="0 -5 10 10" refX="5" refY="0" markerWidth="4" markerHeight="4" orient="auto">
-          <path fill="#00a956" d="M0,-5L10,0L0,5" class="arrowHead"></path>
+          <path fill="#e44e9d" d="M0,-5L10,0L0,5" class="arrowHead"></path>
         </marker>
       </defs>
       <g ref="container">
@@ -28,9 +28,9 @@
 
 <script>
 import * as d3 from 'd3'
-import GridControls from './GridControls'
-import Curve from './Curve/Curve'
-import BaseObject from './Objects/_Base'
+import GridControls from './Grid/GridControls'
+import Curve from './Grid/Curve'
+import BaseObject from './Grid/Object'
 
 export default {
   name: 'Grid',
@@ -43,9 +43,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('fetchObjectsList').then(res => {
-      this.$store.dispatch('fetchCurvesList')
-    })
+    this.$store.dispatch('fetchChart')
   },
   mounted () {
     this.d3svg = d3.select(this.$refs.svg)

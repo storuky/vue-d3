@@ -48,6 +48,9 @@
       setFrom (from) {
         this.fromLocal = from
       },
+      setTo (to) {
+        this.toLocal = to
+      },
       redraw (targetPosition) {
         if (this.fromLocal && this.toLocal) {
           var position = this.$store.getters.getPoints({from: this.fromLocal, to: this.toLocal})

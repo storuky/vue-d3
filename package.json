@@ -9,9 +9,13 @@
   },
   "dependencies": {
     "d3": "^5.5.0",
+    "material-design-icons-iconfont": "^3.0.3",
     "normalize.css": "^8.0.0",
+    "roboto-fontface": "^0.10.0",
     "vue": "^2.5.17",
     "vue-resource": "^1.5.1",
+    "vuedraggable": "^2.16.0",
+    "vuetify": "^1.1.14",
     "vuex": "^3.0.1",
     "write-file-webpack-plugin": "^4.3.2"
   },

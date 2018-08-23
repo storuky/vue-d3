@@ -1,8 +1,10 @@
-import Vue from 'vue'
-
 const store = {
   state: {
-    curvesList: [],
+    curvesList: [
+      // {from: 1, to: 2, id: 1},
+      // {from: 2, to: 4, id: 2},
+      // {from: 1, to: 3, id: 3},
+    ],
     curvesComponentsList: {},
     drawingCurve: null
   },
@@ -21,7 +23,7 @@ const store = {
       state.curvesList.push({ id: parseInt(Math.random() * 10000), from, to })
     },
     removeCurve(state, { from, to }) {
-      state.curvesList = state.curvesList.filter(el => el.from != from || el.to != to)
+      state.curvesList = state.curvesList.filter(el => !(el.from == from && el.to == to))
     },
     setDrawingCurve(state, curve) {
       state.drawingCurve = curve
@@ -42,11 +44,6 @@ const store = {
     },
     setDrawingCurve({ commit, state }, curve) {
       commit('setDrawingCurve', curve)
-    },
-    fetchCurvesList({ commit, state }, objects) {
-      Vue.http.get("/curves", (objects) => {
-        commit('setCurvesList', objects)
-      })
     }
   },
   getters: {
