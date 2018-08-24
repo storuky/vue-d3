@@ -1,11 +1,11 @@
 <template>
-  <div @click="openSettings()" class="chatbot-message" :style="{width: width + 'px', height: height + 'px'}">
-    <div>{{data.info.title}}</div>
+  <div @click="openSettings()" class="chatbot-message" :style="{minWidth: this.data.size.width + 'px', minHeight: this.data.size.height + 'px'}">
+    <div>{{settingsLocal.title}}</div>
   </div>
 </template>
 
 <script>
-  import ChatbotAnswerSettings from './ChatbotAnswerSettings'
+  import SettingsModal from './SettingsModal'
   export default {
     name: "ChatbotAnswer",
     props: {
@@ -13,24 +13,26 @@
       default: Object
     },
     components: {
-      ChatbotAnswerSettings
+      SettingsModal
+    },
+    data () {
+      const settings = {...this.data.settings}
+
+      return {
+        settingsLocal: settings
+      }
     },
     methods: {
       openSettings () {
-        this.$modal.show(ChatbotAnswerSettings, {
-          settings: {}
+        this.$modal.show(SettingsModal, {
+          settings: this.settings,
+          onSave: (settings) => {
+            this.settingsLocal = settings
+          }
         }, {
           height: 'auto',
           scrollable: true
         })
-      }
-    },
-    computed: {
-      width () {
-        return this.data.size.width || this.defaule.size.width
-      },
-      height () {
-        return this.data.size.height || this.defaule.size.height
       }
     }
   }

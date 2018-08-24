@@ -1,4 +1,4 @@
-import settings from '../components/Grid/Objects/settings'
+import settings from '../components/Grid/settings'
 
 const store = {
   state: {

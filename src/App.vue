@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import Grid from './components/Grid.vue'
-import Header from './components/Header.vue'
-import SidebarTools from './components/SidebarTools.vue'
+import Grid from './components/Grid'
+import Header from './components/Layout/Header'
+import SidebarTools from './components/Layout/SidebarTools'
 
 export default {
   name: 'app',

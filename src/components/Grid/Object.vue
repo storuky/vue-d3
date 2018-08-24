@@ -40,19 +40,25 @@
   import './Objects/Elements/in-out.css'
 
   import * as d3 from 'd3'
-  import Person from './Objects/Person'
-  import Organisation from './Objects/Organisation'
-  import General from './Objects/General'
-  import Question from './Objects/Question'
-  import Answer from './Objects/Answer'
-  import ComponentSelector from './Objects/ComponentSelector'
+
+  // Basic
+  import Person from './Objects/Person/index'
+  import Organisation from './Objects/Organisation/index'
+  import General from './Objects/General/index'
+  import ComponentSelector from './Objects/ComponentsSelector/index'
+
+  // Plugins
+  import Question from './Plugins/Chatbot/Objects/Question/index'
+  import Answer from './Plugins/Chatbot/Objects/Answer/index'
+
+  // Elements
   import In from './Objects/Elements/In'
   import Out from './Objects/Elements/Out'
   import Resizer from './Objects/Elements/Resizer'
   import ObjectTools from './Objects/Elements/ObjectTools'
 
-  import settings from './Objects/settings'
-
+  import settings from './settings'
+  
   export default {
     name: "BaseObject",
     props: {
@@ -128,7 +134,6 @@
         this.curves().forEach(curve => curve.redraw());
       },
       calcSize() {
-        console.log(this.$refs.content.scrollHeight)
         this.$nextTick(function () {
           this.data.size.width = this.$refs.content.scrollWidth - 2
           this.data.size.height = this.$refs.content.scrollHeight

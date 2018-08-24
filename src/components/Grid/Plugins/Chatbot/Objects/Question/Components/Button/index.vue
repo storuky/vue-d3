@@ -5,7 +5,7 @@
 
 <script>
   import * as d3 from 'd3'
-  import ButtonSettingsModal from '../../../modals/ControlSettings/Button'
+  import SettingsModal from './SettingsModal'
   export default {
     name: "ChatbotButton",
     props: {
@@ -23,7 +23,7 @@
     },
     methods: {
       openSettings () {
-        this.$modal.show(ButtonSettingsModal, {
+        this.$modal.show(SettingsModal, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
@@ -51,9 +51,5 @@
     text-transform: uppercase;
     color: white;
     border-radius: 3px;
-  }
-
-  .chatbot-button:hover {
-    filter: brightness(105%);
   }
 </style>

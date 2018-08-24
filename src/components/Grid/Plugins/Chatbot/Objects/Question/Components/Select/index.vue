@@ -1,15 +1,14 @@
 <template>
-  <div @click="openSettings()" class="chatbot-video" :style="{width: (localSettings.width || 100) + '%'}">
-    Video
+  <div @click="openSettings()" class="chatbot-select" v-html="label" :style="{width: (localSettings.width || 100) + '%'}">
   </div>
 </template>
 
 <script>
   import * as d3 from 'd3'
-  import VideoSettingsModal from '../../../modals/ControlSettings/Video'
+  import SettingsModal from './SettingsModal'
 
   export default {
-    name: "ChatbotVideo",
+    name: "ChatbotSelect",
     props: {
       settings: Object
     },
@@ -23,9 +22,14 @@
         localSettings: {...this.settings},
       }
     },
+    computed: {
+      label () {
+        return this.localSettings.options && this.localSettings.options.length ? this.localSettings.options[0].text : 'select'
+      }
+    },
     methods: {
       openSettings () {
-        this.$modal.show(VideoSettingsModal, {
+        this.$modal.show(SettingsModal, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
@@ -39,16 +43,17 @@
   }
 </script>
 
-<style scope>
-  .chatbot-video {
-    background: #e7e7e7;
-    height: 200px;
-    width: 100%;
+<style scoped>
+  .chatbot-select {
     cursor: pointer;
-    text-align: center;
+    margin: 0 10px;
+    background-color: #f5f5f5;
+    height: 36px;
+    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    text-transform: uppercase;
+    border-radius: 3px;
   }
 </style>

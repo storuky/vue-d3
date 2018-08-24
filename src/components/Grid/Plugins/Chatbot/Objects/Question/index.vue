@@ -33,11 +33,11 @@
 
 <script>
   import * as d3 from 'd3'
-  import Separator from './Chatbot/Separator'
-  import Controls from './Chatbot/Controls'
-  import ControlsSelector from '../../modals/ControlsSelector'
+  import Separator from './UI/Separator'
+  import Controls from './UI/Controls'
+  import ControlsSelector from './Modals/ControlsSelector'
 
-  import controls from './Chatbot/controlsList'
+  import controls from './settings'
   import draggable from 'vuedraggable'
 
   export default {
@@ -151,6 +151,10 @@
     float: right;
     margin: -4px;
     cursor: pointer;
+  }
+
+  .delete-message i {
+    color: white;
   }
 
   .question-actions {

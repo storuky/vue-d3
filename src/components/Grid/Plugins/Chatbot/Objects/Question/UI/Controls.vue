@@ -7,13 +7,13 @@
 <script>
   import * as d3 from 'd3'
   import draggable from 'vuedraggable'
-  import ChatbotButton from './Button'
-  import ChatbotSelect from './Select'
-  import ChatbotInput from './Input'
-  import ChatbotVideo from './Video'
-  import ChatbotImage from './Image'
-  import ChatbotCheckboxList from './CheckboxList'
-  import ChatbotRadioList from './RadioList'
+  import ChatbotButton from '../Components/Button/index'
+  import ChatbotSelect from '../Components/Select/index'
+  import ChatbotInput from '../Components/Input/index'
+  import ChatbotVideo from '../Components/Video/index'
+  import ChatbotImage from '../Components/Image/index'
+  import ChatbotCheckboxList from '../Components/CheckboxList/index'
+  import ChatbotRadioList from '../Components/RadioList/index'
 
   export default {
     name: "Controls",

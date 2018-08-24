@@ -1,6 +1,5 @@
 <template>
   <div class="grid">
-    <GridControls />
     <svg ref="svg">
       <defs>
         <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -28,7 +27,6 @@
 
 <script>
 import * as d3 from 'd3'
-import GridControls from './Grid/GridControls'
 import Curve from './Grid/Curve'
 import BaseObject from './Grid/Object'
 
@@ -59,7 +57,6 @@ export default {
     })
   },
   components: {
-    GridControls,
     BaseObject,
     Curve
   },

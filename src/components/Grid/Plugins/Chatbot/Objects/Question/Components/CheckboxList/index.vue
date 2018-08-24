@@ -1,20 +1,18 @@
 <template>
-  <div @click="openSettings()" class="chatbot-radiolist" :style="{width: (localSettings.width || 100) + '%'}">
+  <div @click="openSettings()" class="chatbot-checkboxlist" :style="{width: (localSettings.width || 100) + '%'}">
     <div v-if="!localSettings.options || localSettings.options.length == 0" class="component-settings">Checkbox List Settings</div>
-    <v-radio-group disabled v-model="model">
-      <v-radio v-for="option in localSettings.options" :key="option.id" :label="option.text" :value="option.text"></v-radio>
-    </v-radio-group>
+    <v-checkbox disabled :key="option.id" v-for="option in localSettings.options" v-model="model" :label="option.text" :value="option.text"></v-checkbox>
   </div>
 </template>
 
 <script>
   import * as d3 from 'd3'
-  import RadioListSettingsModal from '../../../modals/ControlSettings/RadioList'
+  import SettingsModal from './SettingsModal'
 
   export default {
-    name: "ChatbotRadioList",
+    name: "ChatbotCheckboxList",
     props: {
-      settings: Object
+      settings: Object,
     },
     mounted () {
       this.$nextTick(function () {
@@ -24,12 +22,12 @@
     data() {
       return {
         localSettings: {...this.settings},
-        model: null
+        model: undefined
       }
     },
     methods: {
       openSettings () {
-        this.$modal.show(RadioListSettingsModal, {
+        this.$modal.show(SettingsModal, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
@@ -43,22 +41,23 @@
   }
 </script>
 
-<style scope>
-  .chatbot-radiolist {
+<style scoped>
+  .chatbot-checkboxlist {
     display: block;
   }
-  .chatbot-radiolist .v-input {
-    margin-top: 0 !important;
-  }
-  .chatbot-radiolist .v-messages {
-    display: none;
-  }
-
 </style>
 
 <style>
-  .chatbot-radiolist .v-label,
-  .chatbot-radiolist .v-icon  {
+  .chatbot-checkboxlist .v-messages {
+    display: none;
+  }
+
+  .chatbot-checkboxlist .v-input {
+    margin-top: 0;
+  }
+
+  .chatbot-checkboxlist .v-label,
+  .chatbot-checkboxlist .v-icon  {
     color: #333 !important;
   }
 </style>

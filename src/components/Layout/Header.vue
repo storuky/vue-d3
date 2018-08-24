@@ -13,7 +13,7 @@
         color="white"
         align-with-title
       >
-        <v-tabs-slider color="v-pink"></v-tabs-slider>
+        <v-tabs-slider color="primary"></v-tabs-slider>
 
         <v-tab
           v-for="item in items"
@@ -27,18 +27,13 @@
 </template>
 
 <script>
-  import HeaderTabs from './Header/Tabs'
-
   export default {
     name: "Header",
-    components: {
-      HeaderTabs
-    },
     data () {
       return {
         tab: 'web',
         items: [
-          'Visual Bot', 'Directories'
+          'Visual Bot'
         ]
       }
     }
