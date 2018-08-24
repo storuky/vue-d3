@@ -16,7 +16,7 @@ const settings = {
     default (object) {
       return {
         ...settings.default,
-        info: {title: 'Answer'},
+        info: {title: 'Answer', settings: {answerVariants: [{}]}},
         size: settings[object.type].size,
         ...object
       }

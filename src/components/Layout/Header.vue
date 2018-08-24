@@ -4,7 +4,7 @@
       color="white"
       tabs
     >
-      <v-toolbar-side-icon></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click.stop="toggleDrawer"></v-toolbar-side-icon>
       <v-toolbar-title>Ulf</v-toolbar-title>
 
       <v-tabs
@@ -35,6 +35,11 @@
         items: [
           'Visual Bot'
         ]
+      }
+    },
+    methods: {
+      toggleDrawer () {
+        this.$store.dispatch('toggleDrawer')
       }
     }
   }

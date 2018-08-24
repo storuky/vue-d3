@@ -1,19 +1,23 @@
 <template>
   <v-app id="app" data-app light>
-    <Header />
-    <div class="work-area">
-      <SidebarTools />
-      <div class="grid-container">
-        <Grid />
+    <div class="wrapper">
+      <Header />
+      <div class="work-area">
+        <SidebarTools />
+        <div class="grid-container">
+          <Grid />
+        </div>
       </div>
+      <modals-container></modals-container>
     </div>
-    <modals-container></modals-container>
+    <Navigation />
   </v-app>
 </template>
 
 <script>
 import Grid from './components/Grid'
 import Header from './components/Layout/Header'
+import Navigation from './components/Layout/Navigation'
 import SidebarTools from './components/Layout/SidebarTools'
 
 export default {
@@ -21,7 +25,8 @@ export default {
   components: {
     Grid,
     Header,
-    SidebarTools
+    SidebarTools,
+    Navigation
   }
 }
 </script>
@@ -37,6 +42,19 @@ export default {
     top: 84px;
     bottom: 0;
     background: #f8f8f8;
+  }
+
+  .wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: .2s;
+  }
+
+  .work-area.with-drawer {
+    left: 300px;
   }
 
   .grid-container {

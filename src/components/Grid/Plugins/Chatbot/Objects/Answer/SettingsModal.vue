@@ -5,9 +5,9 @@
     </div>
     <div class="modal-title">Answer Block Settings</div>
     <div class="modal-body">
-      <v-layout row :key="variant.id" v-for="variant in localSettings.answerVariants">
+      <v-layout row :key="variant.id" v-for="(variant, index) in localSettings.answerVariants">
         <v-flex xs11>
-          <v-text-field v-model="variant.text" label="Answer" solo></v-text-field>
+          <v-text-field v-model="variant.text" :label="`Answer ${index+1}`"></v-text-field>
         </v-flex>
         <v-flex xs1>
           <div class="delete-variant" @click="deleteVariant(variant.id)">

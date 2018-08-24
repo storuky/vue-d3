@@ -35,12 +35,12 @@
               const target = d3.event.sourceEvent.target
               const targetObjectNode = target && target.closest ? target.closest('g[data-object-id]') : null
               if (targetObjectNode) {
-                this.targetObjectComponent = this.$store.getters.getObjectComponent(targetObjectNode.dataset.objectId)
-
-                var id = this.targetObjectComponent.data.id
+                var id = targetObjectNode.dataset.objectId
                 if (id != this.curve.fromLocal && !this.$store.getters.getCurve({from: this.objectId, to: id})) {
+                  this.targetObjectComponent = this.$store.getters.getObjectComponent(id)
                   this.curve.toLocal = this.targetObjectComponent.data.id
                 }
+
               }
 
               if (!targetObjectNode && this.targetObjectComponent) {
