@@ -3,13 +3,13 @@
     <!-- Object -->
     <foreignObject :height="data.size.height + 10" :width="data.size.width + 10" ref="foreignObject">
       <div style="margin: 4px" ref="content">
-        <component @calcMinSize="calcMinSize()" :default={defaultSize} :is="componentType" :data="data"></component>
+        <component @calcSize="calcSize()" :default={defaultSize} :is="componentType" :data="data"></component>
       </div>
     </foreignObject>
 
     <!-- Tools -->
     <foreignObject v-if="toolsVisible" y="-30" height="30" :width="data.size.width">
-      <ObjectTools :objectId="data.id" />
+      <ObjectTools @deleteObject="deleteObject" :objectId="data.id" />
     </foreignObject>
 
     <!-- Label -->
@@ -127,16 +127,13 @@
 
         this.curves().forEach(curve => curve.redraw());
       },
-      calcMinSize() {
-        if (this.data.size.width < this.$refs.content.scrollWidth) {
-          this.data.size.width = this.$refs.content.scrollWidth
-          this.redraw()
-        }
-
-        if (this.data.size.height < this.$refs.content.scrollHeight) {
-          this.data.size.height = this.$refs.content.scrollHeight
-          this.redraw()
-        }
+      calcSize() {
+        this.data.size.width = this.$refs.content.scrollWidth - 2
+        this.data.size.height = this.$refs.content.scrollHeight
+        this.redraw()
+      },
+      deleteObject () {
+        this.$store.dispatch('removeObject', this.data.id)
       },
       makeDraggable () {
         this.d3container.call(

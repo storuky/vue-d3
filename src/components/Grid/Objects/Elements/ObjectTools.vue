@@ -3,7 +3,7 @@
     <div class="object-tool">
       <v-icon>code</v-icon>
     </div>
-    <div class="object-tool">
+    <div class="object-tool" @click="$emit('deleteObject')">
       <v-icon>delete</v-icon>
     </div>
   </div>
@@ -35,6 +35,7 @@
     width: 25px;
     height: 25px;
     border-radius: 25px;
+    cursor: pointer;
   }
   .object-tool i {
     font-size: 18px;

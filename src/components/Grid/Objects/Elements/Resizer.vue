@@ -51,7 +51,7 @@
               this.$store.getters.getCurves(this.objectId).forEach(curve => curve.redraw())
             })
             .on('end', () => {
-              this.objectComponent.calcMinSize()
+              this.objectComponent.calcSize()
             })
         )
       })

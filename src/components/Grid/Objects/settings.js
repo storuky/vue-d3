@@ -10,7 +10,7 @@ const settings = {
     has: {
       in: true,
       out: true,
-      resize: true
+      resize: false
     },
     components: ['Question'],
     default (object) {
@@ -24,13 +24,13 @@ const settings = {
   },
   'Question': {
     size: {
-      width: 350,
-      height: 600
+      width: 390,
+      height: 330
     },
     has: {
       in: true,
       out: true,
-      resize: true
+      resize: false
     },
     components: ['Answer', 'Question'],
     default(object) {

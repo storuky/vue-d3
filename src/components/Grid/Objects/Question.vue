@@ -1,22 +1,37 @@
 <template>
-  <div class="chatbot" :style="{minWidth: width + 'px', minHeight: height + 'px'}">
-    <div class="bot-messages">
-      <div class="bot-message" :class="{first: index == 0}" :key="message.id" v-for="(message, index) in messages" v-html="message.text"></div>
-      <div class="bot-message-actions">
-        <div class="add-message" @click="addMessage()">Add Message</div>
-        <div class="messages-settings" v-if="messages.length">
-          <v-icon>settings</v-icon>
+  <div class="question">
+    <div class="question-margin">
+      <div class="bot-messages" ref="messages">
+        <div class="bot-message" :class="{first: index == 0}" :key="message.id" v-for="(message, index) in messages">
+          <div class="delete-message" @click="deleteMessage(message.id)">
+            <v-icon>close</v-icon>
+          </div>
+          <div v-html="message.text" @input="$emit('calcMinSize')" @click="showInput = index" contenteditable></div>
+        </div>
+        <div class="bot-message-actions">
+          <div class="add-message" @click="addMessage()">Add Message Variant</div>
+          <div class="messages-settings" v-if="messages.length">
+            <v-icon>settings</v-icon>
+          </div>
+        </div>
+      </div>
+      <div class="message-body">
+        <div class="message-body-label">Content</div>
+        <div class="message-body-list">
+          <div class="message-body-item" :key="type" v-for="type in ['image', 'checkboxList', 'radioList', 'video']" @click="addContent()">
+            <div>{{type}}</div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="body"></div>
-    <draggable class="chatbot-actions" v-model="data.info.component.actions">
-      <component :key="action.id" v-for="action in data.info.component.actions" :is="item.type" :settings="item"></component>
+    <draggable class="message-actions" v-model="actions">
+      <component :key="action.id" v-for="action in actions" :is="action.type" :settings="item"></component>
     </draggable>
   </div>
 </template>
 
 <script>
+  import * as d3 from 'd3'
   import ChatbotButton from './Chatbot/Button'
   import ChatbotSelect from './Chatbot/Select'
   import ChatbotInput from './Chatbot/Input'
@@ -34,23 +49,46 @@
       ChatbotInput,
       draggable
     },
+    mounted() {
+      this.$nextTick(function () {
+        d3.select(this.$refs.messages).on('mousedown', () => d3.event.stopPropagation())
+      })
+    },
     data () {
       return {
-        messages: this.data.info.component.messages || []
+        showInput: null,
+        messages: this.data.info.component.messages || [],
+        content: this.data.info.component.content || [],
+        actions: this.data.info.component.actions || []
       }
     },
     methods: {
       addMessage() {
         this.messages.push({text: "message", id: Math.random()})
         this.$nextTick(function () {
-          this.$emit('calcMinSize')
+          this.$emit('calcSize')
+        })
+      },
+      addContent() {
+        this.content.push({text: "message", id: Math.random()})
+        this.$nextTick(function () {
+          this.$emit('calcSize')
+        })
+      },
+      addAction() {
+        this.actions.push({type: "ChatbotButton", id: Math.random()})
+        this.$nextTick(function () {
+          this.$emit('calcSize')
+        })
+      },
+      deleteMessage(messageId) {
+        this.messages = this.messages.filter(message => message.id != messageId)
+        this.$nextTick(function () {
+          this.$emit('calcSize')
         })
       }
     },
     computed: {
-      // messages () {
-      //   return this.data.info.component.messages || ["lol"]
-      // },
       width () {
         return this.data.size.width || this.defaule.size.width
       },
@@ -65,14 +103,14 @@
 </script>
 
 <style scoped>
-  .chatbot {
+  .question {
     background: white;
     border: 5px solid #555fa6;
     border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
+  }
+
+  .question-margin {
+    margin: 20px;
   }
 
   .bot-message {
@@ -82,7 +120,6 @@
     font-size: 14px;
     border-radius: 5px;
     margin-bottom: 10px;
-    cursor: pointer;
     min-width: 200px;
   }
 
@@ -116,5 +153,48 @@
   .bot-message-actions {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+  }
+
+  .delete-message {
+    float: right;
+    margin: -4px;
+    cursor: pointer;
+  }
+
+  .message-body-list {
+    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .message-body {
+    padding: 10px;
+    margin: 40px 0;
+    border: 1px dashed #e7e7e7;
+  }
+  .message-body-item {
+    padding: 5px 10px;
+    background: #df4e9e;
+    margin: 5px;
+    color: white;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .message-body-label {
+    float: left;
+    margin-top: -16px;
+    background: white;
+    display: block;
+    height: 10px;
+    font-size: 12px;
+    color: #b7b7b7;
+    margin-left: 0px;
+    padding: 0 5px;
+  }
+
+  .message-actions {
+    height: 60px;
+    border-top: 1px solid #e7e7e7;
   }
 </style>
