@@ -3,11 +3,11 @@
     <div class="wrapper">
       <Header />
       <div class="work-area">
-        <SidebarTools />
         <div class="grid-container">
           <Grid />
         </div>
       </div>
+      <ObjectEditor />
       <modals-container></modals-container>
     </div>
     <Navigation />
@@ -18,15 +18,15 @@
 import Grid from './components/Grid'
 import Header from './components/Layout/Header'
 import Navigation from './components/Layout/Navigation'
-import SidebarTools from './components/Layout/SidebarTools'
+import ObjectEditor from './components/Layout/ObjectEditor'
 
 export default {
   name: 'app',
   components: {
     Grid,
     Header,
-    SidebarTools,
-    Navigation
+    Navigation,
+    ObjectEditor
   }
 }
 </script>
@@ -53,13 +53,9 @@ export default {
     transition: .2s;
   }
 
-  .work-area.with-drawer {
-    left: 300px;
-  }
-
   .grid-container {
     position: absolute;
-    left: 50px;
+    left: 0;
     top: 0;
     bottom: 0;
     right: 0;

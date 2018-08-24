@@ -10,8 +10,10 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import store from './store/index'
 import VueResource from 'vue-resource'
+import VueDraggableResizable from 'vue-draggable-resizable'
 import VModal from 'vue-js-modal'
 import App from './App.vue'
+
 
 Vue.use(VueResource)
 Vue.use(Vuetify, {
@@ -23,6 +25,7 @@ Vue.use(Vuetify, {
 Vue.use(VModal, { dynamic: true })
 
 Vue.config.productionTip = false
+Vue.component('vue-draggable-resizable', VueDraggableResizable)
 
 new Vue({
   store: store,

@@ -21,8 +21,12 @@
             <v-list-tile-title>Projects</v-list-tile-title>
           </v-list-tile>
 
-          <v-list-tile :class="{active: i == 2}" :key="i" v-for="i in 5" @click="">
+          <v-list-tile :class="{active: i == active}" :key="i" v-for="i in 5" @click="active = i">
             <v-list-tile-title>Projects {{i}}</v-list-tile-title>
+          </v-list-tile>
+
+          <v-list-tile @click="">
+            <v-list-tile-title>+ New Project</v-list-tile-title>
           </v-list-tile>
         </v-list-group>
 
@@ -47,9 +51,9 @@
     data () {
       return {
         items: [
-          {icon: 'assignment', title: 'Projects'},
           {icon: 'account_circle', title: 'Profile'}
-        ]
+        ],
+        active: null
       }
     },
     computed: {
