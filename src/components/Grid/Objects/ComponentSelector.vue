@@ -1,7 +1,9 @@
 <template>
-  <div class="component-selector gradient" :style="{width: data.size.width + 'px', height: data.size.height + 'px'}">
-    <div @click="addComponent(component)" class="component-item" :key="component" v-for="component in data.components">
-      {{component}}
+  <div class="component-selector gradient" :style="{minWidth: data.size.width + 'px', minHeight: data.size.height + 'px'}">
+    <div class="ll">
+      <div @click="addComponent(component)" class="component-item" :key="component" v-for="component in data.components">
+        {{component}}
+      </div>
     </div>
   </div>
 </template>
@@ -20,6 +22,11 @@
         this.addComponent(this.data.components[0])
       }
     },
+    mounted () {
+      this.$nextTick(function () {
+        this.$emit('calcSize')
+      })
+    },
     computed: {
       width () {
         return this.data.size.width || this.defaule.size.width
@@ -34,7 +41,7 @@
           type: componentName,
           position: {
             x: this.data.position.x,
-            y: this.data.position.y
+            y: this.data.position.y + this.data.size.height/2 - settings[componentName].size.height/2
           },
         }).then(res => {
           this.$nextTick(function () {
@@ -54,7 +61,7 @@
     border-radius: 20px;
     color: #333;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
     background: white;
     cursor: pointer;
@@ -70,10 +77,7 @@
     justify-content: center;
     text-align: center;
     border-bottom: 1px solid #e7e7e7;
-  }
-
-  .component-item:hover {
-    background: #df4e9e26;
+    margin-top: -1px;
   }
 
   .component-item:last-child {

@@ -128,6 +128,7 @@
         this.curves().forEach(curve => curve.redraw());
       },
       calcSize() {
+        console.log(this.$refs.content.scrollHeight)
         this.$nextTick(function () {
           this.data.size.width = this.$refs.content.scrollWidth - 2
           this.data.size.height = this.$refs.content.scrollHeight
