@@ -1,17 +1,30 @@
 <template>
-  <div class="chatbot-button" v-html="state.label" :style="{width: (state.width || 100) + '%'}">
+  <div @click="openSettings()" class="chatbot-button" v-html="localSettings.label || 'Button'" :style="{width: (localSettings.width || 100) + '%'}">
   </div>
 </template>
 
 <script>
+  import ButtonSettingsModal from '../../../modals/ControlSettings/Button'
   export default {
     name: "ChatbotButton",
     props: {
       settings: Object
     },
-    computed: {
-      state () {
-        return this.settings.settings.states[0]
+    data() {
+      return {
+        localSettings: this.settings
+      }
+    },
+    methods: {
+      openSettings () {
+        this.$modal.show(ButtonSettingsModal, {
+          settings: this.localSettings,
+          onSave: (settings) => {
+            this.localSettings = settings
+          }
+        }, {
+          scrollable: true, height: "auto"
+        })
       }
     }
   }

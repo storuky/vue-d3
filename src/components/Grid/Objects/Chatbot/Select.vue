@@ -1,5 +1,5 @@
 <template>
-  <div class="chatbot-select" v-html="state.list[0].label" :style="{width: (state.width || 100) + '%'}">
+  <div class="chatbot-select" v-html="settings.label || 'select'" :style="{width: (settings.width || 100) + '%'}">
   </div>
 </template>
 
@@ -8,11 +8,6 @@
     name: "ChatbotSelect",
     props: {
       settings: Object
-    },
-    computed: {
-      state () {
-        return this.settings.settings.states[0]
-      }
     }
   }
 </script>

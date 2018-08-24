@@ -25,6 +25,9 @@ const store = {
     removeCurve(state, { from, to }) {
       state.curvesList = state.curvesList.filter(el => !(el.from == from && el.to == to))
     },
+    removeCurves(state, objectid) {
+      state.curvesList = state.curvesList.filter(el => !(el.from == objectid || el.to == objectid))
+    },
     setDrawingCurve(state, curve) {
       state.drawingCurve = curve
     },

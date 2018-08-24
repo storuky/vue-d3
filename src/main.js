@@ -3,15 +3,18 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'vuetify/dist/vuetify.min.css'
 import 'roboto-fontface'
 import './assets/css/Material.css'
+import './assets/css/styles.css'
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import store from './store/index'
 import VueResource from 'vue-resource'
+import VModal from 'vue-js-modal'
 import App from './App.vue'
 
 Vue.use(VueResource)
-Vue.use(Vuetify, {})
+Vue.use(Vuetify)
+Vue.use(VModal, { dynamic: true })
 
 Vue.config.productionTip = false
 

@@ -49,6 +49,7 @@ const store = {
     },
     removeObject ({commit}, objectId) {
       commit('removeObject', objectId)
+      commit('removeCurves', objectId, {root: true})
     }
   },
   getters: {
