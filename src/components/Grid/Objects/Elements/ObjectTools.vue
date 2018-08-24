@@ -27,7 +27,6 @@
   .object-tool {
     background: #e44e9d;
     margin-left: 10px;
-    color: white;
     display: flex;
     align-items: center;
     text-align: center;
@@ -38,6 +37,7 @@
     cursor: pointer;
   }
   .object-tool i {
+    color: white;
     font-size: 18px;
   }
 </style>

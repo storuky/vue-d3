@@ -14,7 +14,7 @@
 
     <!-- Label -->
     <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="data.size.width + 50" x="-20" :y="data.size.height+10">
-      <div class="label" ref="label">
+      <div class="object-label" ref="label">
         {{data.info.title}}
       </div>
     </foreignObject>
@@ -128,9 +128,11 @@
         this.curves().forEach(curve => curve.redraw());
       },
       calcSize() {
-        this.data.size.width = this.$refs.content.scrollWidth - 2
-        this.data.size.height = this.$refs.content.scrollHeight
-        this.redraw()
+        this.$nextTick(function () {
+          this.data.size.width = this.$refs.content.scrollWidth - 2
+          this.data.size.height = this.$refs.content.scrollHeight
+          this.redraw()
+        })
       },
       deleteObject () {
         this.$store.dispatch('removeObject', this.data.id)
@@ -160,7 +162,7 @@
 </script>
 
 <style scoped>
-  .label {
+  .object-label {
     text-transform: uppercase;
     font-size: 12px;
     text-align: center;

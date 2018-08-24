@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <v-app id="app" data-app light>
     <Header />
     <div class="work-area">
       <SidebarTools />
@@ -8,7 +8,7 @@
       </div>
     </div>
     <modals-container></modals-container>
-  </div>
+  </v-app>
 </template>
 
 <script>

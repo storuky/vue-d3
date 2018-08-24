@@ -4,6 +4,7 @@
 </template>
 
 <script>
+  import * as d3 from 'd3'
   import ButtonSettingsModal from '../../../modals/ControlSettings/Button'
   export default {
     name: "ChatbotButton",
@@ -12,8 +13,13 @@
     },
     data() {
       return {
-        localSettings: this.settings
+        localSettings: {...this.settings}
       }
+    },
+    mounted () {
+      this.$nextTick(function () {
+        d3.select(this.$el).on('mousedown', () => d3.event.stopPropagation())
+      })
     },
     methods: {
       openSettings () {
@@ -21,6 +27,7 @@
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
+            this.$emit('calcSize')
           }
         }, {
           scrollable: true, height: "auto"

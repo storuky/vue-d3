@@ -1,12 +1,14 @@
 <template>
-  <div @click="openSettings()" class="chatbot-input" v-html="localSettings.placeholder || 'Input'" :style="{width: (settings.width || 100) + '%'}"></div>
+  <div @click="openSettings()" class="chatbot-image" :style="{width: (localSettings.width || 100) + '%'}">
+    <div v-if="!localSettings.src" class="component-settings">Image Settings</div>
+  </div>
 </template>
 
 <script>
   import * as d3 from 'd3'
-  import InputSettingsModal from '../../../modals/ControlSettings/Input'
+  import ImageSettingsModal from '../../../modals/ControlSettings/Image'
   export default {
-    name: "ChatbotInput",
+    name: "ChatbotImage",
     props: {
       settings: Object
     },
@@ -22,7 +24,7 @@
     },
     methods: {
       openSettings () {
-        this.$modal.show(InputSettingsModal, {
+        this.$modal.show(ImageSettingsModal, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
@@ -36,15 +38,8 @@
   }
 </script>
 
-<style scoped>
-  .chatbot-input {
-    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
-    border-radius: 5px;
-    height: 37px;
-    padding: 10px;
-    width: 100%;
-    margin: 0 10px;
-    color: #8a8a8a;
-    cursor: pointer;
+<style scope>
+  .chatbot-image {
+    display: block;
   }
 </style>

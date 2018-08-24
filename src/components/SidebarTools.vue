@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-tools">
-    <v-btn fab small color="v-pink">
+    <v-btn fab small color="primary">
       <v-icon>add</v-icon>
     </v-btn>
   </div>

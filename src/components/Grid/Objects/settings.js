@@ -25,7 +25,7 @@ const settings = {
   'Question': {
     size: {
       width: 390,
-      height: 330
+      height: 510
     },
     has: {
       in: true,

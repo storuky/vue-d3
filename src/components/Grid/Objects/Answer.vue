@@ -1,17 +1,30 @@
 <template>
-  <div class="chatbot-message" :style="{width: width + 'px', height: height + 'px'}">
+  <div @click="openSettings()" class="chatbot-message" :style="{width: width + 'px', height: height + 'px'}">
     <div>{{data.info.title}}</div>
   </div>
 </template>
 
 <script>
+  import ChatbotAnswerSettings from './ChatbotAnswerSettings'
   export default {
-    name: "ChatbotMessage",
+    name: "ChatbotAnswer",
     props: {
       data: Object,
       default: Object
     },
-    components: {},
+    components: {
+      ChatbotAnswerSettings
+    },
+    methods: {
+      openSettings () {
+        this.$modal.show(ChatbotAnswerSettings, {
+          settings: {}
+        }, {
+          height: 'auto',
+          scrollable: true
+        })
+      }
+    },
     computed: {
       width () {
         return this.data.size.width || this.defaule.size.width
@@ -25,6 +38,7 @@
 
 <style scoped>
   .chatbot-message {
+    cursor: pointer;
     background: #df4e9e;
     color: white;
     font-weight: bold;

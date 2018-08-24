@@ -4,6 +4,7 @@ import 'vuetify/dist/vuetify.min.css'
 import 'roboto-fontface'
 import './assets/css/Material.css'
 import './assets/css/styles.css'
+import './assets/css/modal.css'
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'
@@ -13,7 +14,12 @@ import VModal from 'vue-js-modal'
 import App from './App.vue'
 
 Vue.use(VueResource)
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  theme: {
+    primary: "#df4e9e",
+    success: "#6eccb9"
+  }
+})
 Vue.use(VModal, { dynamic: true })
 
 Vue.config.productionTip = false
