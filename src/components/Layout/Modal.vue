@@ -84,6 +84,7 @@
     width: 100% !important;
     margin: 0 !important;
     border-radius: 0 !important;
+    overflow: auto;
   }
   div[data-modal="object-editor"] .v--modal-background-click {
     padding-bottom: 0;
@@ -91,11 +92,8 @@
 
   div[data-modal="object-editor"] .modal {
     padding: 20px 20px 0 20px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    position: relative;
     background: white;
+    min-height: 100%;
   }
 </style>

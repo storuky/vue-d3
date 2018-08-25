@@ -73,7 +73,7 @@
         this.$modal.show(ControlsSelector, {
           controls: controls[controlsFor],
           onSave: (result) => {
-            this[controlsFor].push(result)
+            this[controlsFor].push({id: Math.random(),...result})
             this.$emit('calcSize')
           }
         }, {name: "object-editor", scrollable: true, height: "auto", })

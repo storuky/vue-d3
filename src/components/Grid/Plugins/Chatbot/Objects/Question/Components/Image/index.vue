@@ -1,6 +1,6 @@
 <template>
   <div :style="{width: (localSettings.width || 100) + '%'}">
-    <Separator @settings="openSettings()" label="Image" :actions="['settings']" />
+    <slot :openSettings="openSettings"></slot>
     <div class="chatbot-image">
 
     </div>

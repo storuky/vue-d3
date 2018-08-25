@@ -1,6 +1,6 @@
 <template>
   <div @add="openSettings()" :style="{width: (localSettings.width || 100) + '%'}">
-    <Separator @settings="openSettings()" label="RadioList" :actions="['settings']" />
+    <slot :openSettings="openSettings"></slot>
     <div class="chatbot-radiolist">
       <div class="title" v-html="localSettings.title"></div>
       <v-radio-group disabled v-model="model">

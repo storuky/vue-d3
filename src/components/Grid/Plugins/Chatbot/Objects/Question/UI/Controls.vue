@@ -1,6 +1,10 @@
 <template>
   <draggable :options="{group}" v-model="localControls">
-    <component @calcSize="$emit('calcSize')" class="component" :key="control.id" v-for="control in localControls" :is="control.type" :settings="control.settings"></component>
+    <component @calcSize="$emit('calcSize')" class="component" :key="control.id" v-for="control in localControls" :is="control.type" :settings="control.settings">
+      <template slot-scope="slotProps">
+        <Separator @delete="deleteControl(control.id)" @settings="slotProps.openSettings" :label="control.name" :actions="['settings', 'delete']" />
+      </template>
+    </component>
   </draggable>
 </template>
 
@@ -14,6 +18,7 @@
   import ChatbotImage from '../Components/Image/index'
   import ChatbotCheckboxList from '../Components/CheckboxList/index'
   import ChatbotRadioList from '../Components/RadioList/index'
+  import Separator from '../UI/Separator'
 
   export default {
     name: "Controls",
@@ -27,6 +32,12 @@
         localControls: this.controls
       }
     },
+    methods: {
+      deleteControl: function (controlId) {
+        const index = this.localControls.findIndex(lc => lc.id == controlId)
+        this.localControls.splice(index, 1)
+      }
+    },
     components: {
       draggable,
       ChatbotButton,
@@ -35,7 +46,8 @@
       ChatbotVideo,
       ChatbotImage,
       ChatbotCheckboxList,
-      ChatbotRadioList
+      ChatbotRadioList,
+      Separator
     }
   }
 </script>

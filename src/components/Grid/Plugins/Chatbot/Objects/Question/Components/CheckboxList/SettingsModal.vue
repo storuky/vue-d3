@@ -16,7 +16,7 @@
         </v-flex>
       </v-layout>
 
-      <OptionsList :options="localSettings.options" />      
+      <OptionsList v-model="localSettings.options" />      
     </div>
 
     <div class="modal-footer">

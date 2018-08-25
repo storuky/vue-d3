@@ -1,8 +1,8 @@
 <template>
   <div class="section">
     <div class="section-label">Options</div>
-    <draggable v-model="localOptions">
-      <div class="form-row" v-for="option in localOptions" :key="option.id">
+    <draggable v-model="localValue">
+      <div class="form-row" v-for="option in localValue" :key="option.id">
         <v-layout row>
           <v-flex xs11>
             <v-text-field v-model="option.text" label="Option"></v-text-field>
@@ -23,20 +23,22 @@
   export default {
     name: 'OptionsList',
     props: {
-      options: Array
+      value: Array
     },
     components: {draggable},
     data () {
       return {
-        localOptions: this.options
+        localValue: [...this.value]
       }
     },
     methods: {
       addOption () {
-        this.localOptions.push({id: Math.random()})
+        this.localValue.push({id: Math.random()})
+        this.$emit('input', this.localValue)
       },
       deleteOption (optionId) {
-        this.localOptions = this.localOptions.filter(option => option.id != optionId)
+        this.localValue = this.localValue.filter(option => option.id != optionId)
+        this.$emit('input', this.localValue)
       }
     }
   }

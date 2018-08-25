@@ -6,14 +6,16 @@
     <div class="modal-title">Button Settings</div>
     <div class="modal-body">
       <v-layout row>
-        <v-flex xs9>
-          <v-text-field v-model="localSettings.label" label="Label"></v-text-field>
+        <v-flex xs8>
+          <v-text-field type="text" v-model="localSettings.showCondition" label="Show Condition, default true" solo></v-text-field>
         </v-flex>
         <v-flex xs1></v-flex>
         <v-flex xs3>
           <v-text-field type="number" v-model="localSettings.width" label="Width, %"></v-text-field>
         </v-flex>
       </v-layout>
+      
+      <v-text-field v-model="localSettings.label" label="Label"></v-text-field>
 
       <div class="section">
         <div class="section-label">Action</div>

@@ -1,6 +1,6 @@
 <template>
   <div :style="{width: (localSettings.width || 100) + '%'}">
-    <Separator @settings="openSettings()" label="CheckboxList" :actions="['settings']" />
+    <slot :openSettings="openSettings"></slot>
     <div class="chatbot-checkboxlist">
       <div class="title" v-html="localSettings.title"></div>
       <v-checkbox disabled :key="option.id" v-for="option in localSettings.options" v-model="model" :label="option.text" :value="option.text"></v-checkbox>

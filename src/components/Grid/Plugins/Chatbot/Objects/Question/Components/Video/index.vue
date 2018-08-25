@@ -1,6 +1,6 @@
 <template>
   <div :style="{width: (localSettings.width || 100) + '%'}">
-    <Separator @settings="openSettings()" label="Video" :actions="['settings']" />
+    <slot :openSettings="openSettings"></slot>
     <div @add="openSettings()" class="chatbot-video">
     </div>
   </div>
