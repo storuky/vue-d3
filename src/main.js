@@ -7,25 +7,26 @@ import './assets/css/styles.css'
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import store from './store/index'
-import VueResource from 'vue-resource'
 import VModal from 'vue-js-modal'
-import App from './App.vue'
-import './components/Global'
 
-
-Vue.use(VueResource)
 Vue.use(Vuetify, {
   theme: {
     primary: "#df4e9e",
     success: "#6eccb9"
   }
 })
+
 Vue.use(VModal, { dynamic: true })
 
 Vue.config.productionTip = false
 
+import store from './store/index'
+import router from './router/index'
+import App from './App.vue'
+import './components/Global'
+
 new Vue({
-  store: store,
+  store,
+  router,
   render: h => h(App)
 }).$mount('#app')

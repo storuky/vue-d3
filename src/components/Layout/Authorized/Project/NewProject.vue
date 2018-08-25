@@ -1,6 +1,6 @@
 <template>
   <Modal :showSubmit="showSubmit" title="New Project" submitBtnText="Create" @submit="create()" @close="$emit('close')">
-    <v-text-field @keyup.enter.native="create()" type="text" v-model="settings.name" label="Project Name"></v-text-field>
+    <v-text-field autofocus @keyup.enter.native="create()" type="text" v-model="settings.name" label="Project Name"></v-text-field>
     <div class="project-types">
       <div @click="settings.type = type.name" :class="{active: settings.type == type.name}" class="project-type" v-for="type in types" :key="type.name">
         {{type.title}}
@@ -10,20 +10,22 @@
 </template>
 
 <script>
+  import {Project} from '../../../../resources/index'
+
   export default {
     name: 'NewProject',
     props: {},
     data () {
       return {
         types: [{
-          name: 'analysis_tools',
+          name: 'AnalysisTools',
           title: 'Analysis Tools'
         }, {
-          name: 'chatbot',
+          name: 'Chatbot',
           title: 'Chatbot'
         }],
         settings: {
-          type: 'analysis_tools'
+          type: 'AnalysisTools'
         }
       }
     },
@@ -34,9 +36,13 @@
     },
     methods: {
       create () {
-        const settings = {...this.settings}
-        if (settings.name) {
-          this.$emit('close')
+        if (this.settings.name) {
+          Project.save({project: this.settings})
+            .then(res => {
+              this.$emit('close')
+              const project = res.body
+              this.$router.push(`/project/${project.id}/chart/${project.charts[0].id}`)
+            })
         }
       }
     }
@@ -49,6 +55,7 @@
     margin: 0 -10px;
   }
   .project-type {
+    user-select: none;
     height: 80px;
     width: 100px;
     background: #e7e7e7;

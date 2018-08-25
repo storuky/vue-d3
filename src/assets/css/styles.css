@@ -2,6 +2,14 @@
   outline: none !important;
 }
 
+a {
+  text-decoration: none;
+}
+
+.weight-500 {
+  font-weight: 500;
+}
+
 .section {
   border: 1px solid #e7e7e7;
   padding: 20px;
@@ -46,4 +54,23 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.page {
+  margin: 0 80px;
+  background: white;
+  padding: 40px;
+  min-height: calc(100% - 84px);
+  box-shadow: 0 0 8px rgba(0,0,0,.3);
+  height: 100%;
+}
+
+.page-tabs-content {
+  height: calc(100% - 84px);
+}
+.page-tabs-content .v-tabs__items {
+  height: 100%;
+}
+.page-tabs-content .v-tabs__content {
+  height: 100%;
 }

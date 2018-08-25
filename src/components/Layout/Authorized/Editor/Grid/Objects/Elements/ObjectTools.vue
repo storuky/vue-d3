@@ -10,10 +10,14 @@
 </template>
 
 <script>
+  import * as d3 from 'd3'
   export default {
     name: 'ObjectTools',
     props: {
       objectId: Number
+    },
+    mounted () {
+      d3.select(this.$el).on('mousedown', () => d3.event.stopPropagation())
     }
   }
 </script>

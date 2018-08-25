@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import Modal from './Layout/Modal'
+import Modal from './Layout/UI/Modal'
 Vue.component('Modal', Modal)
 
 import OptionsList from './Layout/UI/OptionsList'

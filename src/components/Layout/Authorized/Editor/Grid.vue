@@ -29,6 +29,7 @@
 import * as d3 from 'd3'
 import Curve from './Grid/Curve'
 import BaseObject from './Grid/Object'
+import settings from './Grid/settings'
 
 export default {
   name: 'Grid',
@@ -40,9 +41,6 @@ export default {
       }
     }
   },
-  created () {
-    this.$store.dispatch('fetchChart')
-  },
   mounted () {
     this.d3svg = d3.select(this.$refs.svg)
     this.d3container = d3.select(this.$refs.container)
@@ -52,6 +50,7 @@ export default {
         'translate('+[this.transform.x, this.transform.y]+')',
         'scale('+this.transform.k+')'
       ])
+
 
       this.enablePanAndZoomMode()
     })
@@ -100,6 +99,28 @@ export default {
             .translate(this.transform.x, this.transform.y)
             .scale(this.transform.k)
         )
+
+      this.d3svg.on("dblclick.zoom", null)
+
+      this.d3svg.on('dblclick', () => {
+        d3.event.stopPropagation()
+        d3.event.preventDefault()
+
+        const translate = this.$store.getters.getChartTranslate(),
+              scale = this.$store.getters.getChartScale()
+
+        const components = settings.components[this.$store.getters.getActiveProject.type]
+        const objectParams = {
+          type: "ComponentSelector",
+          position: {
+            x: (d3.event.x - translate.x)/scale,
+            y: (d3.event.y - translate.y - 100)/scale
+          },
+          components
+        }
+
+        this.$store.dispatch("createObject", objectParams)
+      })
 
       this.mode = 'zoom'
     }

@@ -1,15 +1,10 @@
-import settings from '../components/Grid/settings'
+import settings from '../components/Layout/Authorized/Editor/Grid/settings'
+import { CharObject } from '../resources/index'
+
 
 const store = {
   state: {
-    objectsList: [
-      // { id: 1, type: "Person", position: { x: 0, y: 0 }, size: { width: 100, height: 100 }, info: { title: "Vue.JS 2" } },
-      // { id: 2, type: "General", position: { x: 250, y: 0 }, size: { width: 100, height: 100 }, info: { title: "Product" } },
-      // { id: 2, type: "General", position: { x: 250, y: 0 }, size: { width: 100, height: 100 }, info: { title: "SVG" } },
-      // { id: 3, type: "Organisation", position: { x: 200, y: 150 }, size: { width: 100, height: 100 }, info: {title: "Merge"} },
-      // { id: 4, type: "Person", position: { x: 500, y: 0 }, size: { width: 100, height: 100 }, info: {title: "D3.JS 5"} },
-      // { id: 5, type: "Person", position: { x: 1000, y: 0 }, size: { width: 100, height: 100 }, info: {title: "Webpack 4"} },
-    ],
+    objectsList: [],
     objectsComponentsList: {}
   },
   mutations: {
@@ -19,12 +14,8 @@ const store = {
     setObjectsList(state, objectsList) {
       state.objectsList = objectsList
     },
-    createObject(state, {object, fn}) {
-      object.id = Math.floor(Math.random() * 10000000)
-
-      const _object = settings[object.type].default(object)
-      state.objectsList.push(_object)
-      fn(_object)
+    createObject(state, object) {
+      state.objectsList.push(object)
     },
     removeObject(state, objectId) {
       state.objectsList = state.objectsList.filter(object => object.id != objectId)
@@ -37,14 +28,19 @@ const store = {
     setObjectsList ({commit, state}, objects) {
       commit('setObjectsList', objects)
     },
-    createObject ({commit, state}, object) {
-      return new Promise((resolve, reject) => {
-        commit('createObject', {
-          object,
-          fn: (_object) => {
-            resolve(_object)
-          }
-        })
+    createObject({ commit, state, rootGetters}, objectParams) {
+      const newObjectParams = settings[objectParams.type].default(objectParams)
+      return new Promise(resolve => {
+        if (objectParams.type == 'ComponentSelector') {
+          resolve({ id: Math.random(), ...newObjectParams})
+        } else {
+          CharObject.save({ chart_id: rootGetters.getActiveChart.id, object: newObjectParams}).then(res => {
+            resolve(res.body)
+          })
+        }
+      }).then(object => {
+        commit('createObject', object)
+        return object
       })
     },
     removeObject ({commit}, objectId) {

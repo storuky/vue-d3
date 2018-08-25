@@ -4,7 +4,7 @@
       <v-list class="pa-1">
         <v-list-tile avatar>
           <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            <img src="https://avatars2.githubusercontent.com/u/3216491?s=460&v=4">
           </v-list-tile-avatar>
 
           <v-list-tile-content>
@@ -24,7 +24,7 @@
                 <v-list-tile-title>{{item.title}}</v-list-tile-title>
               </v-list-tile>
 
-              <v-list-tile :class="{active: subitem.id == active}" :key="subitem.id" v-for="subitem in item.list" @click="active = subitem.id">
+              <v-list-tile :class="{active: subitem.id == active}" :key="subitem.id" v-for="subitem in item.list" @click="subitem.callback ? subitem.callback(subitem.id) : null">
                 <v-list-tile-title>{{subitem.title}}</v-list-tile-title>
               </v-list-tile>
             </v-list-group>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import NewProject from './Project/NewProject'
+  import NewProject from '../Project/NewProject'
 
   export default {
     name: "Navigation",
@@ -61,20 +61,22 @@
           },
           {
             icon: "folder_open",
-            title: "Open Project"
+            title: "Open Project",
+            callback: this.openProjectModal
           },
           {
             icon: "assignment",
             title: "Recent Projects",
             list: [
-              {id: 1, title: "Project 1"},
-              {id: 2, title: "Project 2"},
-              {id: 3, title: "Project 3"},
+              {id: 1, title: "Project 1", callback: this.openProject},
+              {id: 2, title: "Project 2", callback: this.openProject},
+              {id: 3, title: "Project 3", callback: this.openProject},
             ]
           },
           {
             icon: 'account_circle',
-            title: 'Profile'
+            title: 'Profile',
+            callback: this.openProfile
           }
         ],
         active: null
@@ -84,6 +86,14 @@
       openNewProject () {
         this.drawer = false
         this.$modal.show(NewProject, {}, {scrollable: true, height: "auto"})
+      },
+      openProfile () {
+        this.drawer = false
+        this.$router.push('/profile')
+      },
+      openProject (projectId) {
+        this.drawer = false
+        this.$router.push(`/project/${projectId}/chart/1`)
       }
     },
     computed: {

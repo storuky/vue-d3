@@ -5,21 +5,21 @@
       tabs
     >
       <v-toolbar-side-icon @click.stop="toggleDrawer"></v-toolbar-side-icon>
-      <v-toolbar-title>Ulf</v-toolbar-title>
+      <v-toolbar-title>{{title}}</v-toolbar-title>
 
       <v-tabs
         slot="extension"
-        v-model="tab"
+        v-model="localTab"
         color="white"
         align-with-title
       >
         <v-tabs-slider color="primary"></v-tabs-slider>
 
         <v-tab
-          v-for="item in items"
-          :key="item"
+          v-for="tab in tabs"
+          :key="tab.id"
         >
-          {{ item }}
+          {{ tab.name }}
         </v-tab>
       </v-tabs>
     </v-toolbar>
@@ -29,12 +29,27 @@
 <script>
   export default {
     name: "Header",
+    props: {
+      tabs: {
+        type: Array,
+        default: function () {
+          return []
+        }
+      },
+      value: String,
+      title: String
+    },
     data () {
       return {
-        tab: 'web',
-        items: [
-          'Visual Bot'
-        ]
+        localTab: 0
+      }
+    },
+    watch: {
+      localTab () {
+        this.$emit('input', this.tabs[this.localTab].id)
+      },
+      tabs () {
+        this.localTab = this.tabs.findIndex(t => this.value == t.id)
       }
     },
     methods: {

@@ -34,14 +34,13 @@
               
               const target = d3.event.sourceEvent.target
               const targetObjectNode = target && target.closest ? target.closest('g[data-object-id]') : null
+
               if (targetObjectNode) {
                 const id = targetObjectNode.dataset.objectId
                 const targetObjectComponent = this.$store.getters.getObjectComponent(id)
-
-
                 const canBeTarget = this.objectComponent.settings.components.includes(targetObjectComponent.componentType)
 
-                if (canBeTarget && id != this.curve.fromLocal && !this.$store.getters.getCurve({from: this.objectId, to: id})) {
+                if (targetObjectComponent.componentType == "ComponentSelector" || canBeTarget && id != this.curve.fromLocal && !this.$store.getters.getCurve({from: this.objectId, to: id})) {
                   this.targetObjectComponent = targetObjectComponent
                   this.curve.toLocal = this.targetObjectComponent.data.id
                 }
@@ -55,7 +54,7 @@
             })
             .on('end', () => {
               if (this.targetObjectComponent) {
-                this.$store.dispatch('createCurve', {from: this.objectId, to: parseInt(this.targetObjectComponent.data.id)})
+                this.$store.dispatch('createCurve', {from: this.objectId, to: this.targetObjectComponent.localData.id})
                 this.targetObjectComponent = null
                 this.curve.toLocal = null
               } else {

@@ -56,12 +56,14 @@
       })
     },
     data () {
+      this.data.info.settings.messages = this.data.info.settings.messages || []
+      this.data.info.settings.body = this.data.info.settings.body || []
+      this.data.info.settings.actions = this.data.info.settings.actions || []
       return {
         showInput: null,
-        messages: this.data.info.component.messages || [],
-        body: this.data.info.component.body || [],
-        actions: this.data.info.component.actions || [],
-        body: this.data.info.component.body || []
+        messages: this.data.info.settings.messages,
+        body: this.data.info.settings.body,
+        actions: this.data.info.settings.actions
       }
     },
     methods: {
@@ -83,7 +85,8 @@
         this.$emit('calcSize')
       },
       deleteMessage(messageId) {
-        this.messages = this.messages.filter(message => message.id != messageId)
+        const index = this.messages.findIndex(message => message.id == messageId)
+        this.messages.splice(index, 1)
         this.$emit('calcSize')
       }
     },

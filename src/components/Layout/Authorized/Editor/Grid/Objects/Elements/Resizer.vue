@@ -23,8 +23,8 @@
         this.d3el.call(
           d3.drag()
             .on('start', () => {
-              const position = this.objectComponent.data.position,
-                    size = this.objectComponent.data.size
+              const position = this.objectComponent.localData.position,
+                    size = this.objectComponent.localData.size
 
               this.initialPosition = {
                 x: position.x + size.width,
@@ -44,14 +44,16 @@
               let width = resultPosition.x + this.initialSize.width,
                   height = resultPosition.y + this.initialSize.height
 
-              this.objectComponent.data.size = {
+              this.objectComponent.localData.size = {
                 width, height
               }
 
               this.$store.getters.getCurves(this.objectId).forEach(curve => curve.redraw())
+
             })
             .on('end', () => {
               this.objectComponent.calcSize()
+              this.objectComponent.sync()
             })
         )
       })

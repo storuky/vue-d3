@@ -2,24 +2,6 @@ const settings = {
   default: {
     info: {}
   },
-  'ComponentSelector': {
-    size: {
-      width: 300,
-      height: 100
-    },
-    has: {
-      in: true,
-      out: false,
-      resize: false
-    },
-    default(object) {
-      return {
-        ...settings.default,
-        size: settings[object.type].size,
-        ...object
-      }
-    }
-  },
   'General': {
     size: {
       width: 100,
@@ -30,6 +12,7 @@ const settings = {
       out: true,
       resize: true
     },
+    components: ["Person", "Organisation", "General"],
     default(object) {
       return {
         ...settings.default,
@@ -48,6 +31,7 @@ const settings = {
       out: true,
       resize: true
     },
+    components: ["Person", "Organisation", "General"],
     default(object) {
       return {
         ...settings.default,
@@ -66,6 +50,7 @@ const settings = {
       out: true,
       resize: true
     },
+    components: ["Person", "Organisation", "General"],
     default(object) {
       return {
         ...settings.default,

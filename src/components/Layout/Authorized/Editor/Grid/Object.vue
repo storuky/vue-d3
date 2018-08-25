@@ -58,6 +58,9 @@
   import ObjectTools from './Objects/Elements/ObjectTools'
 
   import settings from './settings'
+  import debounce from '../../../../../utils'
+
+  import { CharObject } from '../../../../../resources/index'
   
   export default {
     name: "BaseObject",
@@ -99,12 +102,20 @@
         localData: localData
       }
     },
+    watch: {
+      localData: {
+        handler (val) {
+          this.sync()
+        },
+        deep: true
+      }
+    },
     computed: {
       defaultSize () {
         return settings[this.componentType].size
       },
       componentType () {
-        return this.localData.type.replace("VulcanCore::ChartObject::", "")
+        return this.localData.type
       },
       labelHeightByContent () {
         return this.$refs.label ? this.$refs.label.scrollHeight : this.initialLabelHeightByContent || 30
@@ -150,6 +161,11 @@
         const openSettingsCallback = this.$refs.component.openSettings
         if (openSettingsCallback) openSettingsCallback()
       },
+      sync: debounce(function () {
+        if (!settings[this.componentType].disableSync) {
+          CharObject.update({id: this.localData.id}, {object: this.localData})
+        }
+      }, 500),
       makeDraggable () {
         this.d3container.call(
           d3.drag()
@@ -160,13 +176,14 @@
               }
             })
             .on("drag", () => {
-              this.setPosition({
+              var targetPosition = {
                 x: d3.event.x - this.initialPosition.x,
                 y: d3.event.y - this.initialPosition.y
-              })
+              }
+              this.setPosition(targetPosition)
             })
             .on("end", () => {
-
+              
             })
         )
       }

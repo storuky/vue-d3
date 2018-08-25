@@ -6,7 +6,8 @@ const store = {
     translate: {
       x: 0,
       y: 0
-    }
+    },
+    activeChart: null
   },
   mutations: {
     setScale (state, scale) {
@@ -16,7 +17,7 @@ const store = {
       state.translate = translate
     },
     setChart (state, chart) {
-      state.chart = chart
+      state.activeChart = chart
     }
   },
   actions: {
@@ -41,6 +42,9 @@ const store = {
     },
     getChartTranslate: state => () => {
       return state.translate
+    },
+    getActiveChart: state => {
+      return state.activeChart
     }
   }
 }

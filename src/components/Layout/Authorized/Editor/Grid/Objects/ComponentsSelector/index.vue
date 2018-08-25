@@ -46,8 +46,10 @@
         }).then(res => {
           this.$nextTick(function () {
             const curve = this.$store.getters.getCurves(this.data.id)[0]
-            this.$store.dispatch('removeCurve', {from: curve.fromLocal, to: this.data.id})
-            this.$store.dispatch('createCurve', {from: curve.fromLocal, to: res.id})
+            if (curve) {
+              this.$store.dispatch('removeCurve', {from: curve.fromLocal, to: this.data.id})
+              this.$store.dispatch('createCurve', {from: curve.fromLocal, to: res.id})
+            }
             this.$store.dispatch('removeObject', this.data.id)
           })
         })

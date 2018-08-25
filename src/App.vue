@@ -1,30 +1,12 @@
 <template>
   <v-app id="app" data-app light>
-    <div class="wrapper">
-      <Header />
-      <div class="work-area">
-        <div class="grid-container">
-          <Grid />
-        </div>
-      </div>
-    </div>
-    <Navigation />
-    <modals-container></modals-container>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import Grid from './components/Grid'
-import Header from './components/Layout/Header'
-import Navigation from './components/Layout/Navigation'
-
 export default {
-  name: 'app',
-  components: {
-    Grid,
-    Header,
-    Navigation
-  }
+  name: 'app'
 }
 </script>
 

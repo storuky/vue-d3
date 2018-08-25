@@ -6,7 +6,7 @@
       </li>
     </ol>
     <div v-else>
-      {{settingsLocal.answerVariants[0].text || "Click to Add"}}
+      {{settingsLocal.answerVariants[0] && settingsLocal.answerVariants[0].text || "Click to Add"}}
     </div>
   </div>
 </template>
@@ -21,7 +21,9 @@
     },
     data () {
       const settings = {...this.data.info.settings}
-
+      if (!settings.answerVariants) {
+        settings.answerVariants = []
+      }
       return {
         settingsLocal: settings
       }
