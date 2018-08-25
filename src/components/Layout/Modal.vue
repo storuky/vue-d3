@@ -74,10 +74,6 @@
     cursor: pointer;
   }
 
-  .v--modal-overlay.scrollable .v--modal-box {
-    margin: 50px 0;
-  }
-
   div[data-modal="object-editor"] {
     position: absolute;
     right: 0;

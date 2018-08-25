@@ -18,8 +18,6 @@
 </template>
 
 <script>
-  import draggable from 'vuedraggable'
-
   export default {
     name: 'OptionsList',
     props: {
@@ -27,7 +25,6 @@
       label: String,
       itemName: String
     },
-    components: {draggable},
     data () {
       return {
         localValue: [...this.value]

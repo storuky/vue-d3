@@ -10,7 +10,6 @@
 
 <script>
   import * as d3 from 'd3'
-  import draggable from 'vuedraggable'
   import ChatbotButton from '../Components/Button/index'
   import ChatbotSelect from '../Components/Select/index'
   import ChatbotInput from '../Components/Input/index'
@@ -18,7 +17,6 @@
   import ChatbotImage from '../Components/Image/index'
   import ChatbotCheckboxList from '../Components/CheckboxList/index'
   import ChatbotRadioList from '../Components/RadioList/index'
-  import Separator from '../UI/Separator'
 
   export default {
     name: "Controls",
@@ -39,15 +37,13 @@
       }
     },
     components: {
-      draggable,
       ChatbotButton,
       ChatbotSelect,
       ChatbotInput,
       ChatbotVideo,
       ChatbotImage,
       ChatbotCheckboxList,
-      ChatbotRadioList,
-      Separator
+      ChatbotRadioList
     }
   }
 </script>

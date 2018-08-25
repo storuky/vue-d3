@@ -9,9 +9,9 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import store from './store/index'
 import VueResource from 'vue-resource'
-import VueDraggableResizable from 'vue-draggable-resizable'
 import VModal from 'vue-js-modal'
 import App from './App.vue'
+import './components/Global'
 
 
 Vue.use(VueResource)
@@ -24,15 +24,8 @@ Vue.use(Vuetify, {
 Vue.use(VModal, { dynamic: true })
 
 Vue.config.productionTip = false
-Vue.component('vue-draggable-resizable', VueDraggableResizable)
 
 new Vue({
   store: store,
   render: h => h(App)
 }).$mount('#app')
-
-import Modal from './components/Layout/Modal'
-Vue.component('Modal', Modal)
-
-import OptionsList from './components/Layout/UI/OptionsList'
-Vue.component('OptionsList', OptionsList)

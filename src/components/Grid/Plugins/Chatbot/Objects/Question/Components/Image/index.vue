@@ -10,14 +10,12 @@
 <script>
   import * as d3 from 'd3'
   import SettingsModal from './SettingsModal'
-  import Separator from '../../UI/Separator'
 
   export default {
     name: "ChatbotImage",
     props: {
       settings: Object
     },
-    components: {Separator},
     data() {
       return {
         localSettings: {...this.settings},

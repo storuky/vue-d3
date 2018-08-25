@@ -16,30 +16,31 @@
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
 
-        <v-list-group prepend-icon="assignment" :value="false">
-          <v-list-tile slot="activator">
-            <v-list-tile-title>Projects</v-list-tile-title>
-          </v-list-tile>
 
-          <v-list-tile :class="{active: i == active}" :key="i" v-for="i in 5" @click="active = i">
-            <v-list-tile-title>Projects {{i}}</v-list-tile-title>
-          </v-list-tile>
+        <div :key="item.id" v-for="item in items">
+          <div v-if="item.list">
+            <v-list-group prepend-icon="assignment" :value="false">
+              <v-list-tile slot="activator">
+                <v-list-tile-title>{{item.title}}</v-list-tile-title>
+              </v-list-tile>
 
-          <v-list-tile @click="openNewProject()">
-            <v-list-tile-title>+ New Project</v-list-tile-title>
-          </v-list-tile>
-        </v-list-group>
+              <v-list-tile :class="{active: subitem.id == active}" :key="subitem.id" v-for="subitem in item.list" @click="active = subitem.id">
+                <v-list-tile-title>{{subitem.title}}</v-list-tile-title>
+              </v-list-tile>
+            </v-list-group>
+          </div>
+          <div v-else>
+            <v-list-tile @click="item.callback ? item.callback() : null">
+              <v-list-tile-action>
+                <v-icon>{{item.icon}}</v-icon>
+              </v-list-tile-action>
 
-
-        <v-list-tile :key="item.id" v-for="item in items" @click="">
-          <v-list-tile-action>
-            <v-icon>{{item.icon}}</v-icon>
-          </v-list-tile-action>
-
-          <v-list-tile-content>
-            <v-list-tile-title>{{item.title}}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-title>{{item.title}}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </div>
+        </div>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -53,7 +54,28 @@
     data () {
       return {
         items: [
-          {icon: 'account_circle', title: 'Profile'}
+          {
+            icon: "add",
+            title: "New Project",
+            callback: this.openNewProject
+          },
+          {
+            icon: "folder_open",
+            title: "Open Project"
+          },
+          {
+            icon: "assignment",
+            title: "Recent Projects",
+            list: [
+              {id: 1, title: "Project 1"},
+              {id: 2, title: "Project 2"},
+              {id: 3, title: "Project 3"},
+            ]
+          },
+          {
+            icon: 'account_circle',
+            title: 'Profile'
+          }
         ],
         active: null
       }

@@ -11,14 +11,12 @@
 <script>
   import * as d3 from 'd3'
   import SettingsModal from './SettingsModal'
-  import Separator from '../../UI/Separator'
 
   export default {
     name: "ChatbotCheckboxList",
     props: {
       settings: Object,
     },
-    components: {Separator},
     mounted () {
       this.$nextTick(function () {
         d3.select(this.$el).on('mousedown', () => d3.event.stopPropagation())

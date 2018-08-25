@@ -33,12 +33,10 @@
 
 <script>
   import * as d3 from 'd3'
-  import Separator from './UI/Separator'
   import Controls from './UI/Controls'
   import ControlsSelector from './Modals/ControlsSelector'
 
   import controls from './settings'
-  import draggable from 'vuedraggable'
 
   export default {
     name: "Chatbot",
@@ -47,10 +45,8 @@
       default: Object
     },
     components: {
-      Separator,
       ControlsSelector,
-      Controls,
-      draggable
+      Controls
     },
     mounted() {
       this.$nextTick(function () {

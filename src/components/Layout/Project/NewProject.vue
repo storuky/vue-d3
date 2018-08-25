@@ -49,8 +49,8 @@
     margin: 0 -10px;
   }
   .project-type {
-    height: 120px;
-    width: 120px;
+    height: 80px;
+    width: 100px;
     background: #e7e7e7;
     margin: 10px;
     display: flex;
