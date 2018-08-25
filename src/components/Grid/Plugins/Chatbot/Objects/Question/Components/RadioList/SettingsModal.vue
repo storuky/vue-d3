@@ -18,15 +18,12 @@
 </template>
 
 <script>
-  import OptionsList from '../../UI/OptionsList'
-
   export default {
     name: "RadioListSettingsModal",
     props: {
       settings: Object,
       onSave: Function,
     },
-    components: {OptionsList},
     data () {
       const settings = {...this.settings}
       settings.options = (this.settings.options || []).map(option => {

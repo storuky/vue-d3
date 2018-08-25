@@ -1,16 +1,5 @@
 <template>
   <Modal title="Answer Block Settings" @submit="save()" @close="$emit('close')">
-    <v-layout row :key="variant.id" v-for="(variant, index) in localSettings.answerVariants">
-      <v-flex xs11>
-        <v-text-field v-model="variant.text" :label="`Answer ${index+1}`"></v-text-field>
-      </v-flex>
-      <v-flex xs1>
-        <div class="delete-variant" @click="deleteVariant(variant.id)">
-          <v-icon>delete</v-icon>
-        </div>
-      </v-flex>
-    </v-layout>
-    <div @click="addVariant()" class="component-settings">Add Answer Variant</div>
     <v-layout row>
       <v-flex xs5>
         <v-select v-model="localSettings.action" :items="items" label="Action"></v-select>
@@ -22,6 +11,8 @@
         </div>
       </v-flex>
     </v-layout>
+    
+    <OptionsList label="Answers" itemName="Answer" v-model="localSettings.answerVariants" />
   </Modal>
 </template>
 

@@ -33,3 +33,6 @@ new Vue({
 
 import Modal from './components/Layout/Modal'
 Vue.component('Modal', Modal)
+
+import OptionsList from './components/Layout/UI/OptionsList'
+Vue.component('OptionsList', OptionsList)

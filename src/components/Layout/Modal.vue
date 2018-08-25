@@ -89,6 +89,7 @@
     min-height: 0 !important;
     box-shadow: 0px 5px 8px rgba(0,0,0,.24);
     background: none;
+    z-index: 3;
   }
   div[data-modal="object-editor"] .v--modal {
     position: absolute;

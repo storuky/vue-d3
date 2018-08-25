@@ -11,21 +11,16 @@
       </v-flex>
     </v-layout>
 
-    <OptionsList v-model="localSettings.options" />      
+    <OptionsList v-model="localSettings.options" />
   </Modal>
 </template>
 
 <script>
-  import OptionsList from '../../UI/OptionsList'
-
   export default {
     name: "CheckboxListSettingsModal",
     props: {
       settings: Object,
       onSave: Function,
-    },
-    components: {
-      OptionsList
     },
     data () {
       const settings = {...this.settings}
