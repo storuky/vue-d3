@@ -30,7 +30,7 @@
             this.$emit('calcSize')
           }
         }, {
-          scrollable: true, height: "auto"
+          scrollable: true, height: "auto", name: "object-editor"
         })
       }
     }

@@ -16,20 +16,7 @@
         </v-flex>
       </v-layout>
 
-      <div class="section">
-        <div class="section-label">Options</div>
-        <div class="form-row" v-for="option in localSettings.options" :key="option.id">
-          <v-layout row>
-            <v-flex xs12>
-              <v-text-field v-model="option.text" label="Option" solo></v-text-field>
-            </v-flex>
-            <v-flex xs0 class="text-right">
-              <v-icon class="delete" @click="deleteOption(option.id)">close</v-icon>
-            </v-flex>
-          </v-layout>
-        </div>
-        <div class="add" @click="addOption">Add Option</div>
-      </div>
+      <OptionsList :options="localSettings.options" />      
     </div>
 
     <div class="modal-footer">
@@ -40,11 +27,16 @@
 </template>
 
 <script>
+  import OptionsList from '../../UI/OptionsList'
+
   export default {
-    name: "ChecboxListSettingsModal",
+    name: "CheckboxListSettingsModal",
     props: {
       settings: Object,
       onSave: Function,
+    },
+    components: {
+      OptionsList
     },
     data () {
       const settings = {...this.settings}

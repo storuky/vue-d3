@@ -1,6 +1,6 @@
 <template>
   <div class="object-tools">
-    <div class="object-tool">
+    <div class="object-tool" @click="$emit('openSettings')">
       <v-icon>code</v-icon>
     </div>
     <div class="object-tool" @click="$emit('deleteObject')">

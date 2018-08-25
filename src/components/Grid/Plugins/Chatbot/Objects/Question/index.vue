@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <Separator @add="openControlsModal('body')" label="Body"></Separator>
+    <Separator @add="openControlsModal('body')" label="Body" :actions="['add']"></Separator>
     <div class="question-margin">
       <div class="question-body-wrapper">
         <Controls @calcSize="$emit('calcSize')" class="question-body" :controls="body" />
@@ -25,7 +25,7 @@
     </div>
 
 
-    <Separator @add="openControlsModal('actions')" label="Actions" />
+    <Separator @add="openControlsModal('actions')" label="Actions" :actions="['add']" />
     <Controls @calcSize="$emit('calcSize')" class="question-actions" :controls="actions" />
 
   </div>
@@ -76,7 +76,7 @@
             this[controlsFor].push(result)
             this.$emit('calcSize')
           }
-        })
+        }, {name: "object-editor", scrollable: true, height: "auto", })
       },
       addMessage() {
         this.messages.push({text: "message", id: Math.random()})

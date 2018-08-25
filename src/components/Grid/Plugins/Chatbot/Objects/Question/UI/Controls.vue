@@ -42,6 +42,7 @@
 
 <style scoped>
   .question-body .component {
-    margin: 20px 0;
+    margin: 10px 0;
+    min-height: 35px;
   }
 </style>

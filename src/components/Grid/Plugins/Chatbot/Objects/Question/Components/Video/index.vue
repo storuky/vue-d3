@@ -1,18 +1,22 @@
 <template>
-  <div @click="openSettings()" class="chatbot-video" :style="{width: (localSettings.width || 100) + '%'}">
-    Video
+  <div :style="{width: (localSettings.width || 100) + '%'}">
+    <Separator @settings="openSettings()" label="Video" :actions="['settings']" />
+    <div @add="openSettings()" class="chatbot-video">
+    </div>
   </div>
 </template>
 
 <script>
   import * as d3 from 'd3'
   import SettingsModal from './SettingsModal'
+  import Separator from '../../UI/Separator'
 
   export default {
     name: "ChatbotVideo",
     props: {
       settings: Object
     },
+    components: {Separator},
     mounted () {
       this.$nextTick(function () {
         d3.select(this.$el).on('mousedown', () => d3.event.stopPropagation())
@@ -32,7 +36,7 @@
             this.$emit('calcSize')
           }
         }, {
-          scrollable: true, height: "auto"
+          scrollable: true, height: "auto", name: "object-editor"
         })
       }
     }
@@ -41,14 +45,5 @@
 
 <style scope>
   .chatbot-video {
-    background: #e7e7e7;
-    height: 200px;
-    width: 100%;
-    cursor: pointer;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
   }
 </style>

@@ -1,17 +1,23 @@
 <template>
-  <div @click="openSettings()" class="chatbot-image" :style="{width: (localSettings.width || 100) + '%'}">
-    <div v-if="!localSettings.src" class="component-settings">Image Settings</div>
+  <div :style="{width: (localSettings.width || 100) + '%'}">
+    <Separator @settings="openSettings()" label="Image" :actions="['settings']" />
+    <div class="chatbot-image">
+
+    </div>
   </div>
 </template>
 
 <script>
   import * as d3 from 'd3'
   import SettingsModal from './SettingsModal'
+  import Separator from '../../UI/Separator'
+
   export default {
     name: "ChatbotImage",
     props: {
       settings: Object
     },
+    components: {Separator},
     data() {
       return {
         localSettings: {...this.settings},
@@ -31,7 +37,7 @@
             this.$emit('calcSize')
           }
         }, {
-          scrollable: true, height: "auto"
+          scrollable: true, height: "auto", name: "object-editor"
         })
       }
     }
@@ -40,6 +46,5 @@
 
 <style scope>
   .chatbot-image {
-    display: block;
   }
 </style>

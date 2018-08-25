@@ -4,7 +4,6 @@ import 'vuetify/dist/vuetify.min.css'
 import 'roboto-fontface'
 import './assets/css/Material.css'
 import './assets/css/styles.css'
-import './assets/css/modal.css'
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'

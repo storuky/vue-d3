@@ -14,7 +14,7 @@ const store = {
   },
   mutations: {
     addObject(state, objectComponent) {
-      state.objectsComponentsList[objectComponent.data.id] = objectComponent
+      state.objectsComponentsList[objectComponent.localData.id] = objectComponent
     },
     setObjectsList(state, objectsList) {
       state.objectsList = objectsList
@@ -63,20 +63,20 @@ const store = {
       const fromObject = state.objectsComponentsList[from],
             toObject = state.objectsComponentsList[to]
 
-      const fromObjectPosition = fromObject ? fromObject.data.position : null,
-      toObjectPosition = toObject ? toObject.data.position : null
+      const fromObjectPosition = fromObject ? fromObject.localData.position : null,
+      toObjectPosition = toObject ? toObject.localData.position : null
 
       if (from && to) {
         return {
-          x1: fromObjectPosition.x + fromObject.data.size.width,
-          y1: fromObjectPosition.y + fromObject.data.size.height / 2,
+          x1: fromObjectPosition.x + fromObject.localData.size.width,
+          y1: fromObjectPosition.y + fromObject.localData.size.height / 2,
           x2: toObjectPosition.x,
-          y2: toObjectPosition.y + toObject.data.size.height / 2
+          y2: toObjectPosition.y + toObject.localData.size.height / 2
         }
       } else if (from) {
         return {
-          x: fromObjectPosition.x + fromObject.data.size.width,
-          y: fromObjectPosition.y + fromObject.data.size.height / 2
+          x: fromObjectPosition.x + fromObject.localData.size.width,
+          y: fromObjectPosition.y + fromObject.localData.size.height / 2
         }
       }
     }

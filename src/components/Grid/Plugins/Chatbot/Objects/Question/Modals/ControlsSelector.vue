@@ -44,6 +44,7 @@
   .controls-list {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .controls-list-item {

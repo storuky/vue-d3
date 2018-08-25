@@ -39,7 +39,8 @@
           }
         }, {
           height: 'auto',
-          scrollable: true
+          scrollable: true,
+          name: "object-editor"
         })
       }
     }

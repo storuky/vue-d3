@@ -6,9 +6,8 @@
         <div class="grid-container">
           <Grid />
         </div>
+        <Modal />
       </div>
-      <ObjectEditor />
-      <modals-container></modals-container>
     </div>
     <Navigation />
   </v-app>
@@ -18,7 +17,7 @@
 import Grid from './components/Grid'
 import Header from './components/Layout/Header'
 import Navigation from './components/Layout/Navigation'
-import ObjectEditor from './components/Layout/ObjectEditor'
+import Modal from './components/Layout/Modal'
 
 export default {
   name: 'app',
@@ -26,7 +25,7 @@ export default {
     Grid,
     Header,
     Navigation,
-    ObjectEditor
+    Modal
   }
 }
 </script>
@@ -42,6 +41,7 @@ export default {
     top: 84px;
     bottom: 0;
     background: #f8f8f8;
+    z-index: 2;
   }
 
   .wrapper {
@@ -51,6 +51,7 @@ export default {
     top: 0;
     bottom: 0;
     transition: .2s;
+    overflow: hidden;
   }
 
   .grid-container {

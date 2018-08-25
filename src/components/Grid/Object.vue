@@ -1,37 +1,37 @@
 <template>
-  <g ref="container" :data-object-id="data.id" @mouseover="showTools()" @mouseleave="hideTools()">
+  <g ref="container" :data-object-id="localData.id" @mouseover="showTools()" @mouseleave="hideTools()">
     <!-- Object -->
-    <foreignObject :height="data.size.height + 10" :width="data.size.width + 10" ref="foreignObject">
+    <foreignObject :height="localData.size.height + 10" :width="localData.size.width + 10" ref="foreignObject">
       <div style="margin: 4px" ref="content">
-        <component @calcSize="calcSize()" :default={defaultSize} :is="componentType" :data="data"></component>
+        <component ref="component" @calcSize="calcSize()" :default={defaultSize} :is="componentType" :data="localData"></component>
       </div>
     </foreignObject>
 
     <!-- Tools -->
-    <foreignObject v-if="toolsVisible" y="-30" height="30" :width="data.size.width">
-      <ObjectTools @deleteObject="deleteObject" :objectId="data.id" />
+    <foreignObject v-if="toolsVisible" y="-30" height="30" :width="localData.size.width">
+      <ObjectTools @openSettings="openSettings" @deleteObject="deleteObject" :objectId="localData.id" />
     </foreignObject>
 
     <!-- Label -->
-    <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="data.size.width + 50" x="-20" :y="data.size.height+10">
+    <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="localData.size.width + 50" x="-20" :y="localData.size.height+10">
       <div class="object-label" ref="label">
-        {{data.info.title}}
+        {{localData.info.title}}
       </div>
     </foreignObject>
 
     <!-- IN -->
-    <foreignObject v-if="settings.has.in" height="12" :width="12" x="0" :y="data.size.height/2 - 2">
+    <foreignObject v-if="settings.has.in" height="12" :width="12" x="0" :y="localData.size.height/2 - 2">
       <In />
     </foreignObject>
 
     <!-- OUT -->
-    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="data.size.width - 4" :y="data.size.height/2 - 2">
-      <Out :objectId="data.id" />
+    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="localData.size.width - 4" :y="localData.size.height/2 - 2">
+      <Out :objectId="localData.id" />
     </foreignObject>
 
     <!-- RESIZER -->
-    <foreignObject v-if="settings.has.resize" width="10" height="10" :x="data.size.width-3" :y="data.size.height-3">
-      <Resizer :objectId="data.id" />
+    <foreignObject v-if="settings.has.resize" width="10" height="10" :x="localData.size.width-3" :y="localData.size.height-3">
+      <Resizer :objectId="localData.id" />
     </foreignObject>
   </g>
 </template>
@@ -90,10 +90,13 @@
       })
     },
     data () {
+      const localData = {...this.data}
+      localData.size = {...localData.size}
       return {
         drawingCurve: false,
         toolsVisible: false,
         components: ['Answer', 'Question'],
+        localData: localData
       }
     },
     computed: {
@@ -101,7 +104,7 @@
         return settings[this.componentType].size
       },
       componentType () {
-        return this.data.type.replace("VulcanCore::ChartObject::", "")
+        return this.localData.type.replace("VulcanCore::ChartObject::", "")
       },
       labelHeightByContent () {
         return this.$refs.label ? this.$refs.label.scrollHeight : this.initialLabelHeightByContent || 30
@@ -119,14 +122,14 @@
       },
       arrange () {
         this.d3container
-          .attr("transform", "translate("+[this.data.position.x - 4, this.data.position.y - 4]+")")
+          .attr("transform", "translate("+[this.localData.position.x - 4, this.localData.position.y - 4]+")")
       },
       setPosition (position) {
-        this.data.position = position
+        this.localData.position = position
         this.redraw()
       },
       curves () {
-        return this.$store.getters.getCurves(this.data.id)
+        return this.$store.getters.getCurves(this.localData.id)
       },
       redraw () {
         this.arrange()
@@ -135,21 +138,25 @@
       },
       calcSize() {
         this.$nextTick(function () {
-          this.data.size.width = this.$refs.content.scrollWidth - 2
-          this.data.size.height = this.$refs.content.scrollHeight
+          this.localData.size.width = this.$refs.content.scrollWidth - 2
+          this.localData.size.height = this.$refs.content.scrollHeight
           this.redraw()
         })
       },
       deleteObject () {
-        this.$store.dispatch('removeObject', this.data.id)
+        this.$store.dispatch('removeObject', this.localData.id)
+      },
+      openSettings () {
+        const openSettingsCallback = this.$refs.component.openSettings
+        if (openSettingsCallback) openSettingsCallback()
       },
       makeDraggable () {
         this.d3container.call(
           d3.drag()
             .on("start", () => {
               this.initialPosition = {
-                x: d3.event.x - this.data.position.x,
-                y: d3.event.y - this.data.position.y
+                x: d3.event.x - this.localData.position.x,
+                y: d3.event.y - this.localData.position.y
               }
             })
             .on("drag", () => {

@@ -18,23 +18,17 @@
       <div class="section">
         <div class="section-label">Action</div>
         <div class="form-row" v-for="action in localSettings.actions" :key="action.id">
-          <v-layout row wrap>
-            <v-flex xs0>
-              <span class="label">Send</span>
-            </v-flex>
+          <v-layout row>
             <v-flex>
-              <v-text-field v-model="action.answer" label="Answer" solo></v-text-field>
+              <v-text-field v-model="action.answer" label="Send Answer"></v-text-field>
             </v-flex>
             <v-flex xs0 class="space">
             </v-flex>
-            <v-flex xs0>
-              <span class="label">If</span>
-            </v-flex>
             <v-flex>
-              <v-text-field v-model="action.if" label="Expression" solo></v-text-field>
+              <v-text-field v-model="action.if" label="If Expression" solo></v-text-field>
             </v-flex>
             <v-flex xs0 class="text-right">
-              <v-icon class="delete" @click="deleteAction(action.id)">close</v-icon>
+              <v-icon class="delete" @click="deleteAction(action.id)">delete</v-icon>
             </v-flex>
           </v-layout>
         </div>
