@@ -1,18 +1,33 @@
 <template>
-  <modals-container></modals-container>
+  <div class="modal">
+    <div class="close" @click="$emit('close')">
+      <v-icon>close</v-icon>
+    </div>
+    <div class="modal-title">{{title}}</div>
+    <div class="modal-body">
+      <slot ref="slot"></slot>
+    </div>
+
+    <div class="modal-footer" v-if="showCancel || showSubmit">
+      <v-btn v-if="showCancel" @click="$emit('close')">Cancel</v-btn>
+      <v-btn v-if="showSubmit" color="primary" @click="$emit('submit')">{{submitBtnText || 'Save'}}</v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
   export default {
-    name: "ObjectEditor",
-    data () {
-      return {
-        left: window.innerWidth - 320
-      }
-    },
-    methods: {
-      close () {
-        
+    name: "Modal",
+    props: {
+      title: String,
+      submitBtnText: String,
+      showSubmit: {
+        type: Boolean,
+        default: true
+      },
+      showCancel: {
+        type: Boolean,
+        default: true
       }
     }
   }
@@ -66,13 +81,13 @@
   div[data-modal="object-editor"] {
     position: absolute;
     right: 0;
-    top: 0;
+    top: 84px;
     bottom: 0;
     left: auto;
     width: 33%;
     min-width: 470px;
     min-height: 0 !important;
-    box-shadow: 0px 0px 8px rgba(0,0,0,.24);
+    box-shadow: 0px 5px 8px rgba(0,0,0,.24);
     background: none;
   }
   div[data-modal="object-editor"] .v--modal {
@@ -85,6 +100,7 @@
     margin: 0 !important;
     border-radius: 0 !important;
     overflow: auto;
+    height: calc(100% - 84px) !important;
   }
   div[data-modal="object-editor"] .v--modal-background-click {
     padding-bottom: 0;

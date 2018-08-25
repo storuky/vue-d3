@@ -1,40 +1,28 @@
 <template>
-  <div class="modal">
-    <div class="close" @click="$emit('close')">
-      <v-icon>close</v-icon>
-    </div>
-    <div class="modal-title">Answer Block Settings</div>
-    <div class="modal-body">
-      <v-layout row :key="variant.id" v-for="(variant, index) in localSettings.answerVariants">
-        <v-flex xs11>
-          <v-text-field v-model="variant.text" :label="`Answer ${index+1}`"></v-text-field>
-        </v-flex>
-        <v-flex xs1>
-          <div class="delete-variant" @click="deleteVariant(variant.id)">
-            <v-icon>delete</v-icon>
-          </div>
-        </v-flex>
-      </v-layout>
-      <div @click="addVariant()" class="component-settings">Add Answer Variant</div>
-      <v-layout row>
-        <v-flex xs5>
-          <v-select v-model="localSettings.action" :items="items" label="Action"></v-select>
-        </v-flex>
-        <v-flex xs1></v-flex>
-        <v-flex xs6>
-          <div v-if="localSettings.action == 'Open Link'">
-            <v-text-field v-model="localSettings.url" label="Url" solo></v-text-field>
-          </div>
-        </v-flex>
-      </v-layout>
-
-    </div>
-
-    <div class="modal-footer">
-      <v-btn @click="$emit('close')">Cancel</v-btn>
-      <v-btn color="primary" @click="save()">Save</v-btn>
-    </div>
-  </div>
+  <Modal title="Answer Block Settings" @submit="save()" @close="$emit('close')">
+    <v-layout row :key="variant.id" v-for="(variant, index) in localSettings.answerVariants">
+      <v-flex xs11>
+        <v-text-field v-model="variant.text" :label="`Answer ${index+1}`"></v-text-field>
+      </v-flex>
+      <v-flex xs1>
+        <div class="delete-variant" @click="deleteVariant(variant.id)">
+          <v-icon>delete</v-icon>
+        </div>
+      </v-flex>
+    </v-layout>
+    <div @click="addVariant()" class="component-settings">Add Answer Variant</div>
+    <v-layout row>
+      <v-flex xs5>
+        <v-select v-model="localSettings.action" :items="items" label="Action"></v-select>
+      </v-flex>
+      <v-flex xs1></v-flex>
+      <v-flex xs6>
+        <div v-if="localSettings.action == 'Open Link'">
+          <v-text-field v-model="localSettings.url" label="Url" solo></v-text-field>
+        </div>
+      </v-flex>
+    </v-layout>
+  </Modal>
 </template>
 
 <script>

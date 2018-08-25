@@ -6,10 +6,10 @@
         <div class="grid-container">
           <Grid />
         </div>
-        <Modal />
       </div>
     </div>
     <Navigation />
+    <modals-container></modals-container>
   </v-app>
 </template>
 
@@ -17,15 +17,13 @@
 import Grid from './components/Grid'
 import Header from './components/Layout/Header'
 import Navigation from './components/Layout/Navigation'
-import Modal from './components/Layout/Modal'
 
 export default {
   name: 'app',
   components: {
     Grid,
     Header,
-    Navigation,
-    Modal
+    Navigation
   }
 }
 </script>

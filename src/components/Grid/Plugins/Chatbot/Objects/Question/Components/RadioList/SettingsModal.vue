@@ -1,31 +1,20 @@
 <template>
-  <div class="modal">
-    <div class="close" @click="$emit('close')">
-      <v-icon>close</v-icon>
-    </div>
-    <div class="modal-title">RadioList Settings</div>
-    <div class="modal-body">
-      <v-layout row>
-        <v-flex xs8>
-          <v-text-field type="text" v-model="localSettings.showCondition" label="Show Condition, default true" solo></v-text-field>
-        </v-flex>
-        <v-flex xs1></v-flex>
+  <Modal title="RadioList Settings" @submit="save()" @close="$emit('close')">
+    <v-layout row>
+      <v-flex xs8>
+        <v-text-field type="text" v-model="localSettings.showCondition" label="Show Condition, default true" solo></v-text-field>
+      </v-flex>
+      <v-flex xs1></v-flex>
 
-        <v-flex xs3>
-          <v-text-field type="number" v-model="localSettings.width" label="Width, %"></v-text-field>
-        </v-flex>
-      </v-layout>
-      
-      <v-text-field type="text" v-model="localSettings.title" label="Title"></v-text-field>
+      <v-flex xs3>
+        <v-text-field type="number" v-model="localSettings.width" label="Width, %"></v-text-field>
+      </v-flex>
+    </v-layout>
+    
+    <v-text-field type="text" v-model="localSettings.title" label="Title"></v-text-field>
 
-      <OptionsList v-model="localSettings.options" />
-    </div>
-
-    <div class="modal-footer">
-      <v-btn @click="$emit('close')">Cancel</v-btn>
-      <v-btn color="primary" @click="save()">Save</v-btn>
-    </div>
-  </div>
+    <OptionsList v-model="localSettings.options" />
+  </Modal>
 </template>
 
 <script>

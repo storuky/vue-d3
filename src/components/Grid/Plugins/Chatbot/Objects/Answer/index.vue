@@ -19,9 +19,6 @@
       data: Object,
       default: Object
     },
-    components: {
-      SettingsModal
-    },
     data () {
       const settings = {...this.data.info.settings}
 

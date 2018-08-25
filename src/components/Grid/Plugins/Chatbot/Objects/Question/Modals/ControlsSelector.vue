@@ -1,18 +1,11 @@
 <template>
-  <div class="modal">
-    <div class="close" @click="$emit('close')">
-      <v-icon>close</v-icon>
-    </div>
-    <div class="modal-title">Select Component</div>
-    
-    <div class="modal-body">
-      <div class="controls-list">
-        <div :class="{selected: selectedControl && selectedControl.type == control.type}" @click="setSelectedControl(control)" class="controls-list-item" v-for="control in controls" :key="control.name">
-          {{control.name}}
-        </div>
+  <Modal :showSubmit="false" :showCancel="false" title="Select Component" submitBtnText="Create" @submit="create()" @close="$emit('close')">
+    <div class="controls-list">
+      <div :class="{selected: selectedControl && selectedControl.type == control.type}" @click="setSelectedControl(control)" class="controls-list-item" v-for="control in controls" :key="control.name">
+        {{control.name}}
       </div>
     </div>
-  </div>
+  </Modal>
 </template>
 
 <script>

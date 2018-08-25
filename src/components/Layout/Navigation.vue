@@ -25,7 +25,7 @@
             <v-list-tile-title>Projects {{i}}</v-list-tile-title>
           </v-list-tile>
 
-          <v-list-tile @click="">
+          <v-list-tile @click="openNewProject()">
             <v-list-tile-title>+ New Project</v-list-tile-title>
           </v-list-tile>
         </v-list-group>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+  import NewProject from './Project/NewProject'
+
   export default {
     name: "Navigation",
     data () {
@@ -54,6 +56,12 @@
           {icon: 'account_circle', title: 'Profile'}
         ],
         active: null
+      }
+    },
+    methods: {
+      openNewProject () {
+        this.drawer = false
+        this.$modal.show(NewProject, {}, {scrollable: true, height: "auto"})
       }
     },
     computed: {
@@ -73,11 +81,5 @@
   .navigation .v-list__group__items > .active {
     background: #df4e9e;
     color: white;
-    /* position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9; */
   }
 </style>
