@@ -6,7 +6,7 @@
       </li>
     </ol>
     <div v-else>
-      {{settingsLocal.answerVariants[0].text}}
+      {{settingsLocal.answerVariants[0].text || "Click to Add"}}
     </div>
   </div>
 </template>
