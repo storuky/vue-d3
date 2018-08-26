@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <Header :title="activeProject.name" :tabs="activeProject.charts" v-model="activeChart">
+    <Header :more="moreMenu" :title="activeProject.name" :tabs="activeProject.charts" v-model="activeChart">
       <template slot="tab" slot-scope="slotProps">
         {{slotProps.tab.name}}
         <span class="chart-actions">
@@ -29,6 +29,8 @@
   import Header from './_Shared/Header'
   import Grid from './Editor/Grid'
   import ChartSettings from './Project/Chart/ChartSettings'
+  import {Project} from '../../../resources'
+  import ProjectForm from './Project/ProjectForm'
   import {Chart} from '../../../resources/index'
 
   export default {
@@ -42,7 +44,28 @@
       return {
         activeChart: this.$route.params.chartId,
         transform: {},
-        chartTransform: false
+        chartTransform: false,
+        moreMenu: [
+          {
+            title: "Edit Project",
+            callback: ()=>{
+              this.$modal.show(ProjectForm, {
+                title: "Edit Project",
+                settings: this.activeProject
+              }, {scrollable: true, height: "auto"})
+            }
+          },
+          {
+            title: "Delete Project", callback: ()=>{
+              if (confirm("Are You Sure?")) {
+                Project.delete({id: this.$route.params.projectId})
+                  .then(response => {
+                    this.$router.push({name: "root"})
+                  })
+              }
+            }
+          },
+        ]
       }
     },
     created () {
@@ -111,8 +134,9 @@
             this.$store.commit('setObjectsList', response.body.objects)
             this.$store.commit('setCurvesList', response.body.connections)
             this.chartTransform = response.data.options.transform || {x: 0, y: 0, k: 1}
-            console.log(response.body.id)
             this.activeChart = response.body.id
+          }, err => {
+            this.$router.push({name: "root"})
           })
 
       },

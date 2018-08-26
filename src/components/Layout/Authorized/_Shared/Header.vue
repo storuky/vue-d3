@@ -13,9 +13,17 @@
         <v-icon>search</v-icon>
       </v-btn>
 
-      <v-btn icon>
-        <v-icon>more_vert</v-icon>
-      </v-btn>
+      <v-menu bottom origin="center center" transition="scale-transition" v-if="more && more.length">
+        <v-icon slot="activator">
+          more_vert
+        </v-icon>
+
+        <v-list>
+          <v-list-tile v-for="(item, i) in more" :key="i" @click="item.callback">
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
 
       <v-tabs v-if="localTabs.length" slot="extension" v-model="localTab" color="white" align-with-title>
         <v-tabs-slider color="primary"></v-tabs-slider>
@@ -41,7 +49,8 @@
         }
       },
       value: String,
-      title: String
+      title: String,
+      more: Array
     },
     data () {
       return {

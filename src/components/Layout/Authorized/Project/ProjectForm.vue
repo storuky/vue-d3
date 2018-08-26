@@ -1,8 +1,8 @@
 <template>
-  <Modal :showSubmit="showSubmit" title="New Project" submitBtnText="Create" @submit="create()" @close="$emit('close')">
-    <v-text-field autofocus @keyup.enter.native="create()" type="text" v-model="settings.name" label="Project Name"></v-text-field>
-    <div class="project-types">
-      <div @click="settings.type = type.name" :class="{active: settings.type == type.name}" class="project-type" v-for="type in types" :key="type.name">
+  <Modal :showSubmit="showSubmit" :title="title" submitBtnText="Create" @submit="create()" @close="$emit('close')">
+    <v-text-field autofocus @keyup.enter.native="create()" type="text" v-model="localSettings.name" label="Project Name"></v-text-field>
+    <div class="project-types" v-if="!this.settings">
+      <div @click="localSettings.type = type.name" :class="{active: localSettings.type == type.name}" class="project-type" v-for="type in types" :key="type.name">
         {{type.title}}
       </div>
     </div>
@@ -14,7 +14,10 @@
 
   export default {
     name: 'NewProject',
-    props: {},
+    props: {
+      settings: Object,
+      title: String,
+    },
     data () {
       return {
         types: [{
@@ -24,25 +27,31 @@
           name: 'Chatbot',
           title: 'Chatbot'
         }],
-        settings: {
-          type: 'AnalysisTools'
-        }
+        localSettings: {...this.settings || {type: 'AnalysisTools'}}
       }
     },
     computed: {
       showSubmit () {
-        return !!this.settings.name
+        return !!this.localSettings.name
       }
     },
     methods: {
       create () {
-        if (this.settings.name) {
-          Project.save({project: this.settings})
-            .then(res => {
-              this.$emit('close')
-              const project = res.body
-              this.$router.push(`/project/${project.id}/chart/${project.charts[0].id}`)
-            })
+        if (this.localSettings.name) {
+          if (this.settings) {
+            Project.update({project: this.localSettings})
+              .then(res => {
+                this.$emit('close')
+                this.settings = res.body
+              })
+          } else {
+            Project.save({project: this.localSettings})
+              .then(res => {
+                this.$emit('close')
+                const project = res.body
+                this.$router.push(`/project/${project.id}/chart/${project.charts[0].id}`)
+              })
+          }
         }
       }
     }

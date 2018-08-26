@@ -38,9 +38,6 @@
 </script>
 
 <style>
-  .projects-list {
-    
-  }
 
   .projects-list-item {
     padding: 10px;

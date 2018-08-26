@@ -1,27 +1,33 @@
 <template>
-  <div class="grid">
-    <svg ref="svg">
-      <defs>
-        <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#505fa6"/>
-          <stop offset="100%" stop-color="#e44e9d"/>
-        </linearGradient>
-        <marker id="arrow" viewBox="0 -5 10 10" refX="5" refY="0" markerWidth="4" markerHeight="4" orient="auto">
-          <path fill="#e44e9d" d="M0,-5L10,0L0,5" class="arrowHead"></path>
-        </marker>
-      </defs>
-      <g ref="container">
-        <g id="curves">
-          <Curve v-for="connection in connections" :key="connection.id" :from="connection.from" :to="connection.to" />
+  <div class="grid-wrapper">
+    <div class="grid-help">
+      <div v-if="objects.length == 0">Double-click to create an object</div>
+      
+    </div>
+    <div class="grid">
+      <svg ref="svg">
+        <defs>
+          <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#505fa6"/>
+            <stop offset="100%" stop-color="#e44e9d"/>
+          </linearGradient>
+          <marker id="arrow" viewBox="0 -5 10 10" refX="5" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+            <path fill="#e44e9d" d="M0,-5L10,0L0,5" class="arrowHead"></path>
+          </marker>
+        </defs>
+        <g ref="container">
+          <g id="curves">
+            <Curve v-for="connection in connections" :key="connection.id" :from="connection.from" :to="connection.to" />
+          </g>
+          <g id="objects">
+            <BaseObject :data="object" v-for="object in objects" :key="object.id"></BaseObject>
+          </g>
+          <g id="drawingCurve">
+            <Curve virtual="true" />
+          </g>
         </g>
-        <g id="objects">
-          <BaseObject :data="object" v-for="object in objects" :key="object.id"></BaseObject>
-        </g>
-        <g id="drawingCurve">
-          <Curve virtual="true" />
-        </g>
-      </g>
-    </svg>
+      </svg>
+    </div>
   </div>
 </template>
 
@@ -144,14 +150,34 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .grid {
-    position: absolute;
+  .grid-wrapper {
     background: white;
   }
 
-  .grid, .grid svg {
+  .grid, .grid-wrapper {
+    position: absolute;
+  }
+
+  .grid-wrapper, .grid, .grid svg {
     width: 100%;
     height: 100%;
+  }
+
+  .grid {
+    z-index: 2;
+    top: 0;
+  }
+
+  .grid-help {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #565656;
   }
 
   .grid svg {

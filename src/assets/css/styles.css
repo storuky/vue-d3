@@ -62,15 +62,25 @@ a {
   padding: 40px;
   min-height: calc(100% - 84px);
   box-shadow: 0 0 8px rgba(0,0,0,.3);
-  height: 100%;
+  min-height: 100%;
+  position: relative;
 }
 
 .page-tabs-content {
   height: calc(100% - 84px);
 }
 .page-tabs-content .v-tabs__items {
-  height: 100%;
+  min-height: 100%;
 }
 .page-tabs-content .v-tabs__content {
-  height: 100%;
+  min-height: 100%;
+}
+
+.page-overflow {
+  overflow: auto;
+}
+
+.hide-controls .close,
+.hide-controls .modal-footer {
+  display: none;
 }
