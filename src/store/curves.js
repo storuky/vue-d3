@@ -1,3 +1,6 @@
+import { Connection } from '../resources/index'
+
+
 const store = {
   state: {
     curvesList: [
@@ -19,8 +22,8 @@ const store = {
         }
       })
     },
-    createCurve(state, { from, to }) {
-      state.curvesList.push({ id: parseInt(Math.random() * 10000), from, to })
+    createCurve(state, curve) {
+      state.curvesList.push(curve)
     },
     removeCurve(state, { from, to }) {
       state.curvesList = state.curvesList.filter(el => !(el.from == from && el.to == to))
@@ -39,11 +42,20 @@ const store = {
     addCurve({ commit, state }, curve) {
       commit('addCurve', curve)
     },
-    createCurve({commit, state}, {from, to}) {
-      commit('createCurve', {from, to})
+    createCurve({ commit, rootGetters}, {from, to, callback}) {
+      const params = { connection: { from, to } }
+      Connection.save(params)
+        .then(response => {
+          commit('createCurve', response.body)
+        })
     },
     removeCurve({commit, state}, {from, to}) {
-      commit('removeCurve', {from, to})
+      const params = {connection: { from, to } }
+
+      Connection.delete({id: 0}, params)
+        .then(() => {
+          commit('removeCurve', {from, to})
+        })
     },
     setDrawingCurve({ commit, state }, curve) {
       commit('setDrawingCurve', curve)

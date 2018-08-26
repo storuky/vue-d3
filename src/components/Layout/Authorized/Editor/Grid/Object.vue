@@ -3,7 +3,7 @@
     <!-- Object -->
     <foreignObject :height="localData.size.height + 10" :width="localData.size.width + 10" ref="foreignObject">
       <div style="margin: 4px" ref="content">
-        <component ref="component" @calcSize="calcSize()" :default={defaultSize} :is="componentType" :data="localData"></component>
+        <component ref="component" @calcSize="calcSize()" :default={defaultSize} :is="componentType" v-model="localData.info.settings" :componentId="localData.id" :size="localData.size" :position="localData.position"></component>
       </div>
     </foreignObject>
 
@@ -25,7 +25,7 @@
     </foreignObject>
 
     <!-- OUT -->
-    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="localData.size.width - 4" :y="localData.size.height/2 - 2">
+    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="localData.size.width - 3" :y="localData.size.height/2 - 2">
       <Out :objectId="localData.id" />
     </foreignObject>
 
@@ -85,6 +85,7 @@
     mounted () {
       this.$nextTick(function () {
         this.d3container = d3.select(this.$refs.container)
+        this.d3container.on('dblclick', () => d3.event.stopPropagation())
         this.arrange()
         this.makeDraggable()
         if (this.$refs.labelFO) {

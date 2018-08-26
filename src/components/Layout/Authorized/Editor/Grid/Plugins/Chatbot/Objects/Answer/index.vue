@@ -1,12 +1,12 @@
 <template>
-  <div @click="openSettings()" class="chatbot-message" :style="{minWidth: this.data.size.width + 'px', minHeight: this.data.size.height + 'px'}">
-    <ol v-if="settingsLocal.answerVariants.length > 1">
-      <li :key="variant.id" v-for="variant in settingsLocal.answerVariants">
+  <div @click="openSettings()" class="chatbot-message" :style="{minWidth: size.width + 'px', minHeight: size.height + 'px'}">
+    <ol v-if="localSettings.answerVariants.length > 1">
+      <li :key="variant.id" v-for="variant in localSettings.answerVariants">
         {{variant.text}}
       </li>
     </ol>
     <div v-else>
-      {{settingsLocal.answerVariants[0] && settingsLocal.answerVariants[0].text || "Click to Add"}}
+      {{localSettings.answerVariants[0] && localSettings.answerVariants[0].text || "Click to Add"}}
     </div>
   </div>
 </template>
@@ -16,25 +16,26 @@
   export default {
     name: "ChatbotAnswer",
     props: {
-      data: Object,
-      default: Object
+      value: Object,
+      size: Object
     },
     data () {
-      const settings = {...this.data.info.settings}
+      const settings = {...this.value}
       if (!settings.answerVariants) {
         settings.answerVariants = []
       }
       return {
-        settingsLocal: settings
+        localSettings: settings
       }
     },
     methods: {
       openSettings () {
         this.$modal.show(SettingsModal, {
-          settings: this.settingsLocal,
+          settings: this.localSettings,
           onSave: (settings) => {
-            this.settingsLocal = settings
+            this.localSettings = settings
             this.$emit("calcSize")
+            this.$emit("input", this.localSettings)
           }
         }, {
           height: 'auto',

@@ -1,5 +1,5 @@
 <template>
-  <div class="organisation-border gradient" :style="{width: width + 'px', height: height + 'px'}">
+  <div class="organisation-border gradient" :style="{width: size.width + 'px', height: size.height + 'px'}">
     <div class="organisation">
     </div>
   </div>
@@ -10,16 +10,7 @@
     name: "Organisation",
     props: {
       data: Object,
-      default: Object
-    },
-    components: {},
-    computed: {
-      width () {
-        return this.data.size.width || this.defaule.size.width
-      },
-      height () {
-        return this.data.size.height || this.defaule.size.height
-      }
+      size: Object
     }
   }
 </script>

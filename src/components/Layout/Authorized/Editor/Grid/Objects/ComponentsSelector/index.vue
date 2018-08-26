@@ -1,7 +1,7 @@
 <template>
-  <div class="component-selector gradient" :style="{minWidth: data.size.width + 'px', minHeight: data.size.height + 'px'}">
+  <div class="component-selector gradient" :style="{minWidth: size.width + 'px', minHeight: size.height + 'px'}">
     <div class="ll">
-      <div @click="addComponent(component)" class="component-item" :key="component" v-for="component in data.components">
+      <div @click="addComponent(component)" class="component-item" :key="component" v-for="component in localValue.components">
         {{component}}
       </div>
     </div>
@@ -14,43 +14,43 @@
   export default {
     name: "ComponentSelector",
     props: {
-      data: Object,
-      default: Object
+      value: Object,
+      size: Object,
+      position: Object,
+      componentId: Number
     },
-    created () {
-      if (this.data.components.length == 1) {
-        this.addComponent(this.data.components[0])
+    data () {
+      return {
+        localValue: {...this.value}
       }
     },
     mounted () {
       this.$nextTick(function () {
+        if (this.localValue.components && this.localValue.components.length == 1) {
+          this.addComponent(this.localValue.components[0])
+        }
         this.$emit('calcSize')
       })
-    },
-    computed: {
-      width () {
-        return this.data.size.width || this.defaule.size.width
-      },
-      height () {
-        return this.data.size.height || this.defaule.size.height
-      }
     },
     methods: {
       addComponent (componentName) {
         this.$store.dispatch('createObject', {
           type: componentName,
           position: {
-            x: this.data.position.x,
-            y: this.data.position.y + this.data.size.height/2 - settings[componentName].size.height/2
+            x: this.position.x,
+            y: this.position.y + this.size.height/2 - settings[componentName].size.height/2
           },
         }).then(res => {
           this.$nextTick(function () {
-            const curve = this.$store.getters.getCurves(this.data.id)[0]
+            const curve = this.$store.getters.getCurves(this.componentId)[0]
+
             if (curve) {
-              this.$store.dispatch('removeCurve', {from: curve.fromLocal, to: this.data.id})
-              this.$store.dispatch('createCurve', {from: curve.fromLocal, to: res.id})
+              this.$store.dispatch('createCurve', {
+                from: curve.fromLocal,
+                to: res.id
+              })
             }
-            this.$store.dispatch('removeObject', this.data.id)
+            this.$store.dispatch('removeObject', this.componentId)
           })
         })
       }

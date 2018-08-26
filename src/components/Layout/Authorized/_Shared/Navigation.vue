@@ -18,25 +18,25 @@
 
 
         <div :key="item.id" v-for="item in items">
-          <div v-if="item.list">
+          <div v-if="(itemSlots[item.slot] || item).list">
             <v-list-group prepend-icon="assignment" :value="false">
               <v-list-tile slot="activator">
-                <v-list-tile-title>{{item.title}}</v-list-tile-title>
+                <v-list-tile-title>{{(itemSlots[item.slot] || item).title}}</v-list-tile-title>
               </v-list-tile>
 
-              <v-list-tile :class="{active: subitem.id == active}" :key="subitem.id" v-for="subitem in item.list" @click="subitem.callback ? subitem.callback(subitem.id) : null">
-                <v-list-tile-title>{{subitem.title}}</v-list-tile-title>
+              <v-list-tile :class="{active: subitem.id == active}" :key="subitem.id" v-for="subitem in (itemSlots[item.slot] || item).list" @click="subitem.callback ? subitem.callback(subitem.id) : null">
+                <v-list-tile-title>{{subitem.title || subitem.name}}</v-list-tile-title>
               </v-list-tile>
             </v-list-group>
           </div>
           <div v-else>
-            <v-list-tile @click="item.callback ? item.callback() : null">
+            <v-list-tile @click="(itemSlots[item.slot] || item).callback ? (itemSlots[item.slot] || item).callback() : null">
               <v-list-tile-action>
                 <v-icon>{{item.icon}}</v-icon>
               </v-list-tile-action>
 
               <v-list-tile-content>
-                <v-list-tile-title>{{item.title}}</v-list-tile-title>
+                <v-list-tile-title>{{item.title || item.name}}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </div>
@@ -47,10 +47,14 @@
 </template>
 
 <script>
-  import NewProject from '../Project/NewProject'
+  import NewProject from '../Project/ProjectForm'
+  import {Project} from '../../../../resources'
 
   export default {
     name: "Navigation",
+    created () {
+      this.updateRecentProjectsList()
+    },
     data () {
       return {
         items: [
@@ -64,25 +68,33 @@
             title: "Open Project",
             callback: this.openProjectModal
           },
-          {
-            icon: "assignment",
-            title: "Recent Projects",
-            list: [
-              {id: 1, title: "Project 1", callback: this.openProject},
-              {id: 2, title: "Project 2", callback: this.openProject},
-              {id: 3, title: "Project 3", callback: this.openProject},
-            ]
-          },
+          {slot: "recentProjects"},
           {
             icon: 'account_circle',
             title: 'Profile',
             callback: this.openProfile
           }
         ],
+        itemSlots: {
+          recentProjects: {
+            icon: "assignment",
+            title: "Recent Projects"
+          },
+        },
         active: null
       }
     },
     methods: {
+      updateRecentProjectsList () {
+        Project.recent().then(response => {
+          this.itemSlots.recentProjects.list = response.data.map(project => {
+            return {
+              ...project,
+              callback: () => {this.openProject(project)}
+            }
+          })
+        })
+      },
       openNewProject () {
         this.drawer = false
         this.$modal.show(NewProject, {}, {scrollable: true, height: "auto"})
@@ -91,9 +103,11 @@
         this.drawer = false
         this.$router.push('/profile')
       },
-      openProject (projectId) {
+      openProject (project) {
         this.drawer = false
-        this.$router.push(`/project/${projectId}/chart/1`)
+        const chartId = project.charts[0] ? project.charts[0].id : 0,
+              projectId = project.id
+        this.$router.push({name: "editor", params: {chartId, projectId}})
       }
     },
     computed: {

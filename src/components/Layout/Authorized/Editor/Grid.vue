@@ -31,27 +31,20 @@ import Curve from './Grid/Curve'
 import BaseObject from './Grid/Object'
 import settings from './Grid/settings'
 
+import debounce from '../../../../utils'
+import {Chart} from '../../../../resources/index'
+
 export default {
   name: 'Grid',
   props: {
-    transform: {
-      type: Object,
-      default: function () {
-        return {x: 0, y: 0, k: 1}
-      }
-    }
+    transform: Object
   },
   mounted () {
     this.d3svg = d3.select(this.$refs.svg)
     this.d3container = d3.select(this.$refs.container)
 
     this.$nextTick(function () {
-      this.d3container.attr('transform', [
-        'translate('+[this.transform.x, this.transform.y]+')',
-        'scale('+this.transform.k+')'
-      ])
-
-
+      this.setTransform()
       this.enablePanAndZoomMode()
     })
   },
@@ -73,6 +66,25 @@ export default {
     }
   },
   methods: {
+    setTransform () {
+      this.d3container.attr('transform', [
+        'translate('+[this.transform.x, this.transform.y]+')',
+        'scale('+this.transform.k+')'
+      ])
+    },
+    sync: debounce(function () {
+      const translate = this.$store.getters.getChartTranslate(),
+            scale = this.$store.getters.getChartScale()
+      Chart.update({
+        id: this.$store.getters.getActiveChart.id
+      },{
+        chart: {
+          options: {
+            transform: {...translate, k: scale}
+          }
+        }
+      })
+    }, 500),
     enablePanAndZoomMode () {
       // Clear
       this.d3svg
@@ -90,7 +102,9 @@ export default {
           x: d3.event.transform.x,
           y: d3.event.transform.y
         })
+        this.sync()
       })
+
       this.d3svg
         .call(zoom)
         .call(
@@ -116,7 +130,7 @@ export default {
             x: (d3.event.x - translate.x)/scale,
             y: (d3.event.y - translate.y - 100)/scale
           },
-          components
+          info: {settings: {components}}
         }
 
         this.$store.dispatch("createObject", objectParams)

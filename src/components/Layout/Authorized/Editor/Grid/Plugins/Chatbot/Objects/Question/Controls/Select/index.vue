@@ -10,7 +10,7 @@
   export default {
     name: "ChatbotSelect",
     props: {
-      settings: Object
+      value: Object
     },
     mounted () {
       this.$nextTick(function () {
@@ -19,7 +19,7 @@
     },
     data() {
       return {
-        localSettings: {...this.settings},
+        localSettings: {...this.value},
       }
     },
     computed: {
@@ -33,6 +33,7 @@
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
+            this.$emit('input', this.localSettings)
             this.$emit('calcSize')
           }
         }, {

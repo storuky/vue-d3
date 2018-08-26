@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 const store = {
   state: {
     scale: 1,
@@ -26,14 +24,6 @@ const store = {
     },
     setTranslate ({commit, state}, translate) {
       commit('setTranslate', translate)
-    },
-    fetchChart({ commit, state }, chartId = '7fad6b0a-0d62-497c-8b0a-637792ddd220') {
-      Vue.http.get(`/vulcan/v1/charts/${chartId}`)
-        .then(response => {
-          commit('setChart', response.body)
-          commit('setObjectsList', response.body.objects, {root: true})
-          commit('setCurvesList', response.body.connections, {root: true})
-        })
     }
   },
   getters: {
@@ -45,6 +35,11 @@ const store = {
     },
     getActiveChart: state => {
       return state.activeChart
+    },
+    getChartTransform: state => {
+      if (state.activeChart) {
+        return state.activeChart.options.transform
+      }
     }
   }
 }

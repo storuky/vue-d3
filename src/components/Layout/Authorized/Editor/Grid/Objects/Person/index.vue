@@ -1,5 +1,5 @@
 <template>
-  <div class="person-border gradient" :style="{width: width + 'px', height: height + 'px'}">
+  <div class="person-border gradient" :style="{width: size.width + 'px', height: size.height + 'px'}">
     <div class="person">
       <div class="avatar"></div>
     </div>
@@ -11,17 +11,8 @@
     name: 'Person',
     props: {
       data: Object,
-      default: Object
-    },
-    computed: {
-      width () {
-        return this.data.size.width || this.defaule.size.width
-      },
-      height () {
-        return this.data.size.height || this.defaule.size.height
-      }
-    },
-    components: {}
+      size: Object
+    }
   }
 </script>
 

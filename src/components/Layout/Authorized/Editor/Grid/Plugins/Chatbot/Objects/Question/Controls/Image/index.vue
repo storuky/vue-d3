@@ -1,9 +1,8 @@
 <template>
   <div :style="{width: (localSettings.width || 100) + '%'}">
     <slot :openSettings="openSettings"></slot>
-    <div class="chatbot-checkboxlist">
-      <div class="title" v-html="localSettings.title"></div>
-      <v-checkbox disabled :key="option.id" v-for="option in localSettings.options" v-model="model" :label="option.text" :value="option.text"></v-checkbox>
+    <div class="chatbot-image">
+
     </div>
   </div>
 </template>
@@ -13,20 +12,19 @@
   import SettingsModal from './SettingsModal'
 
   export default {
-    name: "ChatbotCheckboxList",
+    name: "ChatbotImage",
     props: {
-      settings: Object,
+      value: Object
+    },
+    data() {
+      return {
+        localSettings: {...this.value},
+      }
     },
     mounted () {
       this.$nextTick(function () {
         d3.select(this.$el).on('mousedown', () => d3.event.stopPropagation())
       })
-    },
-    data() {
-      return {
-        localSettings: {...this.settings},
-        model: undefined
-      }
     },
     methods: {
       openSettings () {
@@ -35,6 +33,7 @@
           onSave: (settings) => {
             this.localSettings = settings
             this.$emit('calcSize')
+            this.$emit('input', this.localSettings)
           }
         }, {
           scrollable: true, height: "auto", name: "object-editor"
@@ -44,27 +43,7 @@
   }
 </script>
 
-<style scoped>
-  .title {
-    text-align: center;
-  }
-  .chatbot-checkboxlist {
-    display: block;
-    margin-top: 20px;
-  }
-</style>
-
-<style>
-  .chatbot-checkboxlist .v-messages {
-    display: none;
-  }
-
-  .chatbot-checkboxlist .v-input {
-    margin-top: 0;
-  }
-
-  .chatbot-checkboxlist .v-label,
-  .chatbot-checkboxlist .v-icon  {
-    color: #333 !important;
+<style scope>
+  .chatbot-image {
   }
 </style>

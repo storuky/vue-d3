@@ -17,7 +17,7 @@
   export default {
     name: "ChatbotRadioList",
     props: {
-      settings: Object
+      value: Object
     },
     mounted () {
       this.$nextTick(function () {
@@ -26,7 +26,7 @@
     },
     data() {
       return {
-        localSettings: {...this.settings},
+        localSettings: {...this.value},
         model: null
       }
     },
@@ -36,6 +36,7 @@
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
+            this.$emit('input', this.localSettings)
             this.$emit('calcSize')
           }
         }, {

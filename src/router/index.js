@@ -6,11 +6,13 @@ import Editor from '../components/Layout/Authorized/Editor'
 import SignIn from '../components/Layout/NotAuthorized/SignIn'
 import Profile from '../components/Layout/Authorized/Profile'
 
+import Root from '../Root'
+
 const routes = [
-  { path: '/', component: Editor },
-  { path: '/sign-in', component: SignIn },
-  { path: '/project/:projectId/chart/:chartId', component: Editor },
-  { path: '/profile', component: Profile}
+  {name: 'root', path: '/', component: Root},
+  { name: 'sign-in', path: '/sign-in', component: SignIn },
+  { name: 'editor', path: '/project/:projectId/chart/:chartId', component: Editor },
+  { name: 'profile', path: '/profile', component: Profile}
 ]
 
 

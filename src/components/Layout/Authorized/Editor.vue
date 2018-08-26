@@ -1,9 +1,24 @@
 <template>
   <Layout>
-    <Header :title="activeProject.name" :tabs="activeProject.charts" v-model="activeChart" />
+    <Header :title="activeProject.name" :tabs="activeProject.charts" v-model="activeChart">
+      <template slot="tab" slot-scope="slotProps">
+        {{slotProps.tab.name}}
+        <span class="chart-actions">
+          <v-icon style="font-size: 14px" @click.stop="editChartModal(slotProps.tab)">settings</v-icon>
+          <v-icon @click.stop="deleteChart(slotProps.tab.id)">close</v-icon>
+        </span>
+      </template>
+      <template slot="afterTabs">
+        <div class="v-tabs__div">
+          <a class="v-tabs__item add-chart" @click="newChartModal()">
+            + Add Chart
+          </a>
+        </div>
+      </template>
+    </Header>
     <div class="work-area">
       <div class="grid-container">
-        <Grid />
+        <Grid v-if="chartTransform && $store.getters.getActiveChart.id == chartId" :transform="chartTransform" />
       </div>
     </div>
   </Layout>
@@ -13,6 +28,8 @@
   import Layout from './_Layout'
   import Header from './_Shared/Header'
   import Grid from './Editor/Grid'
+  import ChartSettings from './Project/Chart/ChartSettings'
+  import {Chart} from '../../../resources/index'
 
   export default {
     name: "Editor",
@@ -23,12 +40,17 @@
     },
     data () {
       return {
-        activeChart: this.$route.params.chartId
+        activeChart: this.$route.params.chartId,
+        transform: {},
+        chartTransform: false
       }
     },
     created () {
-      this.fetchProject()
-      this.fetchChart()
+      const chartId = this.$route.params.chartId,
+            projectId = this.$route.params.projectId
+
+      this.fetchProject(projectId)
+      this.fetchChart(chartId)
     },
     beforeRouteUpdate (to, from, next) {
       next()
@@ -43,12 +65,57 @@
       }
     },
     methods: {
-      fetchChart() {
-        this.$store.dispatch('fetchChart', this.chartId)
-        this.activeChart = this.chartId
+      deleteChart (chartId) {
+        Chart.delete({id: chartId})
+          .then(response => {
+            this.activeProject.charts = response.data
+            if (this.$route.params.chartId == chartId) {
+              this.activeChart = this.activeProject.charts[this.activeProject.charts.length-1].id
+            }
+          })
       },
-      fetchProject() {
-        this.$store.dispatch('fetchProject', this.projectId)
+      editChartModal (chart) {
+        this.$modal.show(ChartSettings, {
+          title: "Edit Chart",
+          settings: chart,
+          onSubmit: (chartParams) => {
+            const projectId = this.$route.params.projectId
+            return Chart.update({id: chartParams.id}, {chart: {...chartParams, project_id: projectId}})
+              .then(response => {
+                const chartId = response.body.id
+                const index = this.activeProject.charts.findIndex(chart => chart.id == chartId)
+                this.activeProject.charts.splice(index, 1, response.body)
+              })
+          }
+        }, {scrollable: true, height: "auto"})
+      },
+      newChartModal () {
+        this.$modal.show(ChartSettings, {
+          title: "New Chart",
+          onSubmit: (chartParams) => {
+            const projectId = this.$route.params.projectId
+            return Chart.save({chart: {...chartParams, project_id: projectId}})
+              .then(response => {
+                const chartId = response.body.id
+                this.activeProject.charts.push(response.body)
+                this.activeChart = chartId
+              })
+          }
+        }, {scrollable: true, height: "auto"})
+      },
+      fetchChart(chartId) {
+        this.chartTransform = null
+        Chart.get({id: chartId})
+          .then(response => {
+            this.$store.commit('setChart', response.body)
+            this.$store.commit('setObjectsList', response.body.objects)
+            this.$store.commit('setCurvesList', response.body.connections)
+            this.chartTransform = response.data.options.transform || {x: 0, y: 0, k: 1}
+          })
+
+      },
+      fetchProject(projectId) {
+        this.$store.dispatch('fetchProject', projectId)
       }
     },
     computed: {
@@ -69,3 +136,25 @@
     }
   }
 </script>
+
+<style>
+  .add-chart {
+    color: #df4e9e;
+    font-weight: bold;
+    font-size: 14px;
+    opacity: 1 !important;
+  }
+
+  .chart-actions {
+    position: relative;
+    left: 5px;
+    white-space: nowrap;
+  }
+  .chart-actions i {
+    font-size: 16px;
+    vertical-align: middle;
+  }
+  .chart-actions i:hover {
+    color: #333;
+  }
+</style>

@@ -1,6 +1,6 @@
 <template>
   <draggable :options="{group}" v-model="localControls">
-    <component @calcSize="$emit('calcSize')" class="component" :key="control.id" v-for="control in localControls" :is="control.type" :settings="control.settings">
+    <component @calcSize="$emit('calcSize')" class="component" :key="control.id" v-for="control in localControls" :is="control.type" v-model="control.settings">
       <template slot-scope="slotProps">
         <Separator @delete="deleteControl(control.id)" @settings="slotProps.openSettings" :label="control.name" :actions="['settings', 'delete']" />
       </template>
@@ -10,13 +10,13 @@
 
 <script>
   import * as d3 from 'd3'
-  import ChatbotButton from '../Components/Button/index'
-  import ChatbotSelect from '../Components/Select/index'
-  import ChatbotInput from '../Components/Input/index'
-  import ChatbotVideo from '../Components/Video/index'
-  import ChatbotImage from '../Components/Image/index'
-  import ChatbotCheckboxList from '../Components/CheckboxList/index'
-  import ChatbotRadioList from '../Components/RadioList/index'
+  import ChatbotButton from '../Controls/Button/index'
+  import ChatbotSelect from '../Controls/Select/index'
+  import ChatbotInput from '../Controls/Input/index'
+  import ChatbotVideo from '../Controls/Video/index'
+  import ChatbotImage from '../Controls/Image/index'
+  import ChatbotCheckboxList from '../Controls/CheckboxList/index'
+  import ChatbotRadioList from '../Controls/RadioList/index'
 
   export default {
     name: "Controls",

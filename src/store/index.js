@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import objects from './objects'
 import curves from './curves'
 import chart from './chart'
+import user from './user'
 import project from './project'
 import application from './application'
 
@@ -14,7 +15,8 @@ const store = new Vuex.Store({
     curves,
     chart,
     project,
-    application
+    application,
+    user
   }
 })
 

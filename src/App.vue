@@ -1,14 +1,40 @@
 <template>
   <v-app id="app" data-app light>
-    <router-view></router-view>
+    <div class="spinner" v-if="!$store.getters.getCurrentUser">
+      <atom-spinner :animation-duration="1000" :size="100" :color="'#df4e9e'"/>
+    </div>
+    <router-view v-if="$store.getters.getCurrentUser"></router-view>
   </v-app>
 </template>
 
 <script>
+import {AtomSpinner} from 'epic-spinners'
+import {User} from './resources/index'
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    AtomSpinner
+  },
+  mounted () {
+    User.current()
+      .then(response => {
+        this.$store.dispatch("setCurrentUser", response.body)
+      })
+  }
 }
 </script>
+
+<style scoped>
+  .spinner {
+    text-align: center;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+</style>
+
 
 <style>
   * {

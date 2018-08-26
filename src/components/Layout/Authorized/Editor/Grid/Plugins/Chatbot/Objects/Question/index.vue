@@ -2,15 +2,16 @@
   <div class="question">
     <div class="question-margin">
       <div class="bot-messages" ref="messages">
-        <div class="bot-message" :class="{first: index == 0}" :key="message.id" v-for="(message, index) in messages">
+        <div class="bot-message" :class="{first: index == 0}" :key="message.id" v-for="(message, index) in localValue.messages">
           <div class="delete-message" @click="deleteMessage(message.id)">
             <v-icon>close</v-icon>
           </div>
-          <div v-html="message.text" @input="$emit('calcMinSize')" @click="showInput = index" contenteditable></div>
+          <Editable :content="message.text" @update="message.text = $event" />
+          <!-- <div v-html="message.text" @input="log($event);message.text = $event.data" @click="showInput = index" contenteditable></div> -->
         </div>
         <div class="bot-message-actions">
           <div class="add" @click="addMessage()">Add Message Variant</div>
-          <div class="messages-settings" v-if="messages.length">
+          <div class="messages-settings" v-if="localValue.messages.length">
             <v-icon>settings</v-icon>
           </div>
         </div>
@@ -20,13 +21,13 @@
     <Separator @add="openControlsModal('body')" label="Body" :actions="['add']"></Separator>
     <div class="question-margin">
       <div class="question-body-wrapper">
-        <Controls @calcSize="$emit('calcSize')" class="question-body" :controls="body" />
+        <Controls @calcSize="$emit('calcSize')" class="question-body" :controls="localValue.body" />
       </div>
     </div>
 
 
     <Separator @add="openControlsModal('actions')" label="Actions" :actions="['add']" />
-    <Controls @calcSize="$emit('calcSize')" class="question-actions" :controls="actions" />
+    <Controls @calcSize="$emit('calcSize')" class="question-actions" :controls="localValue.actions" />
 
   </div>
 </template>
@@ -41,7 +42,7 @@
   export default {
     name: "Chatbot",
     props: {
-      data: Object,
+      value: Object,
       default: Object
     },
     components: {
@@ -56,14 +57,21 @@
       })
     },
     data () {
-      this.data.info.settings.messages = this.data.info.settings.messages || []
-      this.data.info.settings.body = this.data.info.settings.body || []
-      this.data.info.settings.actions = this.data.info.settings.actions || []
+      this.value.messages = this.value.messages || []
+      this.value.body = this.value.body || []
+      this.value.actions = this.value.actions || []
       return {
         showInput: null,
-        messages: this.data.info.settings.messages,
-        body: this.data.info.settings.body,
-        actions: this.data.info.settings.actions
+        localValue: {...this.value}
+      }
+    },
+    watch: {
+      localValue: {
+        handler () {
+          this.$emit('input', this.localValue)
+          this.$emit('calcSize')
+        },
+        deep: true
       }
     },
     methods: {
@@ -71,34 +79,16 @@
         this.$modal.show(ControlsSelector, {
           controls: controls[controlsFor],
           onSave: (result) => {
-            this[controlsFor].push({id: Math.random(),...result})
-            this.$emit('calcSize')
+            this.localValue[controlsFor].push({id: Math.random(),...result})
           }
         }, {name: "object-editor", scrollable: true, height: "auto", })
       },
       addMessage() {
-        this.messages.push({text: "message", id: Math.random()})
         this.$emit('calcSize')
-      },
-      addAction() {
-        this.actions.push({type: "ChatbotButton", id: Math.random()})
-        this.$emit('calcSize')
+        this.localValue.messages.push({text: "message", id: Math.random()})
       },
       deleteMessage(messageId) {
-        const index = this.messages.findIndex(message => message.id == messageId)
-        this.messages.splice(index, 1)
-        this.$emit('calcSize')
-      }
-    },
-    computed: {
-      width () {
-        return this.data.size.width || this.defaule.size.width
-      },
-      height () {
-        return this.data.size.height || this.defaule.size.height
-      },
-      footer () {
-        return this.data.info.component.content.footer
+        this.localValue.messages = this.localValue.messages.filter(message => message.id != messageId)
       }
     }
   }

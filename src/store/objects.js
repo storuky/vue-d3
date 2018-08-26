@@ -31,19 +31,16 @@ const store = {
     createObject({ commit, state, rootGetters}, objectParams) {
       const newObjectParams = settings[objectParams.type].default(objectParams)
       return new Promise(resolve => {
-        if (objectParams.type == 'ComponentSelector') {
-          resolve({ id: Math.random(), ...newObjectParams})
-        } else {
-          CharObject.save({ chart_id: rootGetters.getActiveChart.id, object: newObjectParams}).then(res => {
-            resolve(res.body)
-          })
-        }
+        CharObject.save({ chart_id: rootGetters.getActiveChart.id, object: newObjectParams}).then(res => {
+          resolve(res.body)
+        })
       }).then(object => {
         commit('createObject', object)
         return object
       })
     },
     removeObject ({commit}, objectId) {
+      CharObject.delete({ id: objectId })
       commit('removeObject', objectId)
       commit('removeCurves', objectId, {root: true})
     }

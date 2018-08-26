@@ -44,7 +44,6 @@
                   this.targetObjectComponent = targetObjectComponent
                   this.curve.toLocal = this.targetObjectComponent.data.id
                 }
-
               }
 
               if (!targetObjectNode && this.targetObjectComponent) {
@@ -70,8 +69,10 @@
                         width: 250,
                         height: 100
                       },
-                      components: this.objectComponent.settings.components,
                       info: {
+                        settings: {
+                          components: this.objectComponent.settings.components,
+                        },
                         title: "Click to add"
                       },
                     }).then(res => {

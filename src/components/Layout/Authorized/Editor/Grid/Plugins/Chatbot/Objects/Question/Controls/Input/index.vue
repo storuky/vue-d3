@@ -1,24 +1,18 @@
 <template>
-  <div :style="{width: (localSettings.width || 100) + '%'}">
-    <slot :openSettings="openSettings"></slot>
-    <div class="chatbot-image">
-
-    </div>
-  </div>
+  <div @click="openSettings()" class="chatbot-input" v-html="localSettings.placeholder || 'Input'" :style="{width: (localSettings.width || 100) + '%'}"></div>
 </template>
 
 <script>
   import * as d3 from 'd3'
   import SettingsModal from './SettingsModal'
-
   export default {
-    name: "ChatbotImage",
+    name: "ChatbotInput",
     props: {
-      settings: Object
+      value: Object
     },
     data() {
       return {
-        localSettings: {...this.settings},
+        localSettings: {...this.value},
       }
     },
     mounted () {
@@ -32,6 +26,7 @@
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
+            this.$emit('input', this.localSettings)
             this.$emit('calcSize')
           }
         }, {
@@ -42,7 +37,15 @@
   }
 </script>
 
-<style scope>
-  .chatbot-image {
+<style scoped>
+  .chatbot-input {
+    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+    border-radius: 5px;
+    height: 37px;
+    padding: 8px 10px;
+    width: 100%;
+    margin: 0 10px;
+    color: #8a8a8a;
+    cursor: pointer;
   }
 </style>
