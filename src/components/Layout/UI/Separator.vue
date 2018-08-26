@@ -2,13 +2,13 @@
   <div class="separator">
     <div class="separator-label">{{label}}</div>
     <div class="separator-actions">
-      <div v-if="actions.indexOf('add')!=-1" class="separator-action add-action" @click="$emit('add')">
+      <div v-if="localActions.indexOf('add')!=-1" class="separator-action add-action" @click="$emit('add')">
         <v-icon>add</v-icon>
       </div>
-      <div v-if="actions.indexOf('settings')!=-1" class="separator-action settings-action" @click="$emit('settings')">
+      <div v-if="localActions.indexOf('settings')!=-1" class="separator-action settings-action" @click="$emit('settings')">
         <v-icon>settings</v-icon>
       </div>
-      <div v-if="actions.indexOf('delete')!=-1" class="separator-action delete-action" @click="$emit('delete')">
+      <div v-if="localActions.indexOf('delete')!=-1" class="separator-action delete-action" @click="$emit('delete')">
         <v-icon>delete</v-icon>
       </div>
     </div>
@@ -21,6 +21,11 @@
     props: {
       label: String,
       actions: Array
+    },
+    data () {
+      return {
+        localActions: this.actions || []
+      }
     }
   }
 </script>

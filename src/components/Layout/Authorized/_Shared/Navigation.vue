@@ -47,7 +47,8 @@
 </template>
 
 <script>
-  import NewProject from '../Project/ProjectForm'
+  import ProjectForm from '../Project/ProjectForm'
+  import OpenProject from '../Project/OpenProject'
   import {Project} from '../../../../resources'
 
   export default {
@@ -95,9 +96,13 @@
           })
         })
       },
+      openProjectModal () {
+        this.drawer = false
+        this.$modal.show(OpenProject, {}, {scrollable: true, height: "auto"})
+      },
       openNewProject () {
         this.drawer = false
-        this.$modal.show(NewProject, {}, {scrollable: true, height: "auto"})
+        this.$modal.show(ProjectForm, {}, {scrollable: true, height: "auto"})
       },
       openProfile () {
         this.drawer = false

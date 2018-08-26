@@ -56,11 +56,16 @@
       },
       tabs () {
         this.localTabs = this.tabs
-        this.localTab = this.tabs.findIndex(t => this.value == t.id)
+        this.setLocalTab()
+      },
+      value () {
+        this.setLocalTab()
       }
     },
     methods: {
-      log () {console.log(11)},
+      setLocalTab () {
+        this.localTab = this.tabs.findIndex(t => this.value == t.id)
+      },
       toggleDrawer () {
         this.$store.dispatch('toggleDrawer')
       },

@@ -111,6 +111,8 @@
             this.$store.commit('setObjectsList', response.body.objects)
             this.$store.commit('setCurvesList', response.body.connections)
             this.chartTransform = response.data.options.transform || {x: 0, y: 0, k: 1}
+            console.log(response.body.id)
+            this.activeChart = response.body.id
           })
 
       },
