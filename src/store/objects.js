@@ -49,6 +49,9 @@ const store = {
     getObjectComponent: state => id => {
       return state.objectsComponentsList[id]
     },
+    getObject: state => id => {
+      return state.objectsComponentsList[id].data
+    },
     getObjectsList: state => () => {
       return state.objectsList
     },

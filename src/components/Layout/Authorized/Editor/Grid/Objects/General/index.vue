@@ -1,6 +1,6 @@
 <template>
   <div @click="openSettings()" class="general-border gradient">
-    <div class="general" :style="{backgroundImage: `url(${localSettings.image ? localSettings.image.body.quad.url : ''})`}">
+    <div class="general" :style="{backgroundImage: `url(${url})`}">
       
     </div>
   </div>
@@ -35,6 +35,11 @@
           scrollable: true,
           name: "object-editor"
         })
+      }
+    },
+    computed: {
+      url () {
+        return this.localSettings.image ? this.localSettings.image.body.quad.url : ''
       }
     }
   }

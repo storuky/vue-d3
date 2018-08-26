@@ -29,6 +29,9 @@
         type: Boolean,
         default: true
       }
+    },
+    created () {
+      // this.$emit('close')
     }
   }
 </script>
@@ -72,10 +75,6 @@
   .delete {
     padding: 15px 5px;
     cursor: pointer;
-  }
-
-  #modals-container div[data-modal="object-editor"] {
-    display: none;
   }
 
   #modals-container div[data-modal="object-editor"]:last-child {

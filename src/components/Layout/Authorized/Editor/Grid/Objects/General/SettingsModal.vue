@@ -19,6 +19,7 @@
 
 <script>
   import { VueEditor } from 'vue2-editor'
+  import VModal from 'vue-js-modal'
 
   export default {
     name: "GeneralSettings",
@@ -29,7 +30,7 @@
     components: {VueEditor},
     data () {
       const settings = {...this.settings}
-
+      console.log(VModal)
       return {
         localSettings: settings
       }

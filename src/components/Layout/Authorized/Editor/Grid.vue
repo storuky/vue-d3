@@ -39,6 +39,7 @@ import settings from './Grid/settings'
 
 import debounce from '../../../../utils'
 import {Chart} from '../../../../resources/index'
+import GridUtils from './Grid/GridUtils'
 
 export default {
   name: 'Grid',
@@ -52,6 +53,7 @@ export default {
     this.$nextTick(function () {
       this.setTransform()
       this.enablePanAndZoomMode()
+      this.dragAndDrop()
     })
   },
   components: {
@@ -143,6 +145,62 @@ export default {
       })
 
       this.mode = 'zoom'
+    },
+    dragAndDrop () {
+      let node = this.$refs.svg
+
+      node.addEventListener('dragover', function(e) {
+        e.stopPropagation()
+        e.preventDefault()
+      })
+
+      node.addEventListener('drop', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        if (this.$store.getters.getActiveProject.type != "AnalysisTools") {
+          return
+        }
+
+        const translate = this.$store.getters.getChartTranslate(),
+              scale = this.$store.getters.getChartScale(),
+              offset = {x: node.getBoundingClientRect().x, y: node.getBoundingClientRect().y}
+
+        let text = e.dataTransfer.getData("text/html") || e.dataTransfer.getData("text"),
+            objectId = (e.target.closest("g[data-object-id]") || {dataset: {}}).dataset.objectId
+
+        text = text.replace('<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">', '')
+
+
+        let position = {
+              x: (e.x - offset.x - translate.x) / scale - settings.General.size.width/2,
+              y: (e.y - offset.y  - translate.y) / scale - settings.General.size.height/2
+            },
+            isLink = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/.test(text)
+
+        if (/^\<a.*\>.*/i.test(text)) {
+          isLink = true
+          text = text.match(/href="([^"]*)/)[1]
+        }
+
+        if (objectId) {
+          if (isLink) {
+            if (GridUtils.youtubeId(text)) {
+              GridUtils.addYoutube({objectId, text, position})
+            } else {
+              GridUtils.addCrawlerData({objectId, link: text, position})
+            }
+          } else {
+            GridUtils.addNotes({objectId, text, position})
+          }
+        } else {
+          if (isLink) {
+            GridUtils.insertFromCrawler({link: text, position})
+          } else {
+            GridUtils.insertNotes({text, position})
+          }
+        }
+      })
     }
   }
 }
