@@ -1,17 +1,42 @@
 <template>
-  <div class="person-border gradient" :style="{width: size.width + 'px', height: size.height + 'px'}">
+  <div @click="openSettings" class="person-border gradient" :style="{width: size.width + 'px', height: size.height + 'px'}">
     <div class="person">
-      <div class="avatar"></div>
+      <div class="avatar" :style="{backgroundImage: `url(${localSettings.image ? localSettings.image.body.quad.url : ''})`}"></div>
     </div>
   </div>
 </template>
 
 <script>
+  import SettingsModal from './SettingsModal'
+
   export default {
-    name: 'Person',
+    name: "Person",
     props: {
-      data: Object,
+      value: Object,
       size: Object
+    },
+    data () {
+      const settings = {...this.value}
+
+      return {
+        localSettings: settings
+      }
+    },
+    methods: {
+      openSettings () {
+        this.$modal.show(SettingsModal, {
+          settings: this.localSettings,
+          onSave: (settings) => {
+            this.localSettings = settings
+            this.$emit("calcSize")
+            this.$emit("input", this.localSettings)
+          }
+        }, {
+          height: 'auto',
+          scrollable: true,
+          name: "object-editor"
+        })
+      }
     }
   }
 </script>
@@ -22,6 +47,7 @@
     box-sizing: border-box;
     border-radius: 1000px;
     padding: 4px;
+    cursor: pointer;
   }
   .person {
     text-align: center;
@@ -36,5 +62,6 @@
     display: inline-block;
     height: 100%;
     width: 100%;
+    background-position: center center;
   }
 </style>

@@ -1,16 +1,40 @@
 <template>
-  <div class="organisation-border gradient" :style="{width: size.width + 'px', height: size.height + 'px'}">
-    <div class="organisation">
+  <div @click="openSettings" class="organisation-border gradient" :style="{width: size.width + 'px', height: size.height + 'px'}">
+    <div class="organisation" :style="{backgroundImage: `url(${localSettings.image ? localSettings.image.body.quad.url : ''})`}">
     </div>
   </div>
 </template>
 
 <script>
+  import SettingsModal from './SettingsModal'
   export default {
     name: "Organisation",
     props: {
-      data: Object,
+      value: Object,
       size: Object
+    },
+    data () {
+      const settings = {...this.value}
+
+      return {
+        localSettings: settings
+      }
+    },
+    methods: {
+      openSettings () {
+        this.$modal.show(SettingsModal, {
+          settings: this.localSettings,
+          onSave: (settings) => {
+            this.localSettings = settings
+            this.$emit("calcSize")
+            this.$emit("input", this.localSettings)
+          }
+        }, {
+          height: 'auto',
+          scrollable: true,
+          name: "object-editor"
+        })
+      }
     }
   }
 </script>
@@ -18,6 +42,7 @@
 <style scoped>
   .organisation-border {
     padding: 4px;
+    cursor: pointer;
   }
 
   .organisation {
@@ -28,5 +53,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    background-size: cover;
+    background-position: center center;
   }
 </style>

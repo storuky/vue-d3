@@ -4,9 +4,20 @@
     <draggable v-model="localValue">
       <div class="form-row" v-for="(option, index) in localValue" :key="option.id">
         <v-layout row>
-          <v-flex xs11>
-            <v-text-field :autofocus="!option.text" @keyup.enter.native="index == localValue.length - 1 ? addOption() : null" v-model="option.text" :label="itemName || 'Option'"></v-text-field>
+          <!-- Dimension 1 -->
+          <v-flex xs11 v-if="dimension == 1">
+            <v-text-field :autofocus="!option.value" @keyup.enter.native="index == localValue.length - 1 ? addOption() : null" v-model="option.value" :label="itemName || 'Option'"></v-text-field>
           </v-flex>
+          
+          <!-- Dimension 2 -->
+          <v-flex xs6 v-if="dimension == 2">
+            <v-text-field v-model="option.name" label="Name"></v-text-field>
+          </v-flex>
+          <v-flex xs1></v-flex>
+          <v-flex xs6 v-if="dimension == 2">
+            <v-text-field v-model="option.value" label="Value"></v-text-field>
+          </v-flex>
+
           <v-flex xs1 class="text-right">
             <v-icon class="delete" @click="deleteOption(option.id)">delete</v-icon>
           </v-flex>
@@ -23,11 +34,16 @@
     props: {
       value: Array,
       label: String,
-      itemName: String
+      itemName: String,
+      dimension: {
+        type: Number,
+        default: 1
+      }
     },
     data () {
+      const localValue = [...this.value || []]
       return {
-        localValue: [...this.value]
+        localValue
       }
     },
     methods: {

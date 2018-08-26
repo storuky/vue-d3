@@ -74,6 +74,14 @@
     cursor: pointer;
   }
 
+  #modals-container div[data-modal="object-editor"] {
+    display: none;
+  }
+
+  #modals-container div[data-modal="object-editor"]:last-child {
+    display: block;
+  }
+
   div[data-modal="object-editor"] {
     position: absolute;
     right: 0;

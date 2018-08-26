@@ -2,7 +2,7 @@
   <g ref="container" :data-object-id="localData.id" @mouseover="showTools()" @mouseleave="hideTools()">
     <!-- Object -->
     <foreignObject :height="localData.size.height + 10" :width="localData.size.width + 10" ref="foreignObject">
-      <div style="margin: 4px" ref="content">
+      <div style="margin: 4px; width: calc(100% - 8px); height: calc(100% - 8px)" ref="content">
         <component ref="component" @calcSize="calcSize()" :default={defaultSize} :is="componentType" v-model="localData.info.settings" :componentId="localData.id" :size="localData.size" :position="localData.position"></component>
       </div>
     </foreignObject>
@@ -15,7 +15,7 @@
     <!-- Label -->
     <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="localData.size.width + 50" x="-20" :y="localData.size.height+10">
       <div class="object-label" ref="label">
-        {{localData.info.title}}
+        {{localData.info.settings.title || localData.info.title || componentType}}
       </div>
     </foreignObject>
 

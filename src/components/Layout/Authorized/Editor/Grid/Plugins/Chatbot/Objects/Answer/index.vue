@@ -1,5 +1,5 @@
 <template>
-  <div @click="openSettings()" class="chatbot-message" :style="{minWidth: size.width + 'px', minHeight: size.height + 'px'}">
+  <div @click="openSettings()" class="chatbot-message">
     <ol v-if="localSettings.answerVariants.length > 1">
       <li :key="variant.id" v-for="variant in localSettings.answerVariants">
         {{variant.text}}
