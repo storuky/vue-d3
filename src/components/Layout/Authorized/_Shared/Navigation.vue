@@ -52,7 +52,7 @@
   import {Project} from '../../../../resources'
 
   export default {
-    name: "Navigation",
+    name: 'Navigation',
     created () {
       this.updateRecentProjectsList()
     },
@@ -60,26 +60,31 @@
       return {
         items: [
           {
-            icon: "add",
-            title: "New Project",
+            icon: 'add',
+            title: 'New Project',
             callback: this.openNewProject
           },
           {
-            icon: "folder_open",
-            title: "Open Project",
+            icon: 'folder_open',
+            title: 'Open Project',
             callback: this.openProjectModal
           },
-          {slot: "recentProjects"},
+          {slot: 'recentProjects'},
           {
             icon: 'account_circle',
             title: 'Profile',
             callback: this.openProfile
+          },
+          {
+            icon: 'exit_to_app',
+            title: 'Sign Out',
+            callback: this.signOut
           }
         ],
         itemSlots: {
           recentProjects: {
-            icon: "assignment",
-            title: "Recent Projects"
+            icon: 'assignment',
+            title: 'Recent Projects'
           },
         },
         active: null
@@ -98,11 +103,11 @@
       },
       openProjectModal () {
         this.drawer = false
-        this.$modal.show(OpenProject, {}, {scrollable: true, height: "auto"})
+        this.$modal.show(OpenProject, {}, {scrollable: true, height: 'auto'})
       },
       openNewProject () {
         this.drawer = false
-        this.$modal.show(ProjectForm, {}, {scrollable: true, height: "auto"})
+        this.$modal.show(ProjectForm, {}, {scrollable: true, height: 'auto'})
       },
       openProfile () {
         this.drawer = false
@@ -112,13 +117,21 @@
         this.drawer = false
         const chartId = project.charts[0] ? project.charts[0].id : 0,
               projectId = project.id
-        this.$router.push({name: "editor", params: {chartId, projectId}})
+        this.$router.push({name: 'editor', params: {chartId, projectId}})
+      },
+      signOut () {
+        this.drawer = false
+        this.$http.delete('/vulcan/v1/auth/logout')
+          .then(response => {
+            this.$store.dispatch('setCurrentUser', null)
+            this.$router.push({name: 'signIn'})
+          })
       }
     },
     computed: {
       drawer: {
         set(val) {
-          this.$store.dispatch("setDrawer", val)
+          this.$store.dispatch('setDrawer', val)
         },
         get() {
           return this.$store.getters.getDrawer()

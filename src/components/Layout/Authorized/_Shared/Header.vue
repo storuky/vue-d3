@@ -9,9 +9,9 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon>search</v-icon>
-      </v-btn>
+      </v-btn> -->
 
       <v-menu bottom origin="center center" transition="scale-transition" v-if="more && more.length">
         <v-icon slot="activator">
@@ -77,11 +77,6 @@
       },
       toggleDrawer () {
         this.$store.dispatch('toggleDrawer')
-      },
-      deleteChart (chartId) {
-        console.log(111)
-        this.localTabs = this.localTabs.filter(chart => chart.id != chartId)
-        console.log(this.localTabs)
       }
     }
   }

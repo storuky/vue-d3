@@ -1,9 +1,9 @@
 <template>
   <v-app id="app" data-app light>
-    <div class="spinner" v-if="!$store.getters.getCurrentUser">
+    <div class="spinner" v-if="!$store.getters.getApplicationLoaded">
       <atom-spinner :animation-duration="1000" :size="100" :color="'#df4e9e'"/>
     </div>
-    <router-view v-if="$store.getters.getCurrentUser"></router-view>
+    <router-view v-if="$store.getters.getApplicationLoaded"></router-view>
   </v-app>
 </template>
 
@@ -14,12 +14,6 @@ export default {
   name: 'app',
   components: {
     AtomSpinner
-  },
-  mounted () {
-    User.current()
-      .then(response => {
-        this.$store.dispatch("setCurrentUser", response.body)
-      })
   }
 }
 </script>
