@@ -1,8 +1,10 @@
 <template>
-  <div class="component-selector gradient" :style="{minWidth: size.width + 'px', minHeight: size.height + 'px'}">
-    <div class="ll">
-      <div @click="addComponent(component)" class="component-item" :key="component" v-for="component in localValue.components">
-        {{settings[component].name}}
+  <div class="component-selector-border" :style="{minWidth: size.width + 'px', minHeight: size.height + 'px'}">
+    <div class="component-selector gradient">
+      <div class="ll">
+        <div @click="addComponent(component)" class="component-item" :key="component" v-for="component in localValue.components">
+          {{settings[component].name}}
+        </div>
       </div>
     </div>
   </div>
@@ -60,15 +62,20 @@
 </script>
 
 <style scoped>
-  .component-selector {
+  .component-selector-border {
+    background: #df4e9e;
     border-radius: 20px;
+    padding: 3px;
+  }
+  .component-selector {
+    border-radius: 18px;
     color: #333;
     font-weight: bold;
     font-size: 16px;
     text-align: center;
     background: white;
     cursor: pointer;
-    border: 3px solid #df4e9e;
+
     overflow: hidden;
   }
 

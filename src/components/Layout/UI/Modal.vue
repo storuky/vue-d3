@@ -156,6 +156,7 @@
     .v--modal-overlay.object-editor-overlay {
       width: 100% !important;
       position: fixed !important;
+      min-width: 0 !important;
     }
   }
 </style>

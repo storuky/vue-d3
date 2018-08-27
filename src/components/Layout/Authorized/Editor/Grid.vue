@@ -157,8 +157,8 @@ export default {
       let position = {}
       if (d3.event) {
         position = {
-          x: (d3.event.x - translate.x)/scale,
-          y: (d3.event.y - 125 - translate.y)/scale
+          x: (d3.event.x - translate.x -300)/scale,
+          y: (d3.event.y - 115 - translate.y)/scale
         }
       } else {
         position = {

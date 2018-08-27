@@ -13,7 +13,7 @@
     </foreignObject>
 
     <!-- Label -->
-    <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="localData.size.width + 50" x="-20" :y="localData.size.height+20">
+    <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="localData.size.width + 50" :x="-25" :y="localData.size.height+20">
       <div class="object-label" ref="label">
         {{localData.info.settings.title || localData.info.title || componentName}}
       </div>
