@@ -67,3 +67,24 @@
 .sign-link-icon {
   color: #df4e9e !important;
 }
+
+@media screen and (max-width: 600px) {
+  .sign-wrapper {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  .sign-in-up {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sign-in-up-body {
+    height: calc(100% - 51px);
+  }
+}

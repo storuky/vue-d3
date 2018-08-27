@@ -84,7 +84,7 @@
 </script>
 
 <style>
-  .v-toolbar__content {
+  /* .v-toolbar__content {
     max-height: 48px;
   }
 
@@ -106,7 +106,7 @@
   }
   .v-toolbar__extension {
     max-height: 36px;
-  }
+  } */
 </style>
 
 

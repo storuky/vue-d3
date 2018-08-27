@@ -8,10 +8,10 @@ import SignUp from '../components/Layout/NotAuthorized/SignUp'
 import ForgotPassword from '../components/Layout/NotAuthorized/ForgotPassword'
 import Profile from '../components/Layout/Authorized/Profile'
 
-import Root from '../Root'
+import Dashboard from '../components/Layout/Authorized/Dashboard'
 
 const routes = [
-  { name: 'root', path: '/', component: Root, meta: { requiresAuth: true }},
+  { name: 'root', path: '/', component: Dashboard, meta: { requiresAuth: true }},
   { name: 'signIn', path: '/sign-in', component: SignIn },
   { name: 'signUp', path: '/sign-up', component: SignUp },
   { name: 'forgotPassword', path: '/forgot-password', component: ForgotPassword },

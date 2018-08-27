@@ -12,8 +12,8 @@
     </v-layout>
     
     <v-text-field type="text" v-model="localSettings.label" label="Label"></v-text-field>
-
-    <v-text-field type="text" v-model="localSettings.imageUrl" label="Url"></v-text-field>
+    <Uploader label="Upload Image" v-model="localSettings.image" />
+    <!-- <v-text-field type="text" v-model="localSettings.imageUrl" label="Url"></v-text-field> -->
   </Modal>
 </template>
 

@@ -28,6 +28,9 @@
         </g>
       </svg>
     </div>
+    <v-btn @click="createObject" color="primary" fab class="add-object-btn">
+      <v-icon>add</v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -40,6 +43,18 @@ import settings from './Grid/settings'
 import debounce from '../../../../utils'
 import {Chart} from '../../../../resources/index'
 import GridUtils from './Grid/GridUtils'
+
+d3.selection.prototype.dblTap = function(callback) {
+  var last = 0;
+  return this.each(function() {
+    d3.select(this).on("touchstart", function(e) {
+        if ((d3.event.timeStamp - last) < 500) {
+          return callback(e);
+        }
+        last = d3.event.timeStamp;
+    });
+  });
+}
 
 export default {
   name: 'Grid',
@@ -124,27 +139,41 @@ export default {
 
       this.d3svg.on("dblclick.zoom", null)
 
-      this.d3svg.on('dblclick', () => {
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-
-        const translate = this.$store.getters.getChartTranslate(),
-              scale = this.$store.getters.getChartScale()
-
-        const components = settings.components[this.$store.getters.getActiveProject.type]
-        const objectParams = {
-          type: "ComponentSelector",
-          position: {
-            x: (d3.event.x - translate.x)/scale,
-            y: (d3.event.y - translate.y - 100)/scale
-          },
-          info: {settings: {components}}
-        }
-
-        this.$store.dispatch("createObject", objectParams)
-      })
+      this.d3svg.on('dblclick',() => this.createObject())
 
       this.mode = 'zoom'
+    },
+    createObject () {
+      if (d3.event) {
+        d3.event.stopPropagation()
+        d3.event.preventDefault()
+      }
+
+      const translate = this.$store.getters.getChartTranslate(),
+            scale = this.$store.getters.getChartScale()
+      
+      const components = settings.components[this.$store.getters.getActiveProject.type]
+
+      let position = {}
+      if (d3.event) {
+        position = {
+          x: (d3.event.x - translate.x)/scale,
+          y: (d3.event.y - 125 - translate.y)/scale
+        }
+      } else {
+        position = {
+          x: (-translate.x + this.$el.getBoundingClientRect().width / 2)/scale - 144,
+          y: (-translate.y + (this.$el.getBoundingClientRect().height / 2))/scale - 25*components.length
+        }
+      }
+
+      const objectParams = {
+        type: "ComponentSelector",
+        position,
+        info: {settings: {components}}
+      }
+
+      this.$store.dispatch("createObject", objectParams)
     },
     dragAndDrop () {
       let node = this.$refs.svg
@@ -240,5 +269,12 @@ export default {
 
   .grid svg {
     user-select: none;
+  }
+
+  .add-object-btn {
+    position: fixed;
+    z-index: 2;
+    right: 50px;
+    bottom: 30px;
   }
 </style>

@@ -1,26 +1,26 @@
 <template>
-  <Layout>
-    <Header :more="moreMenu" :title="activeProject.name" :tabs="activeProject.charts" v-model="activeChart">
-      <template slot="tab" slot-scope="slotProps">
-        {{slotProps.tab.name}}
-        <span class="chart-actions">
-          <v-icon style="font-size: 14px" @click.stop="editChartModal(slotProps.tab)">settings</v-icon>
-          <v-icon @click.stop="deleteChart(slotProps.tab.id)">close</v-icon>
-        </span>
-      </template>
-      <template slot="afterTabs">
-        <div class="v-tabs__div">
-          <a class="v-tabs__item add-chart" @click="newChartModal()">
-            + Add Chart
-          </a>
+  <Layout :fullWidth="true" :more="moreMenu" :title="activeProject.name" :tabs="tabs" @setActiveTab="setActiveChart">
+    <template slot="tabs-content">
+      <div class="work-area">
+        <div class="grid-container">
+          <Grid v-if="chartTransform && $store.getters.getActiveChart.id == chartId" :transform="chartTransform" />
         </div>
-      </template>
-    </Header>
-    <div class="work-area">
-      <div class="grid-container">
-        <Grid v-if="chartTransform && $store.getters.getActiveChart.id == chartId" :transform="chartTransform" />
       </div>
-    </div>
+    </template>
+    <template slot="tab" slot-scope="slotProps">
+      {{slotProps.tab}}
+      <span class="chart-actions">
+        <v-icon style="font-size: 14px" @click.stop="editChartModal(slotProps.index)">settings</v-icon>
+        <v-icon @click.stop="deleteChart(slotProps.index)">close</v-icon>
+      </span>
+    </template>
+    <template slot="afterTabs">
+      <div class="v-tabs__div">
+        <a class="v-tabs__item add-chart" @click="newChartModal()">
+          + Add Chart
+        </a>
+      </div>
+    </template>
   </Layout>
 </template>
 
@@ -42,6 +42,7 @@
     },
     data () {
       return {
+        activeTab: null,
         activeChart: this.$route.params.chartId,
         transform: {},
         chartTransform: false,
@@ -102,10 +103,10 @@
             })
         }
       },
-      editChartModal (chart) {
+      editChartModal (index) {
         this.$modal.show(ChartSettings, {
           title: "Edit Chart",
-          settings: chart,
+          settings: this.activeProject.charts[index],
           onSubmit: (chartParams) => {
             const projectId = this.$route.params.projectId
             return Chart.update({id: chartParams.id}, {chart: {...chartParams, project_id: projectId}})
@@ -147,9 +148,17 @@
       },
       fetchProject(projectId) {
         this.$store.dispatch('fetchProject', projectId)
+      },
+      setActiveChart (val) {
+        console.log(val)
+        const project = this.$store.getters.getActiveProject
+        this.activeChart = project && project.charts ? project.charts[val].id : null
       }
     },
     computed: {
+      tabs () {
+        return this.activeProject && this.activeProject.charts ? this.activeProject.charts.map(e => e.name) : []
+      },
       activeProject: {
         get () {
           return this.$store.getters.getActiveProject
@@ -192,5 +201,24 @@
   }
   .chart-actions i:hover {
     color: #333;
+  }
+
+  .work-area {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #f8f8f8;
+    z-index: 2;
+  }
+
+  .grid-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    box-shadow: -1px 0px 10px 0 rgba(0, 0, 0, 0.12);
   }
 </style>

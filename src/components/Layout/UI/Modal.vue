@@ -77,19 +77,19 @@
     cursor: pointer;
   }
 
-  .object-editor-overlay {
+  .v--modal-overlay.object-editor-overlay {
     bottom: 0;
     box-shadow: 0 5px 8px rgba(0,0,0,.24);
-    left: auto !important;
-    min-height: 0!important;
+    left: auto;
+    min-height: 0;
     min-width: 470px;
     position: absolute !important;
     right: 0;
-    top: 84px !important;
+    top: 0 !important;
     width: 33% !important;
     z-index: 3 !important;
   }
-  .object-editor-overlay .v--modal {
+  .v--modal-overlay.object-editor-overlay .v--modal {
     position: absolute;
     left: 0 !important;
     right: 0 !important;
@@ -99,26 +99,63 @@
     margin: 0 !important;
     border-radius: 0 !important;
     overflow: auto;
-    height: calc(100% - 84px) !important;
+    height: 100% !important;
   }
-  .object-editor-overlay .v--modal-background-click {
+  .v--modal-overlay.object-editor-overlay .v--modal-background-click {
     padding-bottom: 0;
   }
 
-  .object-editor-overlay .modal {
+  .v--modal-overlay.object-editor-overlay .modal {
     padding: 20px 20px 0 20px;
     position: relative;
     background: white;
     min-height: 100%;
   }
 
-  .object-editor-overlay.overlay-fade-enter {
+  .v--modal-overlay.object-editor-overlay.overlay-fade-enter {
     transition: all .3s ease-out;
     transition-delay: .3s;
     right: -400px;
   }
-  .object-editor-overlay.overlay-fade-leave-active {
+  .v--modal-overlay.object-editor-overlay.overlay-fade-leave-active {
     transition: all .3s ease-out;
     right: -400px;
+  }
+
+  @media screen and (max-width: 600px) {
+    .v--modal-box {
+      width: 100% !important;
+      top: 0 !important;
+      bottom: 0;
+      position: absolute !important;
+      left: 0 !important;
+      margin: 0 !important;
+      overflow: auto !important;
+      border-radius: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .v--modal-overlay .v--modal-background-click {
+      padding: 0;
+    }
+
+    .modal {
+      min-height: 100%;
+      position: relative;
+    }
+
+    .modal-footer {
+      padding: 10px 0;
+      position: relative;
+    }
+
+    .modal-body {
+      padding-bottom: 10px;
+    }
+
+    .v--modal-overlay.object-editor-overlay {
+      width: 100% !important;
+      position: fixed !important;
+    }
   }
 </style>

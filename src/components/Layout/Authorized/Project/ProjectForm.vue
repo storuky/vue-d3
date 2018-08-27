@@ -16,11 +16,11 @@
     name: 'NewProject',
     props: {
       settings: Object,
-      title: String,
       onSubmit: Function
     },
     data () {
       return {
+        title: this.settings ? 'Edit Project' : 'New Project',
         types: [{
           name: 'AnalysisTools',
           title: 'Analysis Tools'

@@ -1,20 +1,19 @@
 <template>
-  <Layout>
-    <Header title="Profile" :tabs="tabs" v-model="activeTab" />
-    <div class="page-tabs-content">
-      <v-tabs-items v-model="activeTabNum">
-        <v-tab-item>
-          <div class="page">
+  <Layout title="Profile" :tabs="tabs">
+    <template slot="tabs-content" slot-scope="slotProps">
+      <v-card-text>
+        <v-tabs-items v-model="slotProps.activeTab">
+          <v-tab-item>
+            <h2>Information</h2>
             <ProfileInformation />
-          </div>
-        </v-tab-item>
-        <v-tab-item>
-          <div class="page">
+          </v-tab-item>
+          <v-tab-item>
+            <h2>Settings</h2>
             <ProfileSettings />
-          </div>
-        </v-tab-item>
-      </v-tabs-items>
-    </div>
+          </v-tab-item>
+        </v-tabs-items>
+      </v-card-text>
+    </template>
   </Layout>
 </template>
 
@@ -28,15 +27,10 @@
     name: "Profile",
     components: {Layout, Header, ProfileInformation, ProfileSettings},
     data () {
-      const tabs = [{name: "Profile Information", id: "1"}, {name: "Settings", id: "2"}]
+      const tabs = ["Profile Information", "Settings"]
       return {
         tabs,
-        activeTab: '1',
-      }
-    },
-    computed: {
-      activeTabNum () {
-        return this.tabs.findIndex(t => t.id == this.activeTab)
+        activeTab: 0,
       }
     }
   }

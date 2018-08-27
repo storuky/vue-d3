@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="title">
-      Profile Information
-    </div>
   </div>
 </template>
 
