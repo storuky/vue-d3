@@ -2,7 +2,8 @@ const settings = {
   default: {
     info: {}
   },
-  'General': {
+  'AnalysisTools_General': {
+    name: 'General',
     size: {
       width: 100,
       height: 100
@@ -10,9 +11,10 @@ const settings = {
     has: {
       in: true,
       out: true,
-      resize: true
+      resize: true,
+      settings: true
     },
-    components: ["Person", "Organisation", "General"],
+    components: ["AnalysisTools_Person", "AnalysisTools_Organisation", "AnalysisTools_General"],
     default(object) {
       return {
         ...settings.default,
@@ -21,7 +23,8 @@ const settings = {
       }
     }
   },
-  'Organisation': {
+  'AnalysisTools_Organisation': {
+    name: 'Organisation',
     size: {
       width: 100,
       height: 100
@@ -29,9 +32,10 @@ const settings = {
     has: {
       in: true,
       out: true,
-      resize: true
+      resize: true,
+      settings: true
     },
-    components: ["Person", "Organisation", "General"],
+    components: ["AnalysisTools_Person", "AnalysisTools_Organisation", "AnalysisTools_General"],
     default(object) {
       return {
         ...settings.default,
@@ -40,7 +44,8 @@ const settings = {
       }
     }
   },
-  'Person': {
+  'AnalysisTools_Person': {
+    name: 'Person',
     size: {
       width: 100,
       height: 100
@@ -48,9 +53,10 @@ const settings = {
     has: {
       in: true,
       out: true,
-      resize: true
+      resize: true,
+      settings: true
     },
-    components: ["Person", "Organisation", "General"],
+    components: ["AnalysisTools_Person", "AnalysisTools_Organisation", "AnalysisTools_General"],
     default(object) {
       return {
         ...settings.default,

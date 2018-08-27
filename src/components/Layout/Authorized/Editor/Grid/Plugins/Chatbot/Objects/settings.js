@@ -2,7 +2,8 @@ const settings = {
   default: {
     info: {}
   },
-  'Answer': {
+  'Chatbot_Answer': {
+    name: 'Answer',
     size: {
       width: 220,
       height: 60
@@ -10,9 +11,10 @@ const settings = {
     has: {
       in: true,
       out: true,
-      resize: false
+      resize: false,
+      settings: true
     },
-    components: ['Question'],
+    components: ['Chatbot_Question'],
     default (object) {
       return {
         ...settings.default,
@@ -22,7 +24,8 @@ const settings = {
       }
     }
   },
-  'Question': {
+  'Chatbot_Question': {
+    name: 'Question',
     size: {
       width: 390,
       height: 510
@@ -30,9 +33,10 @@ const settings = {
     has: {
       in: true,
       out: true,
-      resize: false
+      resize: false,
+      settings: true
     },
-    components: ['Answer', 'Question'],
+    components: ['Chatbot_Answer', 'Chatbot_Question'],
     default(object) {
       return {
         ...settings.default,

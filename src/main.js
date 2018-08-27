@@ -8,6 +8,7 @@ import './assets/css/styles.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import VModal from 'vue-js-modal'
+// import VModal from '/Users/pavelkononenko/devel/forks/vue-js-modal/src/index'
 
 Vue.use(Vuetify, {
   theme: {

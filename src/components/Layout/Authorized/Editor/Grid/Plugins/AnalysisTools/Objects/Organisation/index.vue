@@ -8,7 +8,7 @@
 <script>
   import SettingsModal from './SettingsModal'
   export default {
-    name: "Organisation",
+    name: "AnalysisTools_Organisation",
     props: {
       value: Object,
       size: Object
@@ -32,7 +32,7 @@
         }, {
           height: 'auto',
           scrollable: true,
-          name: "object-editor"
+          overlayClasses: ['object-editor-overlay'], transition: 'object-editor', name: 'object-editor',
         })
       }
     }

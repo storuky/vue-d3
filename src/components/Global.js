@@ -14,3 +14,6 @@ Vue.component('draggable', draggable)
 
 import Uploader from './Layout/Utils/Uploader'
 Vue.component('Uploader', Uploader)
+
+import Editable from './Layout/Utils/Editable'
+Vue.component('Editable', Editable)

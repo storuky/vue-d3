@@ -30,7 +30,6 @@
     components: {VueEditor},
     data () {
       const settings = {...this.settings}
-      console.log(VModal)
       return {
         localSettings: settings
       }

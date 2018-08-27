@@ -1,34 +1,36 @@
 <template>
-  <div class="question">
-    <div class="question-margin">
-      <div class="bot-messages" ref="messages">
-        <div class="bot-message" :class="{first: index == 0}" :key="message.id" v-for="(message, index) in localValue.messages">
-          <div class="delete-message" @click="deleteMessage(message.id)">
-            <v-icon>close</v-icon>
+  <div class="question-border">
+    <div class="question">
+      <div class="question-margin">
+        <div class="bot-messages" ref="messages">
+          <div class="bot-message" :class="{first: index == 0}" :key="message.id" v-for="(message, index) in localValue.messages">
+            <div class="delete-message" @click="deleteMessage(message.id)">
+              <v-icon>close</v-icon>
+            </div>
+            <Editable placeholder="Message" :content="message.text" @update="message.text = $event" />
+            <!-- <div v-html="message.text" @input="log($event);message.text = $event.data" @click="showInput = index" contenteditable></div> -->
           </div>
-          <Editable :content="message.text" @update="message.text = $event" />
-          <!-- <div v-html="message.text" @input="log($event);message.text = $event.data" @click="showInput = index" contenteditable></div> -->
-        </div>
-        <div class="bot-message-actions">
-          <div class="add" @click="addMessage()">Add Message Variant</div>
-          <div class="messages-settings" v-if="localValue.messages.length">
-            <v-icon>settings</v-icon>
+          <div class="bot-message-actions">
+            <div class="add" @click="addMessage()">Add Message Variant</div>
+            <div class="messages-settings" v-if="localValue.messages.length">
+              <v-icon>settings</v-icon>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <Separator @add="openControlsModal('body')" label="Body" :actions="['add']"></Separator>
-    <div class="question-margin">
-      <div class="question-body-wrapper">
-        <Controls @calcSize="$emit('calcSize')" class="question-body" :controls="localValue.body" />
+      <Separator @add="openControlsModal('body')" label="Body" :actions="['add']"></Separator>
+      <div class="question-margin">
+        <div class="question-body-wrapper">
+          <Controls @calcSize="$emit('calcSize')" class="question-body" :controls="localValue.body" />
+        </div>
       </div>
+
+
+      <Separator @add="openControlsModal('actions')" label="Actions" :actions="['add']" />
+      <Controls @calcSize="$emit('calcSize')" class="question-actions" :controls="localValue.actions" />
+
     </div>
-
-
-    <Separator @add="openControlsModal('actions')" label="Actions" :actions="['add']" />
-    <Controls @calcSize="$emit('calcSize')" class="question-actions" :controls="localValue.actions" />
-
   </div>
 </template>
 
@@ -40,7 +42,7 @@
   import controls from './settings'
 
   export default {
-    name: "Chatbot",
+    name: "Chatbot_Question",
     props: {
       value: Object,
       default: Object
@@ -81,28 +83,34 @@
           onSave: (result) => {
             this.localValue[controlsFor].push({id: Math.random(),...result})
           }
-        }, {name: "object-editor", scrollable: true, height: "auto", })
+        }, {overlayClasses: ['object-editor-overlay'], transition: 'object-editor', name: 'object-editor', scrollable: true, height: "auto"})
       },
       addMessage() {
+        this.localValue.messages.push({text: "", id: Math.random()})
         this.$emit('calcSize')
-        this.localValue.messages.push({text: "message", id: Math.random()})
       },
       deleteMessage(messageId) {
-        this.localValue.messages = this.localValue.messages.filter(message => message.id != messageId)
+        const index = this.localValue.messages.findIndex(message => message.id == messageId)
+        this.localValue.messages.splice(index, 1)
+        this.$emit('calcSize')
       }
     }
   }
 </script>
 
 <style scoped>
+  .question-border {
+    background: #605da5;
+    padding: 5px;
+    border-radius: 20px;
+  }
   .question {
     background: white;
-    border: 5px solid #555fa6;
     border-radius: 20px;
   }
 
   .question-margin {
-    margin: 20px;
+    padding: 20px;
   }
 
   .bot-message {
@@ -113,6 +121,7 @@
     border-radius: 5px;
     margin-bottom: 10px;
     min-width: 200px;
+    position: relative;
   }
 
   .bot-message-actions {
@@ -140,6 +149,8 @@
     float: right;
     margin: -4px;
     cursor: pointer;
+    position: relative;
+    z-index: 1;
   }
 
   .delete-message i {

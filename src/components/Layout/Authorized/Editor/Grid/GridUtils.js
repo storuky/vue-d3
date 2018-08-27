@@ -6,7 +6,7 @@ import store from '../../../../../store/index'
 const GridUtils = {
   buildObject({ position, settings}) {
     return {
-      type: "General",
+      type: "AnalysisTools_General",
       position: position,
       size: {width: 100, height: 100},
       info: {

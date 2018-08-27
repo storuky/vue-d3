@@ -1,11 +1,15 @@
 <template>
-  <label class="uploader">
-    <div class="uploader-section">
+  <div class="uploader">
+    <label class="uploader-section">
       <input class="uploader-input" type="file" @change="onFileChanged">
-      <div class="uploader-background" v-if="localValue.body" :style="{backgroundImage: localValue.body ? `url(${localValue.body.quad.url})` : ''}"></div>
+      <div class="uploader-background" v-if="localValue.body" :style="{backgroundImage: localValue.body ? `url(${localValue.body.quad.url})` : ''}">
+      </div>
       <div class="uploader-placeholder" v-else>{{label || 'Upload'}}</div>
+    </label>
+    <div @click="remove" class="uploader-delete" v-if="localValue.body">
+      <v-icon>close</v-icon>
     </div>
-  </label>
+  </div>
 </template>
 
 <script>
@@ -27,6 +31,10 @@
       }
     },
     methods: {
+      remove () {
+        this.localValue = {}
+        this.$emit('input', this.localValue)
+      },
       onFileChanged (event) {
         this.selectedFile = event.target.files[0]
         
@@ -47,6 +55,7 @@
     width: 102px;
     height: 102px;
     display: block;
+    position: relative;
   }
 
   .uploader-input {
@@ -58,6 +67,7 @@
     cursor: pointer;
     width: 100%;
     height: 100%;
+    display: block;
     position: relative;
   }
 
@@ -76,5 +86,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #f9f9f9;
+  }
+
+  .uploader-delete {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    background: #e04e9d;
+    color: white;
+    cursor: pointer;
+  }
+
+  .uploader-delete i {
+    color: white !important;
   }
 </style>

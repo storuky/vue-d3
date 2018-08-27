@@ -65,6 +65,7 @@
       },
       tabs () {
         this.localTabs = this.tabs
+        this.showLocalTabsSlider
         this.setLocalTab()
       },
       value () {

@@ -35,7 +35,7 @@
             this.$emit('calcSize')
           }
         }, {
-          scrollable: true, height: "auto", name: "object-editor"
+          scrollable: true, height: "auto", overlayClasses: ['object-editor-overlay'], transition: 'object-editor', name: 'object-editor',
         })
       }
     }

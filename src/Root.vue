@@ -5,20 +5,18 @@
       <v-tabs-items v-model="activeTabNum">
         <v-tab-item v-if="tabs[0].id == '1'">
           <div class="page hide-controls">
+            <div class="title">Open Project</div>
             <OpenProject />
           </div>
         </v-tab-item>
         <v-tab-item>
           <div class="page hide-cancel">
-            <ProjectForm title="New Project" />
+            <div class="title">New Project</div>
+            <ProjectForm />
           </div>
         </v-tab-item>
       </v-tabs-items>
     </div>
-    <!-- <div class="page-overflow">
-      <div class="page hide-controls">
-      </div>
-    </div> -->
   </Layout>
 </template>
 

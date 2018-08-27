@@ -5,12 +5,12 @@
       <v-tabs-items v-model="activeTabNum">
         <v-tab-item>
           <div class="page">
-            Profile Information
+            <ProfileInformation />
           </div>
         </v-tab-item>
         <v-tab-item>
           <div class="page">
-            Settings
+            <ProfileSettings />
           </div>
         </v-tab-item>
       </v-tabs-items>
@@ -21,10 +21,12 @@
 <script>
   import Header from './_Shared/Header'
   import Layout from './_Layout'
+  import ProfileInformation from './Profile/ProfileInformation'
+  import ProfileSettings from './Profile/ProfileSettings'
 
   export default {
     name: "Profile",
-    components: {Layout, Header},
+    components: {Layout, Header, ProfileInformation, ProfileSettings},
     data () {
       const tabs = [{name: "Profile Information", id: "1"}, {name: "Settings", id: "2"}]
       return {
@@ -39,7 +41,3 @@
     }
   }
 </script>
-
-<style scoped>
-  
-</style>

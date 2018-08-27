@@ -72,8 +72,7 @@
                       info: {
                         settings: {
                           components: this.objectComponent.settings.components,
-                        },
-                        title: "Click to add"
+                        }
                       },
                     }).then(res => {
                       this.$store.dispatch('createCurve', {

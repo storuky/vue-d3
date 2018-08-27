@@ -173,8 +173,8 @@ export default {
 
 
         let position = {
-              x: (e.x - offset.x - translate.x) / scale - settings.General.size.width/2,
-              y: (e.y - offset.y  - translate.y) / scale - settings.General.size.height/2
+              x: (e.x - offset.x - translate.x) / scale - settings.AnalysisTools_General.size.width/2,
+              y: (e.y - offset.y  - translate.y) / scale - settings.AnalysisTools_General.size.height/2
             },
             isLink = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/.test(text)
 

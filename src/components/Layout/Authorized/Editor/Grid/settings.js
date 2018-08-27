@@ -1,4 +1,4 @@
-import AnalysisToolsSettings from './Objects/settings'
+import AnalysisToolsSettings from './Plugins/AnalysisTools/Objects/settings'
 import ChatbotSettings from './Plugins/Chatbot/Objects/settings'
 
 
@@ -8,6 +8,7 @@ const components = {
 }
 
 const ComponentSelector = {
+  name: 'Click To Add',
   size: {
     width: 300,
     height: 100
@@ -15,7 +16,8 @@ const ComponentSelector = {
   has: {
     in: true,
     out: false,
-    resize: false
+    resize: false,
+    settings: false
   },
   disableSync: true,
   default(object) {

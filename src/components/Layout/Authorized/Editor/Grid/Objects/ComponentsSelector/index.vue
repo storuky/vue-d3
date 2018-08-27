@@ -2,7 +2,7 @@
   <div class="component-selector gradient" :style="{minWidth: size.width + 'px', minHeight: size.height + 'px'}">
     <div class="ll">
       <div @click="addComponent(component)" class="component-item" :key="component" v-for="component in localValue.components">
-        {{component}}
+        {{settings[component].name}}
       </div>
     </div>
   </div>
@@ -21,6 +21,7 @@
     },
     data () {
       return {
+        settings,
         localValue: {...this.value}
       }
     },

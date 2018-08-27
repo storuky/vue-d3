@@ -1,61 +1,62 @@
 <template>
   <g ref="container" :data-object-id="localData.id" @mouseover="showTools()" @mouseleave="hideTools()">
     <!-- Object -->
-    <foreignObject :height="localData.size.height + 10" :width="localData.size.width + 10" ref="foreignObject">
-      <div style="margin: 4px; width: calc(100% - 8px); height: calc(100% - 8px)" ref="content">
+    <foreignObject :height="localData.size.height" :width="localData.size.width" ref="foreignObject">
         <component ref="component" @calcSize="calcSize()" :default={defaultSize} :is="componentType" v-model="localData.info.settings" :componentId="localData.id" :size="localData.size" :position="localData.position"></component>
-      </div>
+      <!-- <div style="margin: 4px; width: calc(100% - 8px); height: calc(100% - 8px)" ref="content">
+      </div> -->
     </foreignObject>
 
     <!-- Tools -->
     <foreignObject v-if="toolsVisible" y="-30" height="30" :width="localData.size.width">
-      <ObjectTools @openSettings="openSettings" @deleteObject="deleteObject" :objectId="localData.id" />
+      <ObjectTools :settings="settings" @openSettings="openSettings" @deleteObject="deleteObject" :objectId="localData.id" />
     </foreignObject>
 
     <!-- Label -->
-    <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="localData.size.width + 50" x="-20" :y="localData.size.height+10">
+    <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="localData.size.width + 50" x="-20" :y="localData.size.height+20">
       <div class="object-label" ref="label">
-        {{localData.info.settings.title || localData.info.title || componentType}}
+        {{localData.info.settings.title || localData.info.title || componentName}}
       </div>
     </foreignObject>
 
     <!-- IN -->
-    <foreignObject v-if="settings.has.in" height="12" :width="12" x="0" :y="localData.size.height/2 - 2">
+    <foreignObject v-if="settings.has.in" height="12" :width="12" x="-4" :y="localData.size.height/2 - 4">
       <In />
     </foreignObject>
 
     <!-- OUT -->
-    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="localData.size.width - 3" :y="localData.size.height/2 - 2">
+    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="localData.size.width - 8" :y="localData.size.height/2 - 4">
       <Out :objectId="localData.id" />
     </foreignObject>
 
     <!-- RESIZER -->
-    <foreignObject v-if="settings.has.resize" width="10" height="10" :x="localData.size.width-3" :y="localData.size.height-3">
+    <foreignObject v-if="settings.has.resize" width="10" height="10" :x="localData.size.width-8" :y="localData.size.height-8">
       <Resizer :objectId="localData.id" />
     </foreignObject>
   </g>
 </template>
 
 <script>
-  import './Objects/Elements/in-out.css'
+  import './Objects/_Elements/in-out.css'
 
   import * as d3 from 'd3'
 
-  // Basic
-  import Person from './Objects/Person/index'
-  import Organisation from './Objects/Organisation/index'
-  import General from './Objects/General/index'
   import ComponentSelector from './Objects/ComponentsSelector/index'
 
-  // Plugins
-  import Question from './Plugins/Chatbot/Objects/Question/index'
-  import Answer from './Plugins/Chatbot/Objects/Answer/index'
+  // AnalysisTools
+  import AnalysisTools_Person from './Plugins/AnalysisTools/Objects/Person/index'
+  import AnalysisTools_Organisation from './Plugins/AnalysisTools/Objects/Organisation/index'
+  import AnalysisTools_General from './Plugins/AnalysisTools/Objects/General/index'
+
+  // Chatbot
+  import Chatbot_Question from './Plugins/Chatbot/Objects/Question/index'
+  import Chatbot_Answer from './Plugins/Chatbot/Objects/Answer/index'
 
   // Elements
-  import In from './Objects/Elements/In'
-  import Out from './Objects/Elements/Out'
-  import Resizer from './Objects/Elements/Resizer'
-  import ObjectTools from './Objects/Elements/ObjectTools'
+  import In from './Objects/_Elements/In'
+  import Out from './Objects/_Elements/Out'
+  import Resizer from './Objects/_Elements/Resizer'
+  import ObjectTools from './Objects/_Elements/ObjectTools'
 
   import settings from './settings'
   import debounce from '../../../../../utils'
@@ -68,11 +69,11 @@
       data: Object
     },
     components: {
-      Person,
-      Organisation,
-      General,
-      Answer,
-      Question,
+      AnalysisTools_Person,
+      AnalysisTools_Organisation,
+      AnalysisTools_General,
+      Chatbot_Answer,
+      Chatbot_Question,
       ComponentSelector,
       In,
       Out,
@@ -91,6 +92,10 @@
         if (this.$refs.labelFO) {
           d3.select(this.$refs.labelFO).attr('height', this.$refs.label.scrollHeight)
         }
+
+        // setTimeout(() => {
+          this.calcSize()
+        // }, 1000)
       })
     },
     data () {
@@ -99,7 +104,7 @@
       return {
         drawingCurve: false,
         toolsVisible: false,
-        components: ['Answer', 'Question'],
+        components: ['Chatbot_Answer', 'Chatbot_Question'],
         localData: localData
       }
     },
@@ -117,6 +122,9 @@
       },
       componentType () {
         return this.localData.type
+      },
+      componentName () {
+        return settings[this.componentType].name
       },
       labelHeightByContent () {
         return this.$refs.label ? this.$refs.label.scrollHeight : this.initialLabelHeightByContent || 30
@@ -150,8 +158,8 @@
       },
       calcSize() {
         this.$nextTick(function () {
-          this.localData.size.width = this.$refs.content.scrollWidth - 2
-          this.localData.size.height = this.$refs.content.scrollHeight
+          this.localData.size.width = this.$refs.component.$el.scrollWidth
+          this.localData.size.height = this.$refs.component.$el.scrollHeight
           this.redraw()
         })
       },

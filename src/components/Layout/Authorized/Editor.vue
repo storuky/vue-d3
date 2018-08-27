@@ -51,7 +51,8 @@
             callback: ()=>{
               this.$modal.show(ProjectForm, {
                 title: "Edit Project",
-                settings: this.activeProject
+                settings: this.activeProject,
+                onSubmit: (res) => {this.activeProject = res}
               }, {scrollable: true, height: "auto"})
             }
           },
@@ -80,6 +81,8 @@
       const chartId = to.params.chartId,
             projectId = to.params.projectId
 
+      this.$modal.hide('object-editor')
+
       if (projectId != from.params.projectId) {
         this.fetchProject(projectId)
         this.fetchChart(chartId)
@@ -89,13 +92,15 @@
     },
     methods: {
       deleteChart (chartId) {
-        Chart.delete({id: chartId})
-          .then(response => {
-            this.activeProject.charts = response.data
-            if (this.$route.params.chartId == chartId) {
-              this.activeChart = this.activeProject.charts[this.activeProject.charts.length-1].id
-            }
-          })
+        if (confirm("Are you sure?")) {
+          Chart.delete({id: chartId})
+            .then(response => {
+              this.activeProject.charts = response.data
+              if (this.$route.params.chartId == chartId) {
+                this.activeChart = this.activeProject.charts[this.activeProject.charts.length-1].id
+              }
+            })
+        }
       },
       editChartModal (chart) {
         this.$modal.show(ChartSettings, {
@@ -145,8 +150,13 @@
       }
     },
     computed: {
-      activeProject () {
-        return this.$store.getters.getActiveProject
+      activeProject: {
+        get () {
+          return this.$store.getters.getActiveProject
+        },
+        set (val) {
+          this.$store.dispatch('setActiveProject', val)
+        }
       },
       chartId () {
         return this.$route.params.chartId

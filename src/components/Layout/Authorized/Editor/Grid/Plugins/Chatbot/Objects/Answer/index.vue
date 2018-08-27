@@ -14,7 +14,7 @@
 <script>
   import SettingsModal from './SettingsModal'
   export default {
-    name: "ChatbotAnswer",
+    name: "Chatbot_Answer",
     props: {
       value: Object,
       size: Object
@@ -40,7 +40,7 @@
         }, {
           height: 'auto',
           scrollable: true,
-          name: "object-editor"
+          overlayClasses: ['object-editor-overlay'], transition: 'object-editor', name: 'object-editor',
         })
       }
     }
@@ -50,6 +50,7 @@
 <style scoped>
   .chatbot-message {
     cursor: pointer;
+    height: 100%;
     background: #df4e9e;
     color: white;
     font-weight: bold;

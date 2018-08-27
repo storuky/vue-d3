@@ -1,15 +1,16 @@
 <template>
-  <div @click="openSettings()" class="general-border gradient">
-    <div class="general" :style="{backgroundImage: `url(${url})`}">
-      
+  <div @click="openSettings" class="person-border gradient" :style="{width: size.width + 'px', height: size.height + 'px'}">
+    <div class="person">
+      <div class="avatar" :style="{backgroundImage: `url(${localSettings.image ? localSettings.image.body.quad.url : ''})`}"></div>
     </div>
   </div>
 </template>
 
 <script>
   import SettingsModal from './SettingsModal'
+
   export default {
-    name: "General",
+    name: "AnalysisTools_Person",
     props: {
       value: Object,
       size: Object
@@ -33,35 +34,34 @@
         }, {
           height: 'auto',
           scrollable: true,
-          name: "object-editor"
+          overlayClasses: ['object-editor-overlay'], transition: 'object-editor', name: 'object-editor',
         })
-      }
-    },
-    computed: {
-      url () {
-        return this.localSettings.image ? this.localSettings.image.body.quad.url : ''
       }
     }
   }
 </script>
 
 <style scoped>
-  .general-border {
+  .person-border {
+    display: block;
+    box-sizing: border-box;
+    border-radius: 1000px;
     padding: 4px;
+    cursor: pointer;
+  }
+  .person {
+    text-align: center;
     width: 100%;
     height: 100%;
   }
 
-  .general {
-    width: 100%;
-    height: 100%;
+  .avatar {
+    border-radius: 1000px;
     background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    cursor: pointer;
     background-size: cover;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
     background-position: center center;
   }
 </style>

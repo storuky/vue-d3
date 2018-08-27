@@ -1,6 +1,6 @@
 <template>
   <div class="object-tools">
-    <div class="object-tool" @click="$emit('openSettings')">
+    <div v-if="settings.has.settings" class="object-tool" @click="$emit('openSettings')">
       <v-icon>code</v-icon>
     </div>
     <div class="object-tool" @click="$emit('deleteObject')">
@@ -14,6 +14,7 @@
   export default {
     name: 'ObjectTools',
     props: {
+      settings: Object,
       objectId: Number
     },
     mounted () {

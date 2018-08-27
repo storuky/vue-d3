@@ -3,12 +3,13 @@
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list class="pa-1">
         <v-list-tile avatar>
-          <v-list-tile-avatar>
+          <v-list-tile-avatar style="cursor: pointer" @click="openProfile">
             <img src="https://avatars2.githubusercontent.com/u/3216491?s=460&v=4">
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title>Steve Schofield</v-list-tile-title>
+            <v-list-tile-title>{{currentUser.profile.fullname || currentUser.username}}</v-list-tile-title>
+            <div class="user-email">{{currentUser.email}}</div>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -84,7 +85,8 @@
         itemSlots: {
           recentProjects: {
             icon: 'assignment',
-            title: 'Recent Projects'
+            title: 'Recent Projects',
+            list: []
           },
         },
         active: null
@@ -129,12 +131,22 @@
       }
     },
     computed: {
+      currentUser () {
+        return this.$store.getters.getCurrentUser
+      },
       drawer: {
         set(val) {
           this.$store.dispatch('setDrawer', val)
         },
         get() {
           return this.$store.getters.getDrawer()
+        }
+      }
+    },
+    watch: {
+      drawer (val) {
+        if (val) {
+          this.updateRecentProjectsList()
         }
       }
     }
@@ -145,5 +157,10 @@
   .navigation .v-list__group__items > .active {
     background: #df4e9e;
     color: white;
+  }
+
+  .user-email {
+    font-size: 12px;
+    color: #6b6a6a;
   }
 </style>

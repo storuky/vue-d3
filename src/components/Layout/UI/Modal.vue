@@ -77,11 +77,7 @@
     cursor: pointer;
   }
 
-  #modals-container div[data-modal="object-editor"]:last-child {
-    display: block;
-  }
-
-  div[data-modal="object-editor"] {
+  .object-editor-overlay {
     position: absolute;
     right: 0;
     top: 84px;
@@ -94,7 +90,7 @@
     background: none;
     z-index: 3;
   }
-  div[data-modal="object-editor"] .v--modal {
+  .object-editor-overlay .v--modal {
     position: absolute;
     left: 0 !important;
     right: 0 !important;
@@ -106,14 +102,24 @@
     overflow: auto;
     height: calc(100% - 84px) !important;
   }
-  div[data-modal="object-editor"] .v--modal-background-click {
+  .object-editor-overlay .v--modal-background-click {
     padding-bottom: 0;
   }
 
-  div[data-modal="object-editor"] .modal {
+  .object-editor-overlay .modal {
     padding: 20px 20px 0 20px;
     position: relative;
     background: white;
     min-height: 100%;
+  }
+
+  .object-editor-overlay.overlay-fade-enter {
+    transition: all .3s ease-out;
+    transition-delay: .3s;
+    right: -400px;
+  }
+  .object-editor-overlay.overlay-fade-leave-active {
+    transition: all .3s ease-out;
+    right: -400px;
   }
 </style>

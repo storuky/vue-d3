@@ -64,15 +64,15 @@ const store = {
 
       if (from && to) {
         return {
-          x1: fromObjectPosition.x + fromObject.localData.size.width,
-          y1: fromObjectPosition.y + fromObject.localData.size.height / 2,
-          x2: toObjectPosition.x,
-          y2: toObjectPosition.y + toObject.localData.size.height / 2
+          x1: fromObjectPosition.x + fromObject.localData.size.width - 2,
+          y1: fromObjectPosition.y + fromObject.localData.size.height / 2 -2,
+          x2: toObjectPosition.x - 2,
+          y2: toObjectPosition.y + toObject.localData.size.height / 2 -2
         }
       } else if (from) {
         return {
-          x: fromObjectPosition.x + fromObject.localData.size.width,
-          y: fromObjectPosition.y + fromObject.localData.size.height / 2
+          x: fromObjectPosition.x + fromObject.localData.size.width - 2,
+          y: fromObjectPosition.y + fromObject.localData.size.height / 2 -2
         }
       }
     }

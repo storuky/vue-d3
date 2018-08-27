@@ -1,5 +1,5 @@
 <template>
-  <Modal :showSubmit="showSubmit" :title="title" submitBtnText="Create" @submit="create()" @close="$emit('close')">
+  <Modal :showSubmit="showSubmit" :title="title" :submitBtnText="submitBtnText" @submit="create()" @close="$emit('close')">
     <v-text-field autofocus @keyup.enter.native="create()" type="text" v-model="localSettings.name" label="Project Name"></v-text-field>
     <div class="project-types" v-if="!this.settings">
       <div @click="localSettings.type = type.name" :class="{active: localSettings.type == type.name}" class="project-type" v-for="type in types" :key="type.name">
@@ -17,6 +17,7 @@
     props: {
       settings: Object,
       title: String,
+      onSubmit: Function
     },
     data () {
       return {
@@ -27,6 +28,7 @@
           name: 'Chatbot',
           title: 'Chatbot'
         }],
+        submitBtnText: this.settings ? 'Save' : 'Create',
         localSettings: {...this.settings || {type: 'AnalysisTools'}}
       }
     },
@@ -39,10 +41,11 @@
       create () {
         if (this.localSettings.name) {
           if (this.settings) {
-            Project.update({project: this.localSettings})
+            Project.update({id: this.localSettings.id}, {project: this.localSettings})
               .then(res => {
                 this.$emit('close')
-                this.settings = res.body
+                this.localSettings = res.body
+                this.onSubmit(this.localSettings)
               })
           } else {
             Project.save({project: this.localSettings})
