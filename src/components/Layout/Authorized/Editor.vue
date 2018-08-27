@@ -1,5 +1,5 @@
 <template>
-  <Layout :fullWidth="true" :more="moreMenu" :title="activeProject.name" :tabs="tabs" @setActiveTab="setActiveChart">
+  <Layout :activeTab="activeTab" :fullWidth="true" :more="moreMenu" :title="activeProject.name" :tabs="tabs" @setActiveTab="setActiveChart">
     <template slot="tabs-content">
       <div class="work-area">
         <div class="grid-container">
@@ -92,8 +92,9 @@
       }
     },
     methods: {
-      deleteChart (chartId) {
+      deleteChart (tabIndex) {
         if (confirm("Are you sure?")) {
+          const chartId = this.activeProject.charts[tabIndex].id
           Chart.delete({id: chartId})
             .then(response => {
               this.activeProject.charts = response.data
@@ -128,6 +129,7 @@
                 const chartId = response.body.id
                 this.activeProject.charts.push(response.body)
                 this.activeChart = chartId
+                this.activeTab = this.activeProject.charts.length - 1
               })
           }
         }, {scrollable: true, height: "auto"})
@@ -141,6 +143,7 @@
             this.$store.commit('setCurvesList', response.body.connections)
             this.chartTransform = response.data.options.transform || {x: 0, y: 0, k: 1}
             this.activeChart = response.body.id
+            this.activeTab = this.activeProject.charts.findIndex(c => c.id == this.activeChart)
           }, err => {
             this.$router.push({name: "root"})
           })
@@ -150,7 +153,6 @@
         this.$store.dispatch('fetchProject', projectId)
       },
       setActiveChart (val) {
-        console.log(val)
         const project = this.$store.getters.getActiveProject
         this.activeChart = project && project.charts ? project.charts[val].id : null
       }

@@ -60,7 +60,7 @@
     },
     data() {
       return {
-        localActiveTab: 0,
+        localActiveTab: this.activeTab || 0,
         localTabs: this.tabs || [],
         drawer: false
       }
@@ -68,6 +68,9 @@
     watch: {
       tabs () {
         this.localTabs = this.tabs
+      },
+      activeTab () {
+        this.localActiveTab = this.activeTab
       },
       localActiveTab () {
         this.$emit('setActiveTab', this.localActiveTab)

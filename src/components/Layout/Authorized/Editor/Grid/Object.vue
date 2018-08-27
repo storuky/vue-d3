@@ -20,12 +20,12 @@
     </foreignObject>
 
     <!-- IN -->
-    <foreignObject v-if="settings.has.in" height="12" :width="12" x="-4" :y="localData.size.height/2 - 4">
+    <foreignObject v-if="settings.has.in" height="12" :width="12" x="-4" :y="localData.size.height/2 - 6">
       <In />
     </foreignObject>
 
     <!-- OUT -->
-    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="localData.size.width - 8" :y="localData.size.height/2 - 4">
+    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="localData.size.width - 8" :y="localData.size.height/2 - 6">
       <Out :objectId="localData.id" />
     </foreignObject>
 

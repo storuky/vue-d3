@@ -55,5 +55,6 @@
     text-transform: uppercase;
     color: white;
     border-radius: 3px;
+    width: 100%;
   }
 </style>

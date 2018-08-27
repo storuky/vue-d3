@@ -106,7 +106,7 @@
   }
   .question {
     background: white;
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   .question-margin {
@@ -121,7 +121,6 @@
     border-radius: 5px;
     margin-bottom: 10px;
     min-width: 200px;
-    position: relative;
   }
 
   .bot-message-actions {
@@ -181,15 +180,13 @@
 <style>
   .question-actions-item {
     width: 100%;
-    position: relative;
     margin: 0 10px;
   }
 
   .question-actions .separator {
-    position: absolute;
+    float: right;
     border: none;
-    right: 0;
-    margin: -8px;
+    margin: -10px;
   }
   .question-actions .separator-label {
     display: none;
@@ -201,7 +198,7 @@
   }
 
   .question-actions .separator-action {
-    margin-left: 5px;
+    margin-left: 0;
   }
   .question-actions .settings-action {
     display: none;

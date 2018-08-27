@@ -155,15 +155,16 @@ export default {
       const components = settings.components[this.$store.getters.getActiveProject.type]
 
       let position = {}
+      const rect = this.$el.getBoundingClientRect()
       if (d3.event) {
         position = {
-          x: (d3.event.x - translate.x -300)/scale,
+          x: (d3.event.x - translate.x -rect.x)/scale,
           y: (d3.event.y - 115 - translate.y)/scale
         }
       } else {
         position = {
-          x: (-translate.x + this.$el.getBoundingClientRect().width / 2)/scale - 144,
-          y: (-translate.y + (this.$el.getBoundingClientRect().height / 2))/scale - 25*components.length
+          x: (-translate.x + rect.width / 2)/scale - 144,
+          y: (-translate.y + (rect.height / 2))/scale - 25*components.length
         }
       }
 

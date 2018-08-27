@@ -1,7 +1,6 @@
 <template>
   <div class="editable">
-    <div class="editable-placeholder" v-if="!content">Message</div>
-    <div ref="editable" class="editable-input" contenteditable="true" @input="update"></div>
+    <div ref="editable" :placeholder="placeholder" class="editable-input" contenteditable="true" @input="update"></div>
   </div>
 </template>
 
@@ -9,7 +8,7 @@
 <script>
   export default {
     name: "Editable",
-    props: ['content'],
+    props: ['content', 'placeholder'],
     mounted: function(){
       this.$refs.editable.innerText = this.content;
     },
@@ -22,16 +21,14 @@
 </script>
 
 <style scoped>
-  .editable {
-    position: relative;
+  .editable-input {
+    min-height: 20px;
   }
-  .editable-placeholder {
-    position: absolute;
-    top: 0;
+  .editable-input[contenteditable=true]:empty:before{
     opacity: .6;
     font-style: italic;
-  }
-  .editable-input {
-    position: relative;
+    float: left;
+    content: attr(placeholder);
+    display: block; /* For Firefox */
   }
 </style>
