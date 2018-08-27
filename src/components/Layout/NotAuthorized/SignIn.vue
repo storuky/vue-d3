@@ -9,8 +9,8 @@
           <div class="welcome-title">Welcome Back</div>
           <div class="welcome-subtitle">Sign In to continue</div>
         </div>
-        <v-text-field v-model="params.email" type="email" label="Email"></v-text-field>
-        <v-text-field v-model="params.password" type="password" label="Password"></v-text-field>
+        <v-text-field @keyup.enter.native="signIn" v-model="params.email" type="email" label="Email"></v-text-field>
+        <v-text-field @keyup.enter.native="signIn" v-model="params.password" type="password" label="Password"></v-text-field>
 
         <div class="sign-links">
           <router-link class="weight-500" to="/sign-up">Sign Up</router-link>
@@ -34,7 +34,7 @@
           .then(res => {
             this.$store.dispatch('setCurrentUser', res.data)
             if (this.$route.query.redirect) {
-              this.$router.push({path: this.$route.query})
+              this.$router.push({path: this.$route.query.redirect})
             } else {
               this.$router.push({name: 'root'})
             }

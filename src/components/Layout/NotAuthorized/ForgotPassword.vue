@@ -15,7 +15,7 @@
           <div class="welcome-title">Forgot a password?</div>
           <div class="welcome-subtitle">Not a big deal</div>
         </div>
-        <v-text-field v-model="params.email" type="email" label="Email"></v-text-field>
+        <v-text-field @keyup.enter.native="reset" v-model="params.email" type="email" label="Email"></v-text-field>
 
       </div>
       <div class="submit-sign" @click="reset">Reset</div>

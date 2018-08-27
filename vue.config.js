@@ -11,5 +11,5 @@ module.exports = {
     }
   },
   lintOnSave: true,
-  outputDir: path.resolve(__dirname, '../../../kaupang/frontent'),
+  outputDir: path.resolve(__dirname, '../../../kaupang/frontend'),
 };

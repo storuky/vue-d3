@@ -15,8 +15,8 @@
           <div class="welcome-title">Welcome to Vulcan</div>
           <div class="welcome-subtitle">Sign Up to continue</div>
         </div>
-        <v-text-field v-model="params.email" type="email" label="Email"></v-text-field>
-        <v-text-field autocomplete="off" v-model="params.password" type="password" label="Password"></v-text-field>
+        <v-text-field @keyup.enter.native="signUp" v-model="params.email" type="email" label="Email"></v-text-field>
+        <v-text-field @keyup.enter.native="signUp" autocomplete="off" v-model="params.password" type="password" label="Password"></v-text-field>
 
       </div>
       <div class="submit-sign" @click="signUp">Sign Up</div>

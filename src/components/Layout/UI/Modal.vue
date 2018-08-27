@@ -78,17 +78,16 @@
   }
 
   .object-editor-overlay {
-    position: absolute;
-    right: 0;
-    top: 84px;
     bottom: 0;
-    left: auto;
-    width: 33%;
+    box-shadow: 0 5px 8px rgba(0,0,0,.24);
+    left: auto !important;
+    min-height: 0!important;
     min-width: 470px;
-    min-height: 0 !important;
-    box-shadow: 0px 5px 8px rgba(0,0,0,.24);
-    background: none;
-    z-index: 3;
+    position: absolute !important;
+    right: 0;
+    top: 84px !important;
+    width: 33% !important;
+    z-index: 3 !important;
   }
   .object-editor-overlay .v--modal {
     position: absolute;
