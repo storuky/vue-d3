@@ -1,5 +1,8 @@
 <template>
-  <div @click="openSettings()" class="chatbot-input" v-html="localSettings.placeholder || 'Input'" :style="{width: (localSettings.width || 100) + '%'}"></div>
+  <div class="question-actions-item" :style="{width: (localSettings.width || 100) + '%'}">
+    <slot :openSettings="openSettings"></slot>
+    <div @click="openSettings()" class="chatbot-input" v-html="localSettings.placeholder || 'Input'"></div>
+  </div>
 </template>
 
 <script>
@@ -44,7 +47,6 @@
     height: 37px;
     padding: 8px 10px;
     width: 100%;
-    margin: 0 10px;
     color: #8a8a8a;
     cursor: pointer;
   }

@@ -1,5 +1,8 @@
 <template>
-  <div @click="openSettings()" class="chatbot-select" v-html="label" :style="{width: (localSettings.width || 100) + '%'}">
+  <div class="question-actions-item" :style="{width: (localSettings.width || 100) + '%'}">
+    <slot :openSettings="openSettings"></slot>
+    <div @click="openSettings()" class="chatbot-select" v-html="label" :style="{width: (localSettings.width || 100) + '%'}">
+    </div>
   </div>
 </template>
 
@@ -47,7 +50,6 @@
 <style scoped>
   .chatbot-select {
     cursor: pointer;
-    margin: 0 10px;
     background-color: #f5f5f5;
     height: 36px;
     box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);

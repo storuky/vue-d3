@@ -176,4 +176,34 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+
+</style>
+<style>
+  .question-actions-item {
+    width: 100%;
+    position: relative;
+    margin: 0 10px;
+  }
+
+  .question-actions .separator {
+    position: absolute;
+    border: none;
+    right: 0;
+    margin: -8px;
+  }
+  .question-actions .separator-label {
+    display: none;
+  }
+  .question-actions .separator-actions {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .question-actions .separator-action {
+    margin-left: 5px;
+  }
+  .question-actions .settings-action {
+    display: none;
+  }
 </style>
