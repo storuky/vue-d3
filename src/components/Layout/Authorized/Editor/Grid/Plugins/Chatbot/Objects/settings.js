@@ -2,28 +2,6 @@ const settings = {
   default: {
     info: {}
   },
-  'Chatbot_Answer': {
-    name: 'Answer',
-    size: {
-      width: 220,
-      height: 60
-    },
-    has: {
-      in: true,
-      out: true,
-      resize: false,
-      settings: true
-    },
-    components: ['Chatbot_Question'],
-    default (object) {
-      return {
-        ...settings.default,
-        info: {title: 'Answer', settings: {answerVariants: [{}]}},
-        size: settings[object.type].size,
-        ...object
-      }
-    }
-  },
   'Chatbot_Question': {
     name: 'Question',
     size: {
@@ -34,9 +12,10 @@ const settings = {
       in: true,
       out: true,
       resize: false,
-      settings: true
+      settings: true,
+      title: true
     },
-    components: ['Chatbot_Answer', 'Chatbot_Question'],
+    components: ['Chatbot_Answer', 'Chatbot_Question', 'Chatbot_DialogFlow'],
     default(object) {
       return {
         ...settings.default,
@@ -52,7 +31,55 @@ const settings = {
         ...object
       }
     }
-  }
+  },
+  'Chatbot_Answer': {
+    name: 'Answer',
+    size: {
+      width: 220,
+      height: 60
+    },
+    has: {
+      in: true,
+      out: true,
+      resize: false,
+      settings: true,
+      title: true
+    },
+    components: ['Chatbot_Question'],
+    default(object) {
+      return {
+        ...settings.default,
+        info: { title: 'Answer', settings: { answerVariants: [{}] } },
+        size: settings[object.type].size,
+        ...object
+      }
+    }
+  },
+  'Chatbot_DialogFlow': {
+    name: 'DialogFlow',
+    size: {
+      width: 220,
+      height: 60
+    },
+    has: {
+      in: true,
+      out: true,
+      title: false,
+      resize: false,
+      settings: true
+    },
+    inColor: '#ef6c00',
+    outColor: '#ef6c00',
+    components: ['Chatbot_Answer'],
+    default(object) {
+      return {
+        ...settings.default,
+        info: { title: 'DialogFlow', settings: {}},
+        size: settings[object.type].size,
+        ...object
+      }
+    }
+  },
 }
 
 export default settings

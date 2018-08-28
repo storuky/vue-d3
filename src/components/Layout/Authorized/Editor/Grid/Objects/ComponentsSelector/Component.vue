@@ -1,5 +1,5 @@
 <template>
-  <div class="component-selector-border" :style="{minWidth: size.width + 'px', minHeight: size.height + 'px'}">
+  <div v-if="this.localValue.components && this.localValue.components.length > 1" class="component-selector-border" :style="{minWidth: size.width + 'px', minHeight: size.height + 'px'}">
     <div class="component-selector gradient">
       <div class="ll">
         <div @click="addComponent(component)" class="component-item" :key="component" v-for="component in localValue.components">
@@ -37,7 +37,7 @@
     },
     methods: {
       addComponent (componentName) {
-        this.$store.dispatch('createObject', {
+        this.$store.dispatch('objects/create', {
           type: componentName,
           position: {
             x: this.position.x,
@@ -45,15 +45,18 @@
           },
         }).then(res => {
           this.$nextTick(function () {
-            const curve = this.$store.getters.getCurves(this.componentId)[0]
+            const curve = this.$store.getters['curves/getCurves'](this.componentId)[0]
 
             if (curve) {
-              this.$store.dispatch('createCurve', {
-                from: curve.fromLocal,
-                to: res.id
+              this.$store.dispatch('curves/create', {
+                from: curve.from,
+                to: res.id,
+                callback: () => {
+                  this.$store.dispatch('curves/remove', {from: curve.from, to: this.componentId})
+                }
               })
             }
-            this.$store.dispatch('removeObject', this.componentId)
+            this.$store.dispatch('objects/delete', this.componentId)
           })
         })
       }

@@ -81,13 +81,13 @@
     bottom: 0;
     box-shadow: 0 5px 8px rgba(0,0,0,.24);
     left: auto;
-    min-height: 0;
+    min-height: 0 !important;
     min-width: 470px;
     position: absolute !important;
     right: 0;
     top: 0 !important;
     width: 33% !important;
-    z-index: 3 !important;
+    z-index: 2 !important;
   }
   .v--modal-overlay.object-editor-overlay .v--modal {
     position: absolute;

@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import objects from './objects'
-import curves from './curves'
-import chart from './chart'
-import user from './user'
-import project from './project'
-import application from './application'
+import objects from './modules/objects'
+import curves from './modules/curves'
+import chart from './modules/chart'
+import user from './modules/user'
+import project from './modules/project'
+import application from './modules/application'
 
 Vue.use(Vuex)
 

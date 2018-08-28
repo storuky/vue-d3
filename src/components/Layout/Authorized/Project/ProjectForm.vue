@@ -1,6 +1,6 @@
 <template>
-  <Modal :showSubmit="showSubmit" :title="title" :submitBtnText="submitBtnText" @submit="create()" @close="$emit('close')">
-    <v-text-field autofocus @keyup.enter.native="create()" type="text" v-model="localSettings.name" label="Project Name"></v-text-field>
+  <Modal :showSubmit="showSubmit" :title="title" :submitBtnText="submitBtnText" @submit="submit()" @close="$emit('close')">
+    <v-text-field autofocus @keyup.enter.native="submit()" type="text" v-model="localSettings.name" label="Project Name"></v-text-field>
     <div class="project-types" v-if="!this.settings">
       <div @click="localSettings.type = type.name" :class="{active: localSettings.type == type.name}" class="project-type" v-for="type in types" :key="type.name">
         {{type.title}}
@@ -38,23 +38,27 @@
       }
     },
     methods: {
-      create () {
+      submit () {
         if (this.localSettings.name) {
+          let promise
           if (this.settings) {
-            Project.update({id: this.localSettings.id}, {project: this.localSettings})
-              .then(res => {
-                this.$emit('close')
-                this.localSettings = res.body
-                this.onSubmit(this.localSettings)
-              })
+            promise = Project
+              .update({id: this.localSettings.id}, {project: this.localSettings})
+              .then(res => this.localSettings = res.body)
           } else {
-            Project.save({project: this.localSettings})
+            promise = Project
+              .save({project: this.localSettings})
               .then(res => {
-                this.$emit('close')
-                const project = res.body
-                this.$router.push(`/project/${project.id}/chart/${project.charts[0].id}`)
+                const projectId = res.body.id,
+                      chartId = res.body.charts[0].id
+
+                this.$router.push({name: 'editor', params: {chartId, projectId}})
               })
           }
+          promise.then(response => {
+            this.$emit('close')
+            if (this.onSubmit) this.onSubmit(this.localSettings)
+          })
         }
       }
     }

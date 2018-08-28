@@ -1,11 +1,17 @@
 <template>
-  <div class="curve-in-out in"></div>
+  <div class="curve-in-out in" :style="{background: color}"></div>
 </template>
 
 <script>
   import * as d3 from 'd3'
   export default {
-    name: 'In'
+    name: 'In',
+    props: {
+      color: {
+        type: String,
+        default: '#df4e9e'
+      }
+    }
   }
 </script>
 

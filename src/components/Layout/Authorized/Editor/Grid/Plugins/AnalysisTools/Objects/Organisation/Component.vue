@@ -1,15 +1,14 @@
 <template>
-  <div @click="openSettings()" class="general-border gradient">
-    <div class="general" :style="{backgroundImage: `url(${url})`}">
-      
+  <div @click="openSettings" class="organisation-border gradient" :style="{width: size.width + 'px', height: size.height + 'px'}">
+    <div class="organisation" :style="{backgroundImage: `url(${localSettings.image ? localSettings.image.body.quad.url : ''})`}">
     </div>
   </div>
 </template>
 
 <script>
-  import SettingsModal from './SettingsModal'
+  import Settings from './Settings'
   export default {
-    name: "AnalysisTools_General",
+    name: "AnalysisTools_Organisation",
     props: {
       value: Object,
       size: Object
@@ -23,7 +22,7 @@
     },
     methods: {
       openSettings () {
-        this.$modal.show(SettingsModal, {
+        this.$modal.show(Settings, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
@@ -36,23 +35,17 @@
           overlayClasses: ['object-editor-overlay'], transition: 'object-editor', name: 'object-editor',
         })
       }
-    },
-    computed: {
-      url () {
-        return this.localSettings.image ? this.localSettings.image.body.quad.url : ''
-      }
     }
   }
 </script>
 
 <style scoped>
-  .general-border {
+  .organisation-border {
     padding: 4px;
-    width: 100%;
-    height: 100%;
+    cursor: pointer;
   }
 
-  .general {
+  .organisation {
     width: 100%;
     height: 100%;
     background: white;
@@ -60,7 +53,6 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    cursor: pointer;
     background-size: cover;
     background-position: center center;
   }

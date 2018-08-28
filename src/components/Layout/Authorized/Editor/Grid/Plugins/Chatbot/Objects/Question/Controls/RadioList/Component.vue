@@ -1,17 +1,21 @@
 <template>
-  <div :style="{width: (localSettings.width || 100) + '%'}">
+  <div @add="openSettings()" :style="{width: (localSettings.width || 100) + '%'}">
     <slot :openSettings="openSettings"></slot>
-    <div @add="openSettings()" class="chatbot-video">
+    <div class="chatbot-radiolist">
+      <div class="title" v-html="localSettings.title"></div>
+      <v-radio-group disabled v-model="model">
+        <v-radio v-for="option in localSettings.options" :key="option.id" :label="option.value" :value="option.value"></v-radio>
+      </v-radio-group>
     </div>
   </div>
 </template>
 
 <script>
   import * as d3 from 'd3'
-  import SettingsModal from './SettingsModal'
+  import Settings from './Settings'
 
   export default {
-    name: "ChatbotVideo",
+    name: "ChatbotRadioList",
     props: {
       value: Object
     },
@@ -23,11 +27,12 @@
     data() {
       return {
         localSettings: {...this.value},
+        model: null
       }
     },
     methods: {
       openSettings () {
-        this.$modal.show(SettingsModal, {
+        this.$modal.show(Settings, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
@@ -43,6 +48,25 @@
 </script>
 
 <style scope>
-  .chatbot-video {
+  .title {
+    text-align: center;
+  }
+  .chatbot-radiolist {
+    display: block;
+    margin-top: 20px;
+  }
+  .chatbot-radiolist .v-input {
+    margin-top: 0 !important;
+  }
+  .chatbot-radiolist .v-messages {
+    display: none;
+  }
+
+</style>
+
+<style>
+  .chatbot-radiolist .v-label,
+  .chatbot-radiolist .v-icon  {
+    color: #333 !important;
   }
 </style>

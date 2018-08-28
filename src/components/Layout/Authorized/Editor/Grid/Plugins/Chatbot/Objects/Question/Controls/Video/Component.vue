@@ -1,21 +1,19 @@
 <template>
   <div :style="{width: (localSettings.width || 100) + '%'}">
     <slot :openSettings="openSettings"></slot>
-    <div class="chatbot-checkboxlist">
-      <div class="title" v-html="localSettings.title"></div>
-      <v-checkbox disabled :key="option.id" v-for="option in localSettings.options" v-model="model" :label="option.text" :value="option.text"></v-checkbox>
+    <div @add="openSettings()" class="chatbot-video">
     </div>
   </div>
 </template>
 
 <script>
   import * as d3 from 'd3'
-  import SettingsModal from './SettingsModal'
+  import Settings from './Settings'
 
   export default {
-    name: "ChatbotCheckboxList",
+    name: "ChatbotVideo",
     props: {
-      value: Object,
+      value: Object
     },
     mounted () {
       this.$nextTick(function () {
@@ -25,17 +23,16 @@
     data() {
       return {
         localSettings: {...this.value},
-        model: undefined
       }
     },
     methods: {
       openSettings () {
-        this.$modal.show(SettingsModal, {
+        this.$modal.show(Settings, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
-            this.$emit('calcSize')
             this.$emit('input', this.localSettings)
+            this.$emit('calcSize')
           }
         }, {
           scrollable: true, height: "auto", overlayClasses: ['object-editor-overlay'], transition: 'object-editor', name: 'object-editor',
@@ -45,27 +42,7 @@
   }
 </script>
 
-<style scoped>
-  .title {
-    text-align: center;
-  }
-  .chatbot-checkboxlist {
-    display: block;
-    margin-top: 20px;
-  }
-</style>
-
-<style>
-  .chatbot-checkboxlist .v-messages {
-    display: none;
-  }
-
-  .chatbot-checkboxlist .v-input {
-    margin-top: 0;
-  }
-
-  .chatbot-checkboxlist .v-label,
-  .chatbot-checkboxlist .v-icon  {
-    color: #333 !important;
+<style scope>
+  .chatbot-video {
   }
 </style>

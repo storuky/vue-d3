@@ -12,6 +12,7 @@ const settings = {
       in: true,
       out: true,
       resize: true,
+      title: true,
       settings: true
     },
     components: ["AnalysisTools_Person", "AnalysisTools_Organisation", "AnalysisTools_General"],
@@ -33,6 +34,7 @@ const settings = {
       in: true,
       out: true,
       resize: true,
+      title: true,
       settings: true
     },
     components: ["AnalysisTools_Person", "AnalysisTools_Organisation", "AnalysisTools_General"],
@@ -54,6 +56,7 @@ const settings = {
       in: true,
       out: true,
       resize: true,
+      title: true,
       settings: true
     },
     components: ["AnalysisTools_Person", "AnalysisTools_Organisation", "AnalysisTools_General"],

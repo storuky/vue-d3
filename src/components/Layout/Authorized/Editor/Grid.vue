@@ -6,24 +6,18 @@
     </div>
     <div class="grid">
       <svg ref="svg">
-        <defs>
-          <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stop-color="#505fa6"/>
-            <stop offset="100%" stop-color="#e44e9d"/>
-          </linearGradient>
-          <marker id="arrow" viewBox="0 -5 10 10" refX="5" refY="0" markerWidth="4" markerHeight="4" orient="auto">
-            <path fill="#e44e9d" d="M0,-5L10,0L0,5" class="arrowHead"></path>
-          </marker>
-        </defs>
         <g ref="container">
           <g id="curves">
             <Curve v-for="connection in connections" :key="connection.id" :from="connection.from" :to="connection.to" />
           </g>
           <g id="objects">
-            <BaseObject :data="object" v-for="object in objects" :key="object.id"></BaseObject>
+            <BaseObject :objectId="object.id" v-for="object in objects" :key="object.id"></BaseObject>
           </g>
-          <g id="drawingCurve">
-            <Curve virtual="true" />
+          <g id="drawingCurve" v-if="drawingCurve && drawingCurve.id">
+            <marker id="arrow" viewBox="0 -5 10 10" refX="5" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+              <path fill="#e44e9d" d="M0,-5L10,0L0,5"></path>
+            </marker>
+            <Curve :drawingCurve="drawingCurve" />
           </g>
         </g>
       </svg>
@@ -44,23 +38,8 @@ import debounce from '../../../../utils'
 import {Chart} from '../../../../resources/index'
 import GridUtils from './Grid/GridUtils'
 
-d3.selection.prototype.dblTap = function(callback) {
-  var last = 0;
-  return this.each(function() {
-    d3.select(this).on("touchstart", function(e) {
-        if ((d3.event.timeStamp - last) < 500) {
-          return callback(e);
-        }
-        last = d3.event.timeStamp;
-    });
-  });
-}
-
 export default {
   name: 'Grid',
-  props: {
-    transform: Object
-  },
   mounted () {
     this.d3svg = d3.select(this.$refs.svg)
     this.d3container = d3.select(this.$refs.container)
@@ -75,38 +54,70 @@ export default {
     BaseObject,
     Curve
   },
-  computed: {
-    objects () {
-      return this.$store.getters.getObjectsList()
-    },
-    connections () {
-      return this.$store.getters.getCurvesList()
-    }
-  },
   data () {
     return {
-      mode: 'zoom'
+
+    }
+  },
+  computed: {
+    activeChart () {
+      return this.$store.getters['chart/getActive']
+    },
+    activeProject () {
+      return this.$store.getters['project/getActive']
+    },
+    chartId () {
+      return this.activeChart.id
+    },
+    objects () {
+      return this.$store.getters['objects/getList']()
+    },
+    connections () {
+      return this.$store.getters['curves/getList']()
+    },
+    translate: {
+      get () {
+        return this.$store.getters['chart/getTranslate']()
+      },
+      set (value) {
+        this.$store.dispatch('chart/setTranslate', value)
+      }
+    },
+    scale: {
+      get () {
+        return this.$store.getters['chart/getScale']()
+      },
+      set (value) {
+        this.$store.dispatch('chart/setScale', value)
+      }
+    },
+    drawingCurve () {
+      return this.$store.getters['curves/getDrawingCurve']
     }
   },
   methods: {
     setTransform () {
       this.d3container.attr('transform', [
-        'translate('+[this.transform.x, this.transform.y]+')',
-        'scale('+this.transform.k+')'
+        'translate('+[this.translate.x, this.translate.y]+')',
+        'scale('+this.scale+')'
       ])
     },
     sync: debounce(function () {
-      const translate = this.$store.getters.getChartTranslate(),
-            scale = this.$store.getters.getChartScale()
-      Chart.update({
-        id: this.$store.getters.getActiveChart.id
-      },{
-        chart: {
-          options: {
-            transform: {...translate, k: scale}
+      const translate = this.$store.getters['chart/getTranslate'](),
+            scale = this.$store.getters['chart/getScale']()
+      Chart
+        .update({
+          id: this.activeChart.id
+        },{
+          chart: {
+            options: {
+              transform: {
+                ...translate,
+                k: scale
+              }
+            }
           }
-        }
-      })
+        })
     }, 500),
     enablePanAndZoomMode () {
       // Clear
@@ -120,11 +131,15 @@ export default {
       // Add
       let zoom = d3.zoom().on('zoom', () => {
         this.d3container.attr('transform', d3.event.transform)
-        this.$store.dispatch('setScale', d3.event.transform.k)
-        this.$store.dispatch('setTranslate', {
+
+        this.scale = d3.event.transform.k
+        var translate = {
           x: d3.event.transform.x,
           y: d3.event.transform.y
-        })
+        }
+
+        this.translate = translate
+
         this.sync()
       })
 
@@ -133,48 +148,46 @@ export default {
         .call(
           zoom.transform,
           d3.zoomIdentity
-            .translate(this.transform.x, this.transform.y)
-            .scale(this.transform.k)
+            .translate(this.translate.x, this.translate.y)
+            .scale(this.scale)
         )
 
       this.d3svg.on("dblclick.zoom", null)
-
       this.d3svg.on('dblclick',() => this.createObject())
-
-      this.mode = 'zoom'
     },
     createObject () {
       if (d3.event) {
         d3.event.stopPropagation()
         d3.event.preventDefault()
       }
-
-      const translate = this.$store.getters.getChartTranslate(),
-            scale = this.$store.getters.getChartScale()
       
-      const components = settings.components[this.$store.getters.getActiveProject.type]
+      const components = settings.components[this.activeProject.type],
+            rect = this.$el.getBoundingClientRect()
+      let position
 
-      let position = {}
-      const rect = this.$el.getBoundingClientRect()
       if (d3.event) {
         position = {
-          x: (d3.event.x - translate.x -rect.x)/scale,
-          y: (d3.event.y - 115 - translate.y)/scale
+          x: (d3.event.x - this.translate.x -rect.x)/this.scale,
+          y: (d3.event.y - 115 - this.translate.y)/this.scale
         }
       } else {
         position = {
-          x: (-translate.x + rect.width / 2)/scale - 144,
-          y: (-translate.y + (rect.height / 2))/scale - 25*components.length
+          x: (-this.translate.x + rect.width / 2)/this.scale - 144,
+          y: (-this.translate.y + (rect.height / 2))/this.scale - 25*components.length
         }
       }
 
       const objectParams = {
         type: "ComponentSelector",
         position,
-        info: {settings: {components}}
+        info: {
+          settings: {
+            components
+          }
+        }
       }
 
-      this.$store.dispatch("createObject", objectParams)
+      this.$store.dispatch("objects/create", objectParams)
     },
     dragAndDrop () {
       let node = this.$refs.svg
@@ -188,13 +201,10 @@ export default {
         e.preventDefault()
         e.stopPropagation()
 
-        if (this.$store.getters.getActiveProject.type != "AnalysisTools") {
+        if (this.$store.getters['project/getActive'].type != "AnalysisTools") {
           return
         }
-
-        const translate = this.$store.getters.getChartTranslate(),
-              scale = this.$store.getters.getChartScale(),
-              offset = {x: node.getBoundingClientRect().x, y: node.getBoundingClientRect().y}
+        const rect = node.getBoundingClientRect()
 
         let text = e.dataTransfer.getData("text/html") || e.dataTransfer.getData("text"),
             objectId = (e.target.closest("g[data-object-id]") || {dataset: {}}).dataset.objectId
@@ -203,8 +213,8 @@ export default {
 
 
         let position = {
-              x: (e.x - offset.x - translate.x) / scale - settings.AnalysisTools_General.size.width/2,
-              y: (e.y - offset.y  - translate.y) / scale - settings.AnalysisTools_General.size.height/2
+              x: (e.x - rect.x - this.translate.x) / this.scale - settings.AnalysisTools_General.size.width/2,
+              y: (e.y - rect.y  - this.translate.y) / this.scale - settings.AnalysisTools_General.size.height/2
             },
             isLink = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/.test(text)
 

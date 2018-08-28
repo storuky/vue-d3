@@ -1,28 +1,36 @@
 <template>
-  <div @click="openSettings" class="organisation-border gradient" :style="{width: size.width + 'px', height: size.height + 'px'}">
-    <div class="organisation" :style="{backgroundImage: `url(${localSettings.image ? localSettings.image.body.quad.url : ''})`}">
+  <div @click="openSettings()" class="chatbot-message">
+    <ol v-if="localSettings.answerVariants.length > 1">
+      <li :key="variant.id" v-for="variant in localSettings.answerVariants">
+        {{variant.value}}
+      </li>
+    </ol>
+    <div v-else>
+      {{localSettings.answerVariants[0] && localSettings.answerVariants[0].value || "Click to Add"}}
     </div>
   </div>
 </template>
 
 <script>
-  import SettingsModal from './SettingsModal'
+  import Settings from './Settings'
   export default {
-    name: "AnalysisTools_Organisation",
+    name: "Chatbot_Answer",
     props: {
       value: Object,
       size: Object
     },
     data () {
       const settings = {...this.value}
-
+      if (!settings.answerVariants) {
+        settings.answerVariants = []
+      }
       return {
         localSettings: settings
       }
     },
     methods: {
       openSettings () {
-        this.$modal.show(SettingsModal, {
+        this.$modal.show(Settings, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
@@ -40,20 +48,22 @@
 </script>
 
 <style scoped>
-  .organisation-border {
-    padding: 4px;
+  .chatbot-message {
     cursor: pointer;
-  }
-
-  .organisation {
-    width: 100%;
-    height: 100%;
-    background: white;
+    background: #df4e9e;
+    color: white;
+    font-weight: bold;
+    border-radius: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 18px;
     text-align: center;
-    background-size: cover;
-    background-position: center center;
+    padding: 10px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,.1);
+  }
+
+  .chatbot-message ol {
+    text-align: left;
   }
 </style>

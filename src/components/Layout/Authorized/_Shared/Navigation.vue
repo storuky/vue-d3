@@ -126,22 +126,14 @@
         this.drawer = false
         this.$http.delete('/vulcan/v1/auth/logout')
           .then(response => {
-            this.$store.dispatch('setCurrentUser', null)
+            this.$store.dispatch('user/setCurrent', null)
             this.$router.push({name: 'signIn'})
           })
       }
     },
     computed: {
       currentUser () {
-        return this.$store.getters.getCurrentUser
-      },
-      drawer: {
-        set(val) {
-          this.$store.dispatch('setDrawer', val)
-        },
-        get() {
-          return this.$store.getters.getDrawer()
-        }
+        return this.$store.getters['user/getCurrent']
       }
     },
     watch: {

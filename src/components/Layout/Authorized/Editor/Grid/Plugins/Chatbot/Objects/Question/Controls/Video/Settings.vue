@@ -1,5 +1,5 @@
 <template>
-  <Modal title="Select Settings" @submit="save()" @close="$emit('close')">
+  <Modal title="Video Settings" @submit="save()" @close="$emit('close')">
     <v-layout row>
       <v-flex xs8>
         <v-text-field type="text" v-model="localSettings.showCondition" label="Show Condition, default true" solo></v-text-field>
@@ -9,25 +9,21 @@
         <v-text-field type="number" v-model="localSettings.width" label="Width, %"></v-text-field>
       </v-flex>
     </v-layout>
-
-    <OptionsList v-model="localSettings.options" />
+    <v-text-field type="text" v-model="localSettings.label" label="Label"></v-text-field>
+    <v-text-field type="text" v-model="localSettings.videoUrl" label="Youtube Or Vimeo Url"></v-text-field>
   </Modal>
 </template>
 
 <script>
   export default {
-    name: "SelectSettingsModal",
+    name: "VideoSettings",
     props: {
       settings: Object,
       onSave: Function,
     },
     data () {
-      const settings = {...this.settings}
-      settings.options = (this.settings.options || []).map(option => {
-        return {...option}
-      })
       return {
-        localSettings: settings
+        localSettings: {...this.settings}
       }
     },
     methods: {

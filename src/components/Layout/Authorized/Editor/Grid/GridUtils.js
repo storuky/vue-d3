@@ -24,27 +24,25 @@ const GridUtils = {
     return match ? match[5] : null
   },
   addYoutube({ objectId, text, position }) {
-    console.log(object, text, position)
+    GridUtils.addCrawlerData(object, text, position)
   },
   addCrawlerData({ objectId, link, position }) {
     GridUtils.getCrawlerData(link)
       .then(response => {
-        const objectComponent = store.getters.getObjectComponent(objectId)
-        const settings = objectComponent.localData.info
-        settings.image = settings.image || response.body.image
-        settings.notes += response.body.notes
-        settings.title += '\n'+response.body.title
-        if (settings.addons) {
-          settings.addons.concat(response.body.addons || [])
+        const object = store.getters['objects/getObject'](objectId)
+        object.image = object.image || response.body.image
+        object.notes += response.body.notes
+        object.title += '\n'+response.body.title
+        if (object.addons) {
+          object.addons.concat(response.body.addons || [])
         } else {
-          settings.addons = response.body.addons
+          object.addons = response.body.addons
         }
-        objectComponent.calcSize()
       })
   },
   addNotes({ objectId, text, position }) {
-    const objectComponent = store.getters.getObjectComponent(objectId)
-    objectComponent.localData.info.settings.notes += text
+    const object = store.getters['objects/getObject'](objectId)
+    object.info.settings.notes += text
   },
   insertFromCrawler({ link, position }) {
     GridUtils.getCrawlerData(link)
@@ -55,7 +53,7 @@ const GridUtils = {
             settings: response.body
           }
         )
-        store.dispatch('createObject', objectParams)
+        store.dispatch('objects/create', objectParams)
       })
   },
   insertNotes({ text, position }) {
@@ -65,7 +63,7 @@ const GridUtils = {
         settings: {notes: text}
       }
     )
-    store.dispatch('createObject', objectParams)
+    store.dispatch('objects/create', objectParams)
   }
 }
 

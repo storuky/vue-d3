@@ -18,13 +18,13 @@
     mounted () {
       this.$nextTick(function () {
         this.d3el = d3.select(this.$el)
-        this.objectComponent = this.$store.getters.getObjectComponent(this.objectId)
+        this.object = this.$store.getters['objects/getObject'](this.objectId)
 
         this.d3el.call(
           d3.drag()
             .on('start', () => {
-              const position = this.objectComponent.localData.position,
-                    size = this.objectComponent.localData.size
+              const position = this.object.position,
+                    size = this.object.size
 
               this.initialPosition = {
                 x: position.x + size.width,
@@ -44,16 +44,11 @@
               let width = resultPosition.x + this.initialSize.width,
                   height = resultPosition.y + this.initialSize.height
 
-              this.objectComponent.localData.size = {
+              this.object.size = {
                 width, height
               }
 
-              this.$store.getters.getCurves(this.objectId).forEach(curve => curve.redraw())
-
-            })
-            .on('end', () => {
-              this.objectComponent.calcSize()
-              this.objectComponent.sync()
+              this.$root.$emit(`redrawObject-${this.objectId}`)
             })
         )
       })

@@ -27,24 +27,17 @@
     name: 'Dashboard',
     components: {Layout, Header, OpenProject, ProjectForm},
     data () {
-      const hasProjects = this.$store.getters.getCurrentUser.recent_projects.length != 0
+      const hasProjects = this.$store.getters['user/getCurrent'].recent_projects.length != 0
 
       const tabs = []
       if (hasProjects) {
         tabs.push('Open Project')
       }
-      
       tabs.push('New Project')
 
       return {
         hasProjects,
-        tabs,
-        activeTab: 0
-      }
-    },
-    computed: {
-      activeTabNum () {
-        return this.tabs.findIndex(t => t.id == this.activeTab)
+        tabs
       }
     }
   }

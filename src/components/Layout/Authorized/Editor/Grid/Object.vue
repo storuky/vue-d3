@@ -1,38 +1,40 @@
 <template>
-  <g ref="container" :data-object-id="localData.id" @mouseover="showTools()" @mouseleave="hideTools()">
+  <g ref="container" :data-object-id="params.id" @mouseover="showTools()" @mouseleave="hideTools()">
     <!-- Object -->
-    <foreignObject :height="localData.size.height" :width="localData.size.width" ref="foreignObject">
-        <component ref="component" @calcSize="calcSize()" :default={defaultSize} :is="componentType" v-model="localData.info.settings" :componentId="localData.id" :size="localData.size" :position="localData.position"></component>
+    <foreignObject :height="params.size.height" :width="params.size.width" ref="foreignObject">
+        <component ref="component" @calcSize="calcSize()" :default="settings.size" :is="params.type" v-model="params.info.settings" :componentId="params.id" :size="params.size" :position="params.position"></component>
       <!-- <div style="margin: 4px; width: calc(100% - 8px); height: calc(100% - 8px)" ref="content">
       </div> -->
     </foreignObject>
 
     <!-- Tools -->
-    <foreignObject v-if="toolsVisible" y="-30" height="30" :width="localData.size.width">
-      <ObjectTools :settings="settings" @openSettings="openSettings" @deleteObject="deleteObject" :objectId="localData.id" />
+    <foreignObject v-if="toolsVisible" y="-30" height="30" :width="params.size.width">
+      <ObjectTools :settings="settings" @openSettings="openSettings" @deleteObject="deleteObject" :objectId="params.id" />
     </foreignObject>
 
     <!-- Label -->
-    <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="localData.size.width + 50" :x="-25" :y="localData.size.height+20">
+    <foreignObject ref="labelFO" :height="$refs.label ? $refs.label.scrollHeight : 30" :width="params.size.width + 50" :x="-25" :y="params.size.height+20">
       <div class="object-label" ref="label">
-        {{localData.info.settings.title || localData.info.title || componentName}}
+        {{params.info.settings.title || params.info.title || componentName}}
       </div>
     </foreignObject>
 
     <!-- IN -->
-    <foreignObject v-if="settings.has.in" height="12" :width="12" x="-4" :y="localData.size.height/2 - 6">
-      <In />
+    <foreignObject v-if="hasIn" height="12" :width="12" x="-4" :y="params.size.height/2 - 6">
+      <In :color="settings.inColor" />
     </foreignObject>
 
     <!-- OUT -->
-    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="localData.size.width - 8" :y="localData.size.height/2 - 6">
-      <Out :objectId="localData.id" />
+    <foreignObject v-if="settings.has.out" height="12" :width="12" :x="params.size.width - 8" :y="params.size.height/2 - 6">
+      <Out :color="settings.outColor" :objectId="params.id" />
     </foreignObject>
 
     <!-- RESIZER -->
-    <foreignObject v-if="settings.has.resize" width="10" height="10" :x="localData.size.width-8" :y="localData.size.height-8">
-      <Resizer :objectId="localData.id" />
+    <foreignObject v-if="settings.has.resize" width="10" height="10" :x="params.size.width-8" :y="params.size.height-8">
+      <Resizer :objectId="params.id" />
     </foreignObject>
+
+    <!-- <Curve v-for="curve in curvesTo" :key="curve.id" :from="curve.from" :to="curve.to" /> -->
   </g>
 </template>
 
@@ -41,22 +43,24 @@
 
   import * as d3 from 'd3'
 
-  import ComponentSelector from './Objects/ComponentsSelector/index'
+  import ComponentSelector from './Objects/ComponentsSelector/Component'
 
   // AnalysisTools
-  import AnalysisTools_Person from './Plugins/AnalysisTools/Objects/Person/index'
-  import AnalysisTools_Organisation from './Plugins/AnalysisTools/Objects/Organisation/index'
-  import AnalysisTools_General from './Plugins/AnalysisTools/Objects/General/index'
+  import AnalysisTools_Person from './Plugins/AnalysisTools/Objects/Person/Component'
+  import AnalysisTools_Organisation from './Plugins/AnalysisTools/Objects/Organisation/Component'
+  import AnalysisTools_General from './Plugins/AnalysisTools/Objects/General/Component'
 
   // Chatbot
-  import Chatbot_Question from './Plugins/Chatbot/Objects/Question/index'
-  import Chatbot_Answer from './Plugins/Chatbot/Objects/Answer/index'
+  import Chatbot_Question from './Plugins/Chatbot/Objects/Question/Component'
+  import Chatbot_Answer from './Plugins/Chatbot/Objects/Answer/Component'
+  import Chatbot_DialogFlow from './Plugins/Chatbot/Objects/DialogFlow/Component'
 
   // Elements
   import In from './Objects/_Elements/In'
   import Out from './Objects/_Elements/Out'
   import Resizer from './Objects/_Elements/Resizer'
   import ObjectTools from './Objects/_Elements/ObjectTools'
+  import Curve from './Curve'
 
   import settings from './settings'
   import debounce from '../../../../../utils'
@@ -66,7 +70,7 @@
   export default {
     name: "BaseObject",
     props: {
-      data: Object
+      objectId: Number
     },
     components: {
       AnalysisTools_Person,
@@ -74,63 +78,56 @@
       AnalysisTools_General,
       Chatbot_Answer,
       Chatbot_Question,
+      Chatbot_DialogFlow,
       ComponentSelector,
       In,
       Out,
       Resizer,
-      ObjectTools
-    },
-    created () {
-      this.$store.dispatch("addObject", this)
+      ObjectTools,
+      Curve
     },
     mounted () {
       this.$nextTick(function () {
         this.d3container = d3.select(this.$refs.container)
         this.d3container.on('dblclick', () => d3.event.stopPropagation())
+
+        this.$root.$on(`redrawObject-${this.objectId}`, () => {
+          this.redraw()
+        })
+
         this.arrange()
         this.makeDraggable()
         if (this.$refs.labelFO) {
           d3.select(this.$refs.labelFO).attr('height', this.$refs.label.scrollHeight)
         }
 
-        // setTimeout(() => {
-          this.calcSize()
-        // }, 1000)
+        this.calcSize()
       })
     },
     data () {
-      const localData = {...this.data}
-      localData.size = {...localData.size}
       return {
         drawingCurve: false,
-        toolsVisible: false,
-        components: ['Chatbot_Answer', 'Chatbot_Question'],
-        localData: localData
-      }
-    },
-    watch: {
-      localData: {
-        handler (val) {
-          this.sync()
-        },
-        deep: true
+        toolsVisible: false
       }
     },
     computed: {
-      defaultSize () {
-        return settings[this.componentType].size
+      params () {
+        return this.$store.getters['objects/getObject'](this.objectId)
       },
-      componentType () {
-        return this.localData.type
-      },
-      componentName () {
-        return settings[this.componentType].name
+      settings () {
+        return settings[this.params.type]
       },
       labelHeightByContent () {
         return this.$refs.label ? this.$refs.label.scrollHeight : this.initialLabelHeightByContent || 30
       },
-      settings () {
-        return settings[this.componentType]
+      componentName () {
+        return this.settings.name
+      },
+      curvesTo () {
+        return this.$store.getters['curves/getCurvesTo'](this.params.id)
+      },
+      hasIn () {
+        return this.settings.has.in && this.curvesTo.length
       }
     },
     methods: {
@@ -142,37 +139,39 @@
       },
       arrange () {
         this.d3container
-          .attr("transform", "translate("+[this.localData.position.x - 4, this.localData.position.y - 4]+")")
+          .attr("transform", "translate("+[this.params.position.x - 4, this.params.position.y - 4]+")")
       },
       setPosition (position) {
-        this.localData.position = position
+        this.params.position = position
         this.redraw()
-      },
-      curves () {
-        return this.$store.getters.getCurves(this.localData.id)
       },
       redraw () {
         this.arrange()
-
-        this.curves().forEach(curve => curve.redraw());
+        this.curves().forEach(curve => {
+          this.$root.$emit(`redrawCurve-${curve.id}`)
+        })
+        this.sync()
+      },
+      curves () {
+        return this.$store.getters['curves/getCurves'](this.params.id)
       },
       calcSize() {
         this.$nextTick(function () {
-          this.localData.size.width = this.$refs.component.$el.scrollWidth
-          this.localData.size.height = this.$refs.component.$el.scrollHeight
+          this.params.size.width = this.$refs.component.$el.scrollWidth
+          this.params.size.height = this.$refs.component.$el.scrollHeight
           this.redraw()
         })
       },
       deleteObject () {
-        this.$store.dispatch('removeObject', this.localData.id)
+        this.$store.dispatch('objects/delete', this.params.id)
       },
       openSettings () {
         const openSettingsCallback = this.$refs.component.openSettings
         if (openSettingsCallback) openSettingsCallback()
       },
       sync: debounce(function () {
-        if (!settings[this.componentType].disableSync) {
-          CharObject.update({id: this.localData.id}, {object: this.localData})
+        if (!settings[this.params.type].disableSync) {
+          CharObject.update({id: this.params.id}, {object: this.params})
         }
       }, 500),
       makeDraggable () {
@@ -180,8 +179,8 @@
           d3.drag()
             .on("start", () => {
               this.initialPosition = {
-                x: d3.event.x - this.localData.position.x,
-                y: d3.event.y - this.localData.position.y
+                x: d3.event.x - this.params.position.x,
+                y: d3.event.y - this.params.position.y
               }
             })
             .on("drag", () => {
@@ -190,9 +189,6 @@
                 y: d3.event.y - this.initialPosition.y
               }
               this.setPosition(targetPosition)
-            })
-            .on("end", () => {
-              
             })
         )
       }
@@ -205,5 +201,6 @@
     text-transform: uppercase;
     font-size: 12px;
     text-align: center;
+    word-wrap: break-word;
   }  
 </style>

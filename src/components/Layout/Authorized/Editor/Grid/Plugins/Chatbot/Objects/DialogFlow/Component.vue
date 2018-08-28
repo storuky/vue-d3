@@ -1,18 +1,13 @@
 <template>
-  <div @click="openSettings()" class="chatbot-message">
-    <ol v-if="localSettings.answerVariants.length > 1">
-      <li :key="variant.id" v-for="variant in localSettings.answerVariants">
-        {{variant.text}}
-      </li>
-    </ol>
-    <div v-else>
-      {{localSettings.answerVariants[0] && localSettings.answerVariants[0].text || "Click to Add"}}
+  <div class="chatbot-dialogflow-border">
+    <div @click="openSettings()" class="chatbot-dialogflow">
+
     </div>
   </div>
 </template>
 
 <script>
-  import SettingsModal from './SettingsModal'
+  import Settings from './Settings'
   export default {
     name: "Chatbot_Answer",
     props: {
@@ -21,16 +16,14 @@
     },
     data () {
       const settings = {...this.value}
-      if (!settings.answerVariants) {
-        settings.answerVariants = []
-      }
+
       return {
         localSettings: settings
       }
     },
     methods: {
       openSettings () {
-        this.$modal.show(SettingsModal, {
+        this.$modal.show(Settings, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
@@ -48,23 +41,28 @@
 </script>
 
 <style scoped>
-  .chatbot-message {
+  .chatbot-dialogflow-border {
+    padding: 3px;
+    background: #ef6c00;
+    border-radius: 10px;
+    height: 100%;
+  }
+  .chatbot-dialogflow {
     cursor: pointer;
     height: 100%;
-    background: #df4e9e;
-    color: white;
+    background: white;
+    background-image: url('./dialogflow-logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: #333;
     font-weight: bold;
-    border-radius: 30px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
     text-align: center;
     padding: 10px;
-    text-shadow: 1px 1px 3px rgba(0,0,0,.1);
-  }
-
-  .chatbot-message ol {
-    text-align: left;
   }
 </style>

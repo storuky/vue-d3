@@ -165,7 +165,7 @@
   }
 
   .question-body-wrapper {
-    min-height: 300px;
+    /* min-height: 300px; */
   }
 
   .question-body {

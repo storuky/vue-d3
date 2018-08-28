@@ -1,23 +1,21 @@
 <template>
-  <div @add="openSettings()" :style="{width: (localSettings.width || 100) + '%'}">
+  <div :style="{width: (localSettings.width || 100) + '%'}">
     <slot :openSettings="openSettings"></slot>
-    <div class="chatbot-radiolist">
+    <div class="chatbot-checkboxlist">
       <div class="title" v-html="localSettings.title"></div>
-      <v-radio-group disabled v-model="model">
-        <v-radio v-for="option in localSettings.options" :key="option.id" :label="option.text" :value="option.text"></v-radio>
-      </v-radio-group>
+      <v-checkbox disabled :key="option.id" v-for="option in localSettings.options" v-model="model" :label="option.value" :value="option.value"></v-checkbox>
     </div>
   </div>
 </template>
 
 <script>
   import * as d3 from 'd3'
-  import SettingsModal from './SettingsModal'
+  import Settings from './Settings'
 
   export default {
-    name: "ChatbotRadioList",
+    name: "ChatbotCheckboxList",
     props: {
-      value: Object
+      value: Object,
     },
     mounted () {
       this.$nextTick(function () {
@@ -27,17 +25,17 @@
     data() {
       return {
         localSettings: {...this.value},
-        model: null
+        model: undefined
       }
     },
     methods: {
       openSettings () {
-        this.$modal.show(SettingsModal, {
+        this.$modal.show(Settings, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings
-            this.$emit('input', this.localSettings)
             this.$emit('calcSize')
+            this.$emit('input', this.localSettings)
           }
         }, {
           scrollable: true, height: "auto", overlayClasses: ['object-editor-overlay'], transition: 'object-editor', name: 'object-editor',
@@ -47,26 +45,27 @@
   }
 </script>
 
-<style scope>
+<style scoped>
   .title {
     text-align: center;
   }
-  .chatbot-radiolist {
+  .chatbot-checkboxlist {
     display: block;
     margin-top: 20px;
   }
-  .chatbot-radiolist .v-input {
-    margin-top: 0 !important;
-  }
-  .chatbot-radiolist .v-messages {
-    display: none;
-  }
-
 </style>
 
 <style>
-  .chatbot-radiolist .v-label,
-  .chatbot-radiolist .v-icon  {
+  .chatbot-checkboxlist .v-messages {
+    display: none;
+  }
+
+  .chatbot-checkboxlist .v-input {
+    margin-top: 0;
+  }
+
+  .chatbot-checkboxlist .v-label,
+  .chatbot-checkboxlist .v-icon  {
     color: #333 !important;
   }
 </style>

@@ -8,7 +8,7 @@
 
 <script>
   import * as d3 from 'd3'
-  import SettingsModal from './SettingsModal'
+  import Settings from './Settings'
 
   export default {
     name: "ChatbotSelect",
@@ -32,7 +32,7 @@
     },
     methods: {
       openSettings () {
-        this.$modal.show(SettingsModal, {
+        this.$modal.show(Settings, {
           settings: this.localSettings,
           onSave: (settings) => {
             this.localSettings = settings

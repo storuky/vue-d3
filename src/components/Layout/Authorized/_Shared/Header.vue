@@ -75,9 +75,6 @@
     methods: {
       setLocalTab () {
         this.localTab = this.tabs.findIndex(t => this.value == t.id)
-      },
-      toggleDrawer () {
-        this.$store.dispatch('toggleDrawer')
       }
     }
   }

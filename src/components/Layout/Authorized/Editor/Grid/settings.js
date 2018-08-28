@@ -19,7 +19,6 @@ const ComponentSelector = {
     resize: false,
     settings: false
   },
-  disableSync: true,
   default(object) {
     return {
       ...settings.default,

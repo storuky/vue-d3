@@ -10,13 +10,13 @@
 
 <script>
   import * as d3 from 'd3'
-  import ChatbotButton from '../Controls/Button/index'
-  import ChatbotSelect from '../Controls/Select/index'
-  import ChatbotInput from '../Controls/Input/index'
-  import ChatbotVideo from '../Controls/Video/index'
-  import ChatbotImage from '../Controls/Image/index'
-  import ChatbotCheckboxList from '../Controls/CheckboxList/index'
-  import ChatbotRadioList from '../Controls/RadioList/index'
+  import ChatbotButton from '../Controls/Button/Component'
+  import ChatbotSelect from '../Controls/Select/Component'
+  import ChatbotInput from '../Controls/Input/Component'
+  import ChatbotVideo from '../Controls/Video/Component'
+  import ChatbotImage from '../Controls/Image/Component'
+  import ChatbotCheckboxList from '../Controls/CheckboxList/Component'
+  import ChatbotRadioList from '../Controls/RadioList/Component'
 
   export default {
     name: "Controls",

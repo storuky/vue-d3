@@ -31,11 +31,11 @@
       signUp () {
         this.$http.post('/vulcan/v1/auth/register', {user: this.params})
           .then(res => {
-            this.$store.dispatch('setCurrentUser', res.data)
+            this.$store.dispatch('user/setCurrent', res.data)
             if (this.$route.query.redirect) {
               this.$router.push({path: this.$route.query})
             } else {
-              this.$router.push({name: 'root'})
+              this.$router.push({name: 'dashboard'})
             }
           })
       }

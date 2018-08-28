@@ -36,7 +36,7 @@
 
 <script>
   export default {
-    name: "ButtonSettingsModal",
+    name: "ButtonSettings",
     props: {
       settings: Object,
       onSave: Function,
@@ -55,7 +55,7 @@
         this.localSettings.actions.push({id: Math.random()})
       },
       deleteAction (actionId) {
-        this.actions = this.localSettings.actions.filter(action => action.id != actionId)
+        this.localSettings.actions = this.localSettings.actions.filter(action => action.id != actionId)
       },
       save () {
         this.onSave(this.localSettings)
